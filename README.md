@@ -26,7 +26,7 @@ and then you can install node
 
 ## How to Install and Run the Project
 
-With node installed you can use npm, its default pachage manager. To install cotalker-sdk simply write in your terminal
+With node installed you can use npm, its default package manager. To install cotalker-sdk simply write in your terminal
 
 ```
     npm i cotalker-sdk
