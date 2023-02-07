@@ -1,6 +1,6 @@
 {
   "name": "cotalker-sdk",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Cotalker's partners lib",
   "main": "lib/index.js",
   "author": "cotalker",
@@ -15,8 +15,8 @@
   "scripts": {
     "build": "npx tsc",
     "prepare": "npm run build",
-    "version" : "git add -A src",
-    "postversion" : "git push && git push --tags"  
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "keywords": [
     "cotalker"
