@@ -1,6 +1,5 @@
 import { CotalkerAPI } from './libs/CotalkerAPI'
-
-export default CotalkerAPI 
+export { CotalkerAPI } 
 
 export * from './libs/Answer'
 export * from './customTypes/COTTypes/COTUser'

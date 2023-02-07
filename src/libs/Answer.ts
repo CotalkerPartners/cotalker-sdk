@@ -61,4 +61,3 @@ export class Answer {
     return await this.API.getUser(this.user)
   }
 }
-
