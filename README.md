@@ -1,7 +1,6 @@
 # cotalker-sdk
 
 For Cotalker Partners, this library will help you communicate with Cotalker's API.
-You can use javascript for retrieving some data but we encourage the use of typescript for a full usage of the package.
  
 
 
@@ -37,7 +36,7 @@ With node installed you can use npm, its default package manager. To install cot
 You can now import Cotalker's API and use its methods to communicate with your workspace, by example:
 
 ```typescript
-    import CotalkerAPI from "cotalker-sdk" 
+    import { CotalkerAPI } from "cotalker-sdk" 
 
     const token = "..."
     const  helloAPI = new CotalkerAPI(token)
