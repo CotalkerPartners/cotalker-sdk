@@ -1,6 +1,6 @@
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import * as http from 'http'
 import * as https from 'https'
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios'
 
 declare module 'axios' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -8,19 +8,22 @@ declare module 'axios' {
 }
 
 export default abstract class HttpClient {
-  protected readonly instance: AxiosInstance;
+  protected readonly instance: AxiosInstance
+
+  private waitTime
 
   public constructor(baseURL: string, keepAlive?: boolean) {
-    
     if (keepAlive) {
       const httpAgent = new http.Agent({ keepAlive: true })
       const httpsAgent = new https.Agent({ keepAlive: true })
       this.instance = axios.create({
-        baseURL, httpAgent, httpsAgent
+        baseURL, httpAgent, httpsAgent,
       })
-    } else this.instance = axios.create({
-      baseURL,
-    })
+    } else {
+      this.instance = axios.create({
+        baseURL,
+      })
+    }
 
     this._initializeResponseInterceptor()
   }
@@ -30,7 +33,7 @@ export default abstract class HttpClient {
       this._handleResponse,
       this._handleError,
     )
-  };
+  }
 
   static async post<T>(url: string, headers: Record<string, string>, body: Record<string, unknown>): Promise<T> {
     return (await axios({ url, data: body, method: 'post', headers }))?.data
@@ -40,32 +43,30 @@ export default abstract class HttpClient {
     return (await axios({ url, method: 'get', headers }))?.data
   }
 
-  private _handleResponse = ({ data, }: AxiosResponse) => {
-    return data    
-  };
+  // eslint-disable-next-line class-methods-use-this
+  private _handleResponse = ({ data }: AxiosResponse) => data
 
   protected _handleError = async (axiosError: AxiosError): Promise<any> => {
     const { config, response } = axiosError
-    if (response.status === 429) {
-      console.info(`429 TOO MANY REQUESTS: Retrying ${config.method} ${config.url}`) 
-      const waitTime = Number(response.headers['retry-after'] ?? response.headers['Retry-After'])*1000
-      return new Promise(resolve=>setTimeout(resolve, waitTime))
-      .then(function () {
+    switch (response.status) {
+      case 429:
+        console.error(`Retrying ${config.method} ${config.url}`)
+        this.waitTime = Number(response.headers['retry-after'] ?? response.headers['Retry-After']) * 1000
+        await new Promise(resolve => setTimeout(resolve, this.waitTime))
         return (axios(config))
-      })
-    } else
-    if (response.status === 401) {
-      console.info(`401 UNAUTHORIZED: unvalid token`)
-    } else
-    if (response.status === 403) {
-      console.info(`403 FORBIDDEN: User has no permission to take this action`)
-    } else
-    if (response.status === 404) {
-      console.info(`404 NOT FOUND£`)
-    } else
-    if (response.status === 500) {
-      console.info(`500 INTERNAL SERVER ERROR: `)
+      case 401:
+        throw new Error('Bad authorization token. Your token has expired.')
+      case 403:
+        throw new Error('You do not have permissions to do this action! ')
+      case 404:
+        console.error('ID not found', config.url)
+        return Promise.resolve({ data: null })
+      case 500:
+        console.error(' Cotalker API replied with internal error', response.data)
+        return Promise.resolve({ data: null })
+      default:
+        break
     }
-    return Promise.reject(axiosError);
+    return Promise.reject(axiosError)
   }
 }

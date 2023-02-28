@@ -1,13 +1,11 @@
 {
-    "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-        "@functions/*": ["src/functions/*"],
-        "@libs/*": ["src/libs/*"],
-        "@views/*": ["src/views/*"],
-        "@utils/*": ["src/utils/*"],
-        "@customTypes/*": ["src/customTypes/*"]
-      }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@libs/*": ["src/libs/*"],
+      "@utils/*": ["src/utils/*"],
+      "@customTypes/*": ["src/customTypes/*"],
+      "@models/*": ["src/libs/models/*"]
     }
   }
-
+}

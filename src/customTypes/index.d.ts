@@ -1,2 +1,2 @@
-export * from './libs/CotalkerAPI';
-export * from './libs/Answer';
+export * from '@libs/CotalkerAPI'
+export * from '@libs/Answer'

@@ -17,8 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@libs/*": ["src/libs/*"],
-      "@utils/*": ["sc/utils/*"],
-      "@customTypes/*": ["src/customTypes/*"]
+      "@utils/*": ["src/utils/*"],
+      "@customTypes/*": ["src/customTypes/*"],
+      "@models/*": ["src/libs/models/*"]
     }
   },
   "include": ["src/**/*.ts"],

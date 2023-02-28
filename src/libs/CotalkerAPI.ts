@@ -1,272 +1,393 @@
-import { URLSearchParams } from 'url'
-import * as querystring from 'querystring'
+/* eslint-disable no-param-reassign */
+import { IsActiveOptions, JSONPatchBody } from '@customTypes/COTTypes/APIGenerics'
+import { AccessRolesQueryParams } from '@customTypes/COTTypes/COTAccessRole'
+import { AnswersQueryParams } from '@customTypes/COTTypes/COTAnswer'
+import { ChannelsQueryParams, COTChannel } from '@customTypes/COTTypes/COTChannel'
+import { EditMsgBody, SendMsgBody } from '@customTypes/COTTypes/COTMessage'
+import { COTProperty, PropertiesQueryParams, SearchPropertyQueryOptions } from '@customTypes/COTTypes/COTProperty'
+import { PropertyTypesQueryParams } from '@customTypes/COTTypes/COTPropertyType'
+import { SurveysQueryParams } from '@customTypes/COTTypes/COTSurvey'
+import { COTTaskPatchData, COTTaskPostData, COTTaskQuery, MultiTaskBody, QueryTaskFilterOptions } from '@customTypes/COTTypes/COTTask'
+import { COTUser, UsersQueryParams } from '@customTypes/COTTypes/COTUser'
+import { ScheduleBody } from '@customTypes/COTTypes/scheduler'
+import { ObjectId } from '@customTypes/custom'
+import COTAnswerClient from '@models/COTAnswerClient'
+import COTChannelClient from '@models/COTChannelClient'
+import COTFileClient from '@models/COTFileClient'
+import COTMessageClient from '@models/COTMessageClient'
+import COTPropertyClient from '@models/COTPropertyClient'
+import COTPropertyTypeClient from '@models/COTPropertyTypeClient'
+import COTSchedulerClient from '@models/COTSchedulerClient'
+import COTSMStateClient from '@models/COTSMStateClient'
+import COTSurveyClient from '@models/COTSurveyClient'
+import COTTaskClient from '@models/COTTaskClient'
+import COTUserClient, { AllowedRelation } from '@models/COTUserClient'
+import HttpClient from '@utils/HttpClient'
 import { InternalAxiosRequestConfig } from 'axios'
-import HttpClient from '../utils/HttpClient'
-import { ObjectId } from '../customTypes/custom'
-import { COTAnswer } from "../customTypes/COTTypes/COTAnswer"
-import { COTChannel, COTChannelPostBody } from '../customTypes/COTTypes/COTChannel'
-import { COTPropertyType } from '../customTypes/COTTypes/COTPropertyType'
-import { COTProperty, COTPropertyPostBody }  from '../customTypes/COTTypes/COTProperty'
-import { COTFileUploaded } from '../customTypes/COTTypes/COTFile'
-import { COTTask, COTTaskPatchData, COTTaskPostData, COTTaskQuery} from '../customTypes/COTTypes/COTTask'
-import { COTSurvey } from '../customTypes/COTTypes/COTSurvey'
-import { COTUser, COTUserActivity } from '../customTypes/COTTypes/COTUser'
-import { COTSMState } from '../customTypes/COTTypes/COTSMState'
-import { FilteredTasks, queryTaskFilterOptions } from '../customTypes/COTTypes/COTTask'
-import { ScheduleBody, SchedulePostResponse } from '../customTypes/COTTypes/scheduler'
 
-type isActiveOptions = 'true'|'false'|'all'
-
-type JSONPatchBody = {
-  op: 'add'|'remove'|'replace'|'move'|'copy'|'test'
-  path: `/${string}`, value?: unknown
-}[]
-
-type searchPropertyQueryOptions = {
-  parent?: string | string[]
-}
-
-type SendMsgBody = {
-  channel: ObjectId,
-  content: string,
-  contentType: 'text/system' | 'text/plain',
-  isSaved: 2,
-  sentBy: ObjectId
-}
+import COTAccessRolesClient from './models/COTAccessRolesClient'
 
 export class CotalkerAPI extends HttpClient {
+  private _cotfileClient: COTFileClient
+
+  private _cottaskClient: COTTaskClient
+
+  private _cotuserClient: COTUserClient
+
+  private _cotsurveyClient: COTSurveyClient
+
+  private _cotanswerClient: COTAnswerClient
+
+  private _cotmessageClient: COTMessageClient
+
+  private _cotchannelClient: COTChannelClient
+
+  private _cotsmStateClient: COTSMStateClient
+ 
+  
+  private _cotpropertyClient: COTPropertyClient
+  
+  private _cotschedulerClient: COTSchedulerClient
+
+  private _cotaccessRolesClient: COTAccessRolesClient
+  
+  private _cotpropertyTypeClient: COTPropertyTypeClient
+
   private _cotalkerToken: string
-  public constructor(token: string, baseURL?:string) {
+
+  public constructor(token: string, baseURL?: string) {
     super(baseURL ?? 'https://staging.cotalker.com', false)
     this._cotalkerToken = (token ?? process.env.COTALKER_TOKEN ?? '').replace(/^Bearer /g, '')
     this._initializeRequestInterceptor()
+    this._cotfileClient = new COTFileClient(this.instance)
+    this._cottaskClient = new COTTaskClient(this.instance)
+    this._cotuserClient = new COTUserClient(this.instance)
+    this._cotsurveyClient = new COTSurveyClient(this.instance)
+    this._cotanswerClient = new COTAnswerClient(this.instance)
+    this._cotmessageClient = new COTMessageClient(this.instance)
+    this._cotchannelClient = new COTChannelClient(this.instance)
+    this._cotsmStateClient = new COTSMStateClient(this.instance)
+    this._cotpropertyClient = new COTPropertyClient(this.instance)
+    this._cotschedulerClient = new COTSchedulerClient(this.instance)
+    this._cotaccessRolesClient = new COTAccessRolesClient(this.instance)
+    this._cotpropertyTypeClient = new COTPropertyTypeClient(this.instance)
   }
 
-  private _handleRequest = async (config: InternalAxiosRequestConfig) => {
-    if (!config.headers) return
-    config.headers['Authorization'] = `Bearer ${this._cotalkerToken}`
-    config.headers['Content-Type'] = 'application/json'
-    config.headers['admin'] = 'true'
-    return config
-  }
-  
   private _initializeRequestInterceptor = () => {
     this.instance.interceptors.request.use(
       this._handleRequest,
       this._handleError,
     )
   }
-  
 
-  public static async login(email: string, password: string): Promise<string> {
+  // eslint-disable-next-line require-await, @typescript-eslint/require-await
+  private _handleRequest = async (config: InternalAxiosRequestConfig) => {
+    if (!config.headers) return
+    config.headers.Authorization = `Bearer ${this._cotalkerToken}`
+    config.headers['Content-Type'] = 'application/json'
+    config.headers.admin = 'true'
+    // eslint-disable-next-line consistent-return
+    return config
+  }
+
+  /* COTLogin*/
+  static async login(email: string, password: string): Promise<string> {
     return (await super.post<{ token: string }>(
       `${process.env.BASE_URL}/auth/local`,
       { 'Content-Type': 'application/json' },
-      { email, password }
+      { email, password },
     )).token
   }
 
-  public async runSchedule(body: ScheduleBody): Promise<SchedulePostResponse> {
-    return await this.instance.post('/api/uservices/scheduler/run', body)
-  }
-  public async postSchedule(body: ScheduleBody): Promise<SchedulePostResponse> {
-    return await this.instance.post('/api/uservices/scheduler', body)
-  }
-
-  /* COTProperty */
-  public async getProperty<T extends COTProperty>(_id: ObjectId): Promise<T> {
-    return (await this.instance.get<{data: T}>(`/api/v2/properties/${_id}`)).data
-  }
-  public async getPropertyByCode<T extends COTProperty>(code: string): Promise<T> {
-    return (await this.instance.get(`/api/v2/properties/code/${code}`)).data
+  /* COTScheduler*/
+  async runSchedule(body: ScheduleBody) {
+    const schedule = await this._cotschedulerClient.runSchedule(body)
+    return schedule
   }
 
-  /* COTPropertyType */
-  public async getPropertyTypeByCode<T extends COTPropertyType>(code: string): Promise<T> {
-    return (await this.instance.get(`/api/v2/propertyTypes/code/${code}`)).data
+  async postSchedule(body: ScheduleBody) {
+    const schedule = await this._cotschedulerClient.postSchedule(body)
+    return schedule
   }
-
-  public async searchProperty<T extends COTProperty>(search: string, propertyType?: string, options?: searchPropertyQueryOptions): Promise<T[]>
-  public async searchProperty<T extends COTProperty>(search: string): Promise<T[]>
-  public async searchProperty<T extends COTProperty>(search: string, propertyType?: string, options?: searchPropertyQueryOptions)
-  : Promise<T> {
-    const query: Record<string, string|string[]> = { search, ...(options??{}) }
-    if (propertyType) query.propertyTypes = propertyType
-    return (await this.instance.get(`/api/v2/properties?${new URLSearchParams(query).toString()}`)).data?.properties ?? []
-  }
-  public async getSubproperties<T extends COTProperty>(property: COTProperty, isActive?: isActiveOptions): Promise<T[]>
-  public async getSubproperties<T extends COTProperty>(property: ObjectId,isActive?: isActiveOptions): Promise<T[]>
-  public async getSubproperties<T extends COTProperty>(
-    property: ObjectId | COTProperty, isActive?: isActiveOptions): Promise<T[]> {
-    if (typeof property === 'string') return (await this.instance.get<{ data: { properties: T[] } }>(
-      `/api/v2/properties/relations?property=${property}&relation=child&isActive=${isActive ?? 'all'}`)).data?.properties
-    if (!property.subproperty?.length) return []
-    const qParams = new URLSearchParams({ ids: property.subproperty, limit: '100' }) 
-    return (await this.instance.get<{ data: { properties: T[] } }>(
-      `/api/v2/properties?${qParams.toString()}`)).data?.properties
-  }
-  public async postProperty<T extends COTProperty>(property: COTPropertyPostBody): Promise<T> {
-    return (await this.instance.post<{data: T}>('/api/v2/properties', property)).data
-  }
-  public async patchProperty<T extends COTProperty>(propertyId: ObjectId, body: Partial<COTProperty>): Promise<T> {
-    return (await this.instance.patch<{data: T}>(`/api/v2/properties/${propertyId}`, body)).data
-  }
-  public async jsonPatchProperty<T extends COTProperty>(propertyId: ObjectId, body: JSONPatchBody): Promise<T> {
-    return (await this.instance.patch<{ data: T }>(`/api/v2/properties/jsonpatch/${propertyId}`, body)).data
-  }
-  public async getAllFromPropertyType<T extends COTProperty>(propertyType: string): Promise <T[]> {
-    let count = 1
-    let page = 1
-    const properties: T[] = []
-    do {
-      const response = (await this.instance.get<{ data: { count: number, properties: T[] } }>(
-        `/api/v2/properties?page=${page}&propertyTypes=${propertyType}&limit=100&isActive=true&count=true`)) 
-      properties.push(...(response.data?.properties ?? []))
-      count = response.data?.count ?? properties.length
-      page++
-    } while(properties.length < count)
-    return properties
-  }
-  public async getExtensionProperty<T extends COTProperty>(taskId: ObjectId, extensionKey: string) {
-    const { data } = (await this.instance.get<{ data: T }>(`/api/v2/properties?propertyTypes=${extensionKey}&search=${taskId}`))
-    if (Array.isArray(data) && data[0]) return data[0]
-  }
-  /* COTSurvey */
-  public async getSurvey(surveyId: ObjectId): Promise<COTSurvey> {
-    return (await this.instance.get<{data:COTSurvey}>(`/api/v2/surveys/${surveyId}?populate=true`))?.data
-  }
-  public async getSurveys(): Promise<COTSurvey[]> {
-    let count = 1
-    let page = 1
-    const surveys: COTSurvey[] = []
-    do {
-      const response = (await this.instance.get<{ data: { count: number, surveys: COTSurvey[] } }>(
-        `/api/v2/surveys?count=true&limit=100&page=${page}&isActive=true`)) 
-      surveys.push(...response.data.surveys)
-      count = response.data.count 
-      page++
-    } while(surveys.length < count)
-    return surveys
-  }
-
 
   /* COTAnswer */
-  public async getAnswer(answerId: ObjectId): Promise<COTAnswer> {
-    return (await this.instance.get<{data:COTAnswer}>(`/api/v2/answers/${answerId}`))?.data
+  async getAnswer(answerId: ObjectId) {
+    const answer = await this._cotanswerClient.getAnswer(answerId)
+    return answer
+  }
+  
+  /* COTAccessRole */
+  async searchAccessRole(search: string) {
+    const accessRole = await this._cotaccessRolesClient.searchAccessRoles(search)
+    return accessRole
   }
 
   /* COTTask */
-  public async getTask<T extends COTTask>(taskId: ObjectId, taskGroupId: ObjectId): Promise<COTTask> {
-    return (await this.instance.get<T>(`/api/tasks/${taskGroupId}/task/${taskId}`))
-  }
-  public async getTaskBySerial(taskSerial: number, taskGroupId: ObjectId): Promise<COTTask> {
-    return (await this.instance.get<COTTask>(`/api/tasks/${taskGroupId}/task/serial/${taskSerial}`))
-  }
-  public async patchTask(taskId: ObjectId, taskGroupId: ObjectId, body: COTTaskPatchData): Promise<COTTask> {
-    return (await this.instance.patch<COTTask>(`/api/tasks/${taskGroupId}/task/${taskId}`, body))
-  }
-  public async findTasks<T extends COTTask>(taskGroupId: ObjectId, query: COTTaskQuery): Promise<T[]> {
-    return (await this.instance.post<T[]>(`/api/tasks/${taskGroupId}/task/all`, query))
-  }
-  public async postTask<T extends COTTask>(taskData: COTTaskPostData): Promise<T> {
-    return (await this.instance.post<{task: T}>(`/api/tasks/${taskData.taskGroup}/task/create?requiredSurvey=false`, taskData)).task
+  async getTask(taskId: ObjectId, taskGroupId: ObjectId) {
+    const task = await this._cottaskClient.getTask(taskId, taskGroupId)
+    return task
   }
 
-  public async patchMultiTasks(taskGroupId: ObjectId, body: {cmd: {method: string, task: COTTask}[]}): Promise<COTTask[]> {
-    return (await this.instance.post<COTTask[]>(`/api/tasks/${taskGroupId}/task/multi`, body))
+  async getTaskBySerial(taskSerial: number, taskGroupId: ObjectId) {
+    const task = await this._cottaskClient.getTaskBySerial(taskSerial, taskGroupId)
+    return task
   }
 
-  /* Filter Tasks */
-  public async queryTasksFilter(taskGroupId: string, filterId: string, options?: queryTaskFilterOptions): Promise<FilteredTasks[]> {
-    const qParams: Partial<Record<keyof queryTaskFilterOptions, string>> = {}
-    if (options) {
-      if (options.limit) qParams.limit = String(options.limit)
-      if (options.limitBy) qParams.limitBy = options.limitBy
-    }
-    const queryParams = (options && new URLSearchParams(qParams).toString()) || {}
-    return (await this.instance.get<FilteredTasks[]>(`/api/tasks/${taskGroupId}/task?filter=${filterId}&${queryParams}`))
+  async patchTask(taskId: ObjectId, taskGroupId: ObjectId, body: COTTaskPatchData) {
+    const task = await this._cottaskClient.patchTask(taskId, taskGroupId, body)
+    return task
   }
 
-  /* Users */
-  public async getUsersByAccessRole(role: string): Promise<COTUser[]> {
-    let count = 1
-    let page = 1
-    const users: COTUser[] = []
-    do {
-      const response = (await this.instance.get<{ data: { count: number, users: COTUser[] } }>(
-        `/api/v2/users?accessRole=${role}&count=true&limit=100&page=${page}&isActive=true`)) 
-      users.push(...response.data.users)
-      count = response.data.count 
-      page++
-    } while(users.length < count)
-    return users
+  async patchMultiTasks(taskGroupId: ObjectId, body: MultiTaskBody) {
+    const task = await this._cottaskClient.patchMultiTasks(taskGroupId, body)
+    return task
   }
 
-  public async getUsersByRelation(type: string, _id: ObjectId): Promise<COTUser[]> {
-    return (await this.instance.get(`/api/v2/users/relations/${type}/${_id}?limit=100&isActive=true`))?.data?.users ?? ''
-  }
-  public async getUser(_id: ObjectId): Promise<COTUser> {
-    return (await this.instance.get(`/api/v2/users/${_id}`)).data
+  async findTasks(taskGroupId: ObjectId, query: COTTaskQuery) {
+    const task = await this._cottaskClient.findTasks(taskGroupId, query)
+    return task
   }
 
-  public async getUsersByJob(job: string): Promise<COTUser[]> {
-    let count = 1
-    let page = 1
-    const users: COTUser[] = []
-    do {
-      const response = (await this.instance.get<{ data: { count: number, users: COTUser[] } }>(
-        `/api/v2/users?job=${job}&count=true&limit=100&page=${page}&isActive=true`)) 
-      users.push(...response.data.users)
-      count = response.data.count 
-      page++
-    } while(users.length < count)
-    return users
+  async queryTasksFilter(taskGroupId: string, filterId: string, options?: QueryTaskFilterOptions) {
+    const task = await this._cottaskClient.queryTasksFilter(taskGroupId, filterId, options)
+    return task
   }
 
-  public async getUsersByEmail(email: string): Promise<COTUser> {
-    return (await this.instance.get(`/api/v2/users?email=${email}`))?.data?.users[0]
+  async postTask(taskData: COTTaskPostData) {
+    const task = await this._cottaskClient.postTask(taskData)
+    return task
   }
+  
+  /* COTUser */
 
-  public async getUserActivity(_id: ObjectId): Promise<COTUserActivity> {
-    return (await this.instance.get(`/api/v2/user-activities/${_id}`)).data
-  }
-
-  public static async getUserMe(token: string): Promise<COTUser> {
-    const _token = token.replace(/^Bearer /, '')
-    return (await super.get(
+  static async getUserMe(_token: string): Promise<COTUser> {
+    const token = _token.replace(/^Bearer /, '')
+    const me: COTUser = await (super.get(
       `${process.env.BASE_URL}/api/users/me`,
       { 'Content-Type': 'application/json',
-        'Authorization': `Bearer ${_token}`},
+        Authorization: `Bearer ${token}` },
     ))
+    return me
   }
 
-  public async jsonPatchUser<T extends COTUser>(userId: ObjectId, body: JSONPatchBody): Promise<T> {
-    return (await this.instance.patch<{ data: T }>(`/api/v2/users/jsonpatch/${userId}`, body)).data
+  async getUser(id: ObjectId) {
+    const user = await this._cotuserClient.getUser(id)
+    return user
   }
 
-  public async getSubordiantes(user: COTUser): Promise<COTUser[]> {
-    const qParams = querystring.encode({ id: user.companies[0].hierarchy.subordinate, limit: '100' })
-    return (await this.instance.get(`/api/v2/users?${qParams}`)).data.users
-  }
-  /* smStates */
-  public async getSmStates(taskGroup: ObjectId): Promise<COTSMState[]> {
-    return (await this.instance.get(`/api/v1/tasks/${taskGroup}/sm/smstate/all`))
+  async getUsersByAccessRole(accessRole: ObjectId) {
+    const user = await this._cotuserClient.getUsersByAccessRole(accessRole)
+    return user
   }
 
-  /* channels */
-  public async createChannel<T extends COTChannel>(body: COTChannelPostBody): Promise<T> {
-    return (await this.instance.post<{data:T}>('/api/v2/channels', body)).data
+  async getUsersByRelation(type: AllowedRelation, id: ObjectId) {
+    const user = await this._cotuserClient.getUsersByRelation(type, id)
+    return user
+  }
+
+  async getUsersByJob(job: ObjectId) {
+    const user = await this._cotuserClient.getUsersByJob(job)
+    return user
+  }
+
+  async getUsersByEmail(email: string[] | string) {
+    const user = await this._cotuserClient.getUsersByEmail(email)
+    return user
   }
   
-
-  /* messages */
-  public async sendMessage<T>(body: SendMsgBody): Promise<T> {
-    return (await this.instance.post<{data:T}>('/api/v1/messages', body)).data
+  async getUserByEmail(email: string) {
+    const user = await this._cotuserClient.getUserByEmail(email)
+    return user
   }
 
-  /* files */
-  public async getFileObjectById(fileId: ObjectId): Promise<COTFileUploaded> {
-    return (await this.instance.get(`/api/v3/media/file/${fileId}`))
+  async getUserActivity(id: ObjectId) {
+    const user = await this._cotuserClient.getUserActivity(id)
+    return user
   }
   
+  async getSubordinates(user: COTUser) {
+    const subordinate = await this._cotuserClient.getSubordiantes(user)
+    return subordinate
+  }
+
+  async jsonPatchUser(userId: ObjectId, body: JSONPatchBody) {
+    const user = await this._cotuserClient.jsonPatchUser(userId, body)
+    return user
+  }
+
+
+  /* COTSMStates */
+  async getSmStates(taskGroup: ObjectId) {
+    const smState = await this._cotsmStateClient.getSmStates(taskGroup)
+    return smState
+  }
+
+  /* COTChannels */
+
+  async getChannel(body: COTChannel) {
+    const channel = await this._cotchannelClient.createChannel(body)
+    return channel
+  }
+
+  /* COTFiles */
+  async getFileObjectById(fileId: ObjectId) {
+    const file = await this._cotfileClient.getFileObjectById(fileId)
+    return file
+  }
+
+  /* COTMessages */
+  async sendMessage(body: SendMsgBody) {
+    const message = await this._cotmessageClient.sendMessage(body)
+    return message
+  }
+  
+  async removeMessage(_messageId: ObjectId) {
+    const message = await this._cotmessageClient.removeMessage(_messageId)
+    return message
+  }
+  
+  async editMessage(_messageId: ObjectId, body: EditMsgBody) {
+    const message = await this._cotmessageClient.editMessage(_messageId, body)
+    return message
+  }
+
+  /* COTSurvey */
+  async getSurvey(surveyId: ObjectId) {
+    const survey = await this._cotsurveyClient.getSurvey(surveyId)
+    return survey
+  }
+
+  async getSurveys() {
+    const survey = await this._cotsurveyClient.getSurveys()
+    return survey
+  }
+
+  async getSurveysCodes() {
+    const survey = await this._cotsurveyClient.getSurveysCodes()
+    return survey
+  }
+
+  async getSurveysByAnswer(answerUuid: string | string[]) {
+    const survey = await this._cotsurveyClient.getSurveysByAnswer(answerUuid)
+    return survey
+  }
+
+  /* COTProperty */
+  async getProperty(id: ObjectId) {
+    const property = await this._cotpropertyClient.getProperty(id)
+    return property
+  }
+
+  async getPropertyByCode(code: string) {
+    const property = await this._cotpropertyClient.getPropertyByCode(code)
+    return property
+  }
+
+  async getSubproperties(property: COTProperty | COTProperty, isActive?: IsActiveOptions) {
+    const subproperty = await this._cotpropertyClient.getSubproperties(property, isActive)
+    return subproperty
+  }
+
+  async postPropety(_property: COTProperty) {
+    const property = await this._cotpropertyClient.postProperty(_property)
+    return property
+  }
+
+  async patchPropety(propertyId: ObjectId, body: Partial<COTProperty>) {
+    const property = await this._cotpropertyClient.patchProperty(propertyId, body)
+    return property
+  }
+
+  async jsonPatchPropety(propertyId: ObjectId, body: JSONPatchBody) {
+    const property = await this._cotpropertyClient.jsonPatchProperty(propertyId, body)
+    return property
+  }
+
+  
+  /* COTPropertyType */
+  
+  async getPropertyTypeByCode(code: string) {
+    const property = await this._cotpropertyTypeClient.getPropertyTypeByCode(code)
+    return property
+  }
+
+  async getAllFromPropertyType(propertyType: string) {
+    const property = await this._cotpropertyTypeClient.getAllFromPropertyType(propertyType)
+    return property
+  }
+
+  async getExtensionProperty(taskId: ObjectId, extensionKey: string) {
+    const property = await this._cotpropertyTypeClient.getExtensionProperty(taskId, extensionKey)
+    return property
+  }
+  
+  async searchProperty(search: string, propertyType?: string, options?: SearchPropertyQueryOptions) {
+    const property = await this._cotpropertyTypeClient.searchProperty(search, propertyType, options)
+    return property
+  }
+  
+  /* QUERIES */
+  
+  //accessRoles
+  async getAccessRoleQuery(query:AccessRolesQueryParams) {
+    const accessRoles = await this._cotaccessRolesClient.getAccessRoleQuery(query)
+    return accessRoles
+  }
+
+  async getAllAccessRolesInQuery(query:AccessRolesQueryParams) {
+    const accessRoles = await this._cotaccessRolesClient.getAllAccessRolesInQuery(query)
+    return accessRoles
+  }
+  
+  //channels
+  async getChannelsQuery(query: ChannelsQueryParams) {
+    const property = await this._cotchannelClient.getChannelsQuery(query)
+    return property
+  }
+  
+  //properties
+  async getPropertiesQuery(query: PropertiesQueryParams) {
+    const property = await this._cotpropertyClient.getPropertiesQuery(query)
+    return property
+  }
+  
+  
+  //propertyTypes
+  async getPropertyTypeQuery(query: PropertyTypesQueryParams) {
+    const property = await this._cotpropertyTypeClient.getPropertyTypeQuery(query)
+    return property
+  }
+  
+  async getAllPropertyTypesInQuery(query: PropertyTypesQueryParams) {
+    const property = await this._cotpropertyTypeClient.getAllPropertyTypesInQuery(query)
+    return property
+  }
+  
+  //surveys
+  async getSurveyQuery(query: SurveysQueryParams) {
+    const survey = await this._cotsurveyClient.getSurveyQuery(query)
+    return survey
+  }
+
+  async getAllSurveysInQuery(query: SurveysQueryParams) {
+    const survey = await this._cotsurveyClient.getAllSurveysInQuery(query)
+    return survey
+  }
+  
+  //users
+  async getUsersQuery(query: UsersQueryParams) {
+    const property = await this._cotuserClient.getUsersQuery(query)
+    return property
+  }
+  
+  async getAllUsersInQuery(query: UsersQueryParams) {
+    const property = await this._cotuserClient.getAllUsersInQuery(query)
+    return property
+  }
+
+  //answers
+  async getAnswersQuery(query: AnswersQueryParams) {
+    const answers = await this._cotanswerClient.getAnswersQuery(query)
+    return answers
+  }
 }

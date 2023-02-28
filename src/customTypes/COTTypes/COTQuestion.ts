@@ -1,4 +1,5 @@
-import { ObjectId } from "../custom"
+import { dateQueryParams, genericQueryParams, ObjectId, objectId } from '@customTypes/custom'
+import { z } from 'zod'
 
 export declare type COTQuestionContentType =
 'application/vnd.cotalker.survey+text' |
@@ -16,50 +17,58 @@ export declare type COTQuestionContentType =
 'application/vnd.cotalker.survey+api' |
 'application/vnd.cotalker.survey+survey'
 
-export declare type COTQuestionExec = {
-  context?: string
-  src?: string
+export declare interface COTQuestionExec {
+  context?: string;
+  src?: string;
 }
 
-
-export type COTQuestionExecFilter = {
-  context?: string
-  filter?: string
-  src?: string
+export interface COTQuestionExecFilter {
+  context?: string;
+  filter?: string;
+  src?: string;
 }
 
 export declare interface COTQuestion {
   contentType: COTQuestionContentType;
-  display: string[]
-  code: string[]
-  identifier: string
-  symbolizes?: string
-  group: ObjectId
-  company: ObjectId
-  min: number
-  max: number
-  isActive: boolean
-  modifiedAt: Date
-  hideEmpty: boolean
-  isSystemModel: boolean
-  isReadOnly: boolean
-  required: boolean
-  textAlign?: string
-  responses?: string[]
+  display: string[];
+  code: string[];
+  identifier: string;
+  symbolizes?: string;
+  group: ObjectId;
+  company: ObjectId;
+  min: number;
+  max: number;
+  isActive: boolean;
+  modifiedAt: Date;
+  hideEmpty: boolean;
+  isSystemModel: boolean;
+  isReadOnly: boolean;
+  required: boolean;
+  textAlign?: string;
+  responses?: string[];
   command: {
-    commands: string[],
-    isCommanded: string,
-    values: { op: '=', target: string }[],
-  }
-  exec?: {
-    preload?: COTQuestionExec,
-    onDisplay?: COTQuestionExec,
-    filter?: COTQuestionExecFilter,
-    validate?: COTQuestionExec,
-    onChange?: COTQuestionExec,
-    presave?: COTQuestionExec,
-    postsave?: COTQuestionExec,
+    commands: string[];
+    isCommanded: string;
+    values: { op: '='; target: string }[];
   };
-  subtype?: string
-  skipCodeValidation?: boolean
+  exec?: {
+    preload?: COTQuestionExec;
+    onDisplay?: COTQuestionExec;
+    filter?: COTQuestionExecFilter;
+    validate?: COTQuestionExec;
+    onChange?: COTQuestionExec;
+    presave?: COTQuestionExec;
+    postsave?: COTQuestionExec;
+  };
+  subtype?: string;
+  skipCodeValidation?: boolean;
 }
+
+const questionQueryParamsSpecific = z.object({
+  ids: objectId,
+  _id: objectId,
+  debug: z.literal('true'),
+}).partial().strict()
+
+export const questionQueryParams = questionQueryParamsSpecific.merge(genericQueryParams).merge(dateQueryParams)
+export type QuestionQueryParams = z.infer<typeof questionQueryParams>
