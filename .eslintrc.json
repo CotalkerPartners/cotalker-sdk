@@ -7,28 +7,22 @@
 		"airbnb-typescript/base",
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"prettier"
 	],
 	"parserOptions": {
 		"project": "tsconfig.eslint.json"
 	},
-	"plugins": ["@typescript-eslint", "simple-import-sort", "import"],
+	"plugins": [
+		"@typescript-eslint",
+		"simple-import-sort",
+		"import",
+		"prettier"
+	],
 	"rules": {
 		"no-underscore-dangle": "off",
 		"import/prefer-default-export": "off",
 		"no-await-in-loop": "off",
-		"max-len": [
-			"error",
-			140,
-			2,
-			{
-				"ignoreUrls": true,
-				"ignoreComments": false,
-				"ignoreRegExpLiterals": true,
-				"ignoreStrings": true,
-				"ignoreTemplateLiterals": true
-			}
-		],
 		"no-param-reassign": ["error", { "props": false }],
 		"no-restricted-syntax": [
 			"error",
@@ -47,17 +41,11 @@
 		],
 
 		"sort-imports": "off",
-		"import/order": "off", // overwrite for simple-import-sort
+		"import/order": "off",
 		"simple-import-sort/imports": "error",
 		"simple-import-sort/exports": "error",
-		"indent": [
-			"error",
-			2,
-			{ "SwitchCase": 1, "ignoredNodes": ["PropertyDefinition"] }
-		],
 		"no-promise-executor-return": ["off"],
 		"linebreak-style": ["error", "unix"],
-		"quotes": ["error", "single"],
 		"eol-last": ["error", "always"],
 		"constructor-super": ["error"],
 		"curly": ["error", "multi-line"],
@@ -72,7 +60,6 @@
 			}
 		],
 		"@typescript-eslint/no-misused-new": ["error"],
-		"@typescript-eslint/semi": ["error", "never"],
 		"import/extensions": [
 			"error",
 			"ignorePackages",

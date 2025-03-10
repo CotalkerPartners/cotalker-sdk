@@ -18,7 +18,9 @@
 		"version": "git add -A src",
 		"postversion": "git push && git push --tags",
 		"lint": "eslint ./src",
-		"lint:fix": "eslint ./src --fix"
+		"lint:fix": "eslint ./src --fix",
+		"prettier": "prettier ./src --check",
+		"prettier:fix": "prettier ./src --write"
 	},
 	"keywords": [
 		"cotalker"
@@ -34,9 +36,12 @@
 		"eslint": "^8.33.0",
 		"eslint-config-airbnb": "^19.0.4",
 		"eslint-config-airbnb-typescript": "^17.0.0",
+		"eslint-config-prettier": "^10.1.1",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-jsdoc": "^39.7.5",
+		"eslint-plugin-prettier": "^5.2.3",
 		"eslint-plugin-simple-import-sort": "^10.0.0",
+		"prettier": "^3.5.3",
 		"tsc-alias": "^1.8.11",
 		"typescript": "^4.9.4"
 	},
