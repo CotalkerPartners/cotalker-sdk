@@ -1,146 +1,167 @@
-import { ObjectId } from '@customTypes/custom'
+import { ObjectId } from "@customTypes/custom";
 
 export declare class COTTask {
-  _id: ObjectId
+	_id: ObjectId;
 
-  editors: ObjectId[]
+	editors: ObjectId[];
 
-  followers: ObjectId[]
+	followers: ObjectId[];
 
-  visibility: ObjectId[]
+	visibility: ObjectId[];
 
-  serial: number
+	serial: number;
 
-  closedAt: string
+	closedAt: string;
 
-  modifiedStateAt: string
+	modifiedStateAt: string;
 
-  channelType: 'bound' | 'unbound' | 'unbound-hierarchy'
+	channelType: "bound" | "unbound" | "unbound-hierarchy";
 
-  status1?: ObjectId
+	status1?: ObjectId;
 
-  status2?: ObjectId
+	status2?: ObjectId;
 
-  status3?: ObjectId
+	status3?: ObjectId;
 
-  status4?: ObjectId
+	status4?: ObjectId;
 
-  status5?: ObjectId
+	status5?: ObjectId;
 
-  answers: string[]
+	answers: string[];
 
-  asset?: ObjectId
+	asset?: ObjectId;
 
-  // Special Users
-  assignee: ObjectId
+	// Special Users
+	assignee: ObjectId;
 
-  validators: ObjectId[]
+	validators: ObjectId[];
 
-  // Owner - User that is responsible for Task Creation. E.g., set up scheduler
-  owner: ObjectId
+	// Owner - User that is responsible for Task Creation. E.g., set up scheduler
+	owner: ObjectId;
 
-  // userList: Internal field
-  // contains array with all users that have visibility: Editors + Followers + Viewers
-  userList?: ObjectId[]
+	// userList: Internal field
+	// contains array with all users that have visibility: Editors + Followers + Viewers
+	userList?: ObjectId[];
 
-  // General
-  modifiedAt: string
+	// General
+	modifiedAt: string;
 
-  createdAt: string
+	createdAt: string;
 
-  // createdBy: used who created task (bot, user, system, etc)
-  createdBy: ObjectId
+	// createdBy: used who created task (bot, user, system, etc)
+	createdBy: ObjectId;
 
-  // Position
-  projectCode: ObjectId
+	// Position
+	projectCode: ObjectId;
 
-  indentation: number
+	indentation: number;
 
-  parent?: ObjectId
+	parent?: ObjectId;
 
-  relativeWeight: number
+	relativeWeight: number;
 
-  weight: number
+	weight: number;
 
-  // Status
-  name: string
+	// Status
+	name: string;
 
-  company: ObjectId
+	company: ObjectId;
 
-  taskGroup: ObjectId
+	taskGroup: ObjectId;
 
-  survey: ObjectId
+	survey: ObjectId;
 
-  child: ObjectId[]
+	child: ObjectId[];
 
-  isActive: boolean
+	isActive: boolean;
 
-  isValid: boolean
+	isValid: boolean;
 
-  channel?: ObjectId
+	channel?: ObjectId;
 
-  activeSlas: ObjectId[]
+	activeSlas: ObjectId[];
 
-  info: string
+	info: string;
 
-  estimatedTime: number
+	estimatedTime: number;
 
-  smStateMachine: ObjectId
+	smStateMachine: ObjectId;
 
-  smState: ObjectId
+	smState: ObjectId;
 
-  status: ObjectId
+	status: ObjectId;
 
-  startDate?: Date
+	startDate?: Date;
 
-  resolutionDate?: string
+	resolutionDate?: string;
 
-  endDate?: string
+	endDate?: string;
 
-  color: 'none' | 'red' | 'blue' | 'green' | 'yellow'
+	color: "none" | "red" | "blue" | "green" | "yellow";
 
-  extensions: Record<string, Record<string, any>>
+	extensions: Record<string, Record<string, any>>;
 }
 
-export declare type COTTaskPostData = Pick<COTTask,
-'taskGroup' | 'name' | 'userList' | 'assignee' | 'followers' | 'editors' |
-'startDate' | 'endDate' |
-'status1' | 'status2' | 'status3' | 'status4' | 'status5' | 'extensions'>
-export declare type COTTaskPatchData = Partial<Omit<COTTaskPostData, 'taskGroup'>> & { isActive?: boolean; smState?: ObjectId }
+export declare type COTTaskPostData = Pick<
+	COTTask,
+	| "taskGroup"
+	| "name"
+	| "userList"
+	| "assignee"
+	| "followers"
+	| "editors"
+	| "startDate"
+	| "endDate"
+	| "status1"
+	| "status2"
+	| "status3"
+	| "status4"
+	| "status5"
+	| "extensions"
+>;
+export declare type COTTaskPatchData = Partial<
+	Omit<COTTaskPostData, "taskGroup">
+> & { isActive?: boolean; smState?: ObjectId };
 
-type SingleOrMultiObjectId = ObjectId | { $in: ObjectId[] }
-type DateQuery = string | Partial<Record<'$gt' | '$gte' | '$lt' | '$lte', string | Date>>
+type SingleOrMultiObjectId = ObjectId | { $in: ObjectId[] };
+type DateQuery =
+	| string
+	| Partial<Record<"$gt" | "$gte" | "$lt" | "$lte", string | Date>>;
 export declare interface COTTaskQuery {
-  isActive?: boolean; _id?: SingleOrMultiObjectId;
-  userList?: SingleOrMultiObjectId;
-  channel?: SingleOrMultiObjectId;
-  smState?: SingleOrMultiObjectId;
-  status?: SingleOrMultiObjectId;
-  status1?: SingleOrMultiObjectId;
-  status2?: SingleOrMultiObjectId;
-  status3?: SingleOrMultiObjectId;
-  status4?: SingleOrMultiObjectId;
-  status5?: SingleOrMultiObjectId;
-  createdAt?: DateQuery; startDate?: DateQuery; endDate?: DateQuery;
+	isActive?: boolean;
+	_id?: SingleOrMultiObjectId;
+	userList?: SingleOrMultiObjectId;
+	channel?: SingleOrMultiObjectId;
+	smState?: SingleOrMultiObjectId;
+	status?: SingleOrMultiObjectId;
+	status1?: SingleOrMultiObjectId;
+	status2?: SingleOrMultiObjectId;
+	status3?: SingleOrMultiObjectId;
+	status4?: SingleOrMultiObjectId;
+	status5?: SingleOrMultiObjectId;
+	createdAt?: DateQuery;
+	startDate?: DateQuery;
+	endDate?: DateQuery;
 }
 
 export declare interface QueryTaskFilterOptions {
-  limit?: number; limitBy?: 'all' | 'group';
+	limit?: number;
+	limitBy?: "all" | "group";
 }
 
 export declare interface FilteredTasks {
-  _id: {
-    key: string;
-    display: string;
-    type: string;
-    id: string;
-  }[];
-  tasks: COTTask[];
+	_id: {
+		key: string;
+		display: string;
+		type: string;
+		id: string;
+	}[];
+	tasks: COTTask[];
 }
 
 export interface MultiTaskBody {
-  cmd: {
-    method: string;
-    task: COTTask;
-  }[];
+	cmd: {
+		method: string;
+		task: COTTask;
+	}[];
 }

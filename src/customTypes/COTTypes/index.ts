@@ -1,1 +1,1 @@
-export declare type ObjectId = string
+export declare type ObjectId = string;

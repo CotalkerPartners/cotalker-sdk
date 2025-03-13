@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# 1. Verificar duplicados en Signed-off-by
+test "" = "$(grep '^Signed-off-by: ' "$COMMIT_MSG_FILE" | sort | uniq -c | sed -e '/^[ 	]*1[ 	]/d')" || {
+	echo >&2 "Error: Duplicate Signed-off-by lines."
+	exit 1
+}
+
+# 2. Validar formato de Conventional Commits
+if ! echo "$COMMIT_MSG" | grep -qE '^(feat|fix|chore|docs|style|refactor|test|perf|ci|build|revert)\(.+\): .+'; then
+    echo >&2 "Error: The commit message does not follow Conventional Commits."
+    echo >&2 "Example: 'feat(auth): add login endpoint'"
+    exit 1
+fi
+
+# 3. Evitar mensajes genéricos
+if echo "$COMMIT_MSG" | grep -qE '^(Update|Fix|Changes|Bugfix|Misc|Work in progress|WIP)\b'; then
+    echo >&2 "Error: The commit message is too generic. Be more descriptive."
+    exit 1
+fi
+
+# 4. Validar longitud del encabezado
+HEADER=$(echo "$COMMIT_MSG" | head -n1)
+if [ ${#HEADER} -gt 72 ]; then
+    echo >&2 "Error: The commit message header is longer than 72 characters."
+    exit 1
+fi
+
+# 5. Mensaje válido, permitir commit
+exit 0
