@@ -23,7 +23,7 @@
 		"prettier": "prettier ./src --check",
 		"prettier:fix": "prettier ./src --write",
 		"test": "jest",
-		"test:watch": "jest --watch"
+		"test:watch": "jest --watchAll"
 	},
 	"keywords": [
 		"cotalker"
