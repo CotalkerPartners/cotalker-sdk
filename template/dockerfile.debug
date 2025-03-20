@@ -1,0 +1,22 @@
+FROM node:18-alpine
+
+WORKDIR /home/app
+RUN ln -snf /usr/share/zoneinfo/UTC /etc/localtime && echo UTC > /etc/timezone
+# Install npm packages
+COPY package*.json ./
+COPY .env ./
+RUN npm ci
+
+# Copy all other source code to work directory
+COPY . ./
+RUN npm run build:srcmap
+
+# Set environment variables for debug
+ENV NODE_ENV=development
+
+# Expose port for debugger
+EXPOSE 9229
+EXPOSE 3300
+
+# Start command with dotenv and debugging enabled
+CMD ["node", "-r", "dotenv/config", "--inspect=0.0.0.0", "dist/template/index.js"]
