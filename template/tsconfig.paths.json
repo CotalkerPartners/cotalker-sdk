@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@functions/*": ["functions/*"],
+      "@libs/*": ["libs/*"],
+      "@types/*": ["types/*"],
+      "@views/*": ["views/*"],
+      "@data/*": ["data/*"],
+      "@classes/*": ["classes/*"],
+      "@scripts/*": ["scripts/*"],
+      "@helpers/*": ["helpers/*"],
+      "@bot-templates/*": ["bot-templates/*"]
+    }
+  }
+}

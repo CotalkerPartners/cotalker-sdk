@@ -1,0 +1,63 @@
+{
+  "_id": "6554f7c5bd753e8669b632a8",
+  "subdomain": "testcopper",
+  "properties": {
+  },
+  "stateMachines": {
+    "meetings": {
+      "_id": "655501ccee099252c61272f1",
+      "code": "meetings",
+      "name": "Meetings",
+      "taskGroupId": "6555017aee0992d7551272e6",
+      "smStates": {
+        "meet_scheduled": "655501d88da4ca55f1e54dea",
+        "meet_wrapped_up": "655501d8ee099235f61272f2",
+        "meet_tasks_pending": "655501d8ee099288191272f3",
+        "meet_cancelled": "6594d9c5dc50cc26925a2b5b"
+      },
+      "smStateProperties": {
+        "meet_scheduled": "6555008eee0992730f1272e1",
+        "meet_wrapped_up": "65550083ee09920d591272e0",
+        "meet_tasks_pending": "655500988da4ca7390e54dd1",
+        "meet_cancelled": "6594ccf7dc50ccea115a2570"
+      }
+    },
+    "tasks": {
+      "_id": "655503f8ee0992ae1f12730d",
+      "code": "tasks",
+      "name": "Tasks",
+      "taskGroupId": "655503d98da4cae39be54dfc",
+      "smStates": {
+        "task_pending": "655503fd8da4ca8f5ce54e07",
+        "task_done": "655503fdee099214ee12730e",
+        "task_cancelled": "65978f006d478cf49e247eb4",
+        "task_overdue": "659ed48431329c8733239560"
+      },
+      "smStateProperties": {
+        "task_pending": "6555035a8da4ca23dce54df8",
+        "task_done": "655503618da4caa035e54df9",
+        "task_cancelled": "65978ccbdc50cc06bc5af485",
+        "task_overdue": "659ed46431329c830c239540"
+      }
+    }
+  },
+  "groups": {
+   
+  },
+  "surveys": {
+    
+  },
+  "accessRoles": {
+    
+  },
+  "jobTitles": {},
+  "messages": {},
+  "systemUser": {
+    "email": "api-token-api_testcopperservices-1705339249454@testcopper.cotalker.com",
+    "_id": "65a56971fd3772b0c1524213"
+  },
+  "adminUser": {
+    "email": "admin@testcopper.cotalker.com",
+    "_id": "6554f7c5bd753e5f58b632ef"
+  }
+}
