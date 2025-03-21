@@ -3,56 +3,56 @@ import { COTProperty } from "@customTypes/COTTypes/COTProperty";
 import { COTUser } from "@customTypes/COTTypes/COTUser";
 import { ObjectId } from "@customTypes/custom";
 
-import { CotalkerAPI } from "./CotalkerAPI";
+import { cotalkerAPI } from "./CotalkerAPI";
+
+export const answersAPI = {
+	getAnswer: async (answerId: ObjectId): Promise<COTAnswer> => {
+		return cotalkerAPI.getAnswer(answerId);
+	},
+
+	getUser: async (userId: ObjectId): Promise<COTUser> => {
+		return cotalkerAPI.getUser(userId);
+	}
+};
 
 export class Answer {
 	public createdAt: Date;
 
 	public user: ObjectId;
 
-	private constructor(
-		private API: CotalkerAPI,
-		private cotAnswer: COTAnswer
-	) {
-		this.user = this.cotAnswer.user;
-		this.createdAt = new Date(this.cotAnswer.createdAt);
+	private cotAnswer: COTAnswer;
+
+	private constructor(cotAnswer: COTAnswer) {
+		this.cotAnswer = cotAnswer;
+		this.user = cotAnswer.user;
+		this.createdAt = new Date(cotAnswer.createdAt);
 	}
 
-	static async fromId(api: CotalkerAPI, answerId: ObjectId): Promise<Answer> {
-		return new Answer(api, await api.getAnswer(answerId));
+	static async fromId(answerId: ObjectId): Promise<Answer> {
+		const cotAnswer = await answersAPI.getAnswer(answerId);
+		return new Answer(cotAnswer);
 	}
 
 	getString(identifier: string): string {
-		return (
-			this.cotAnswer.data.find((d) => d.identifier === identifier)
-				?.process[0] ?? ""
-		);
+		return this.getIdentifier(identifier)?.process?.[0] ?? "";
 	}
 
 	getNumber(identifier: string): number {
-		return (
-			parseFloat(
-				this.cotAnswer.data.find((d) => d.identifier === identifier)
-					?.process[0] ?? ""
-			) ?? NaN
+		return parseFloat(
+			this.getIdentifier(identifier)?.process?.[0] ?? "NaN"
 		);
 	}
 
 	getProcess(identifier: string): string[] {
-		return (
-			this.cotAnswer.data.find((d) => d.identifier === identifier)
-				?.process ?? []
-		);
+		return this.getIdentifier(identifier)?.process ?? [];
 	}
 
 	getPropertyResponse<T extends COTProperty>(identifier: string): T | null {
 		try {
-			const resp = this.cotAnswer.data.find(
-				(d) => d.identifier === identifier
-			)?.responses[0];
-			return (resp && JSON.parse(resp)) || null;
+			const response = this.getIdentifier(identifier)?.responses?.[0];
+			return response ? JSON.parse(response) : null;
 		} catch (error) {
-			console.error(error);
+			console.error("Error parsing property response:", error);
 			return null;
 		}
 	}
@@ -63,31 +63,35 @@ export class Answer {
 
 	async getSubAnswers(
 		identifier: string,
-		waitTime?: number
+		waitTime: number = 100
 	): Promise<Answer[]> {
 		const answerData = this.getIdentifier(identifier);
-		if (!answerData) return [];
+
 		if (
+			!answerData ||
 			answerData.contentType !== "application/vnd.cotalker.survey+survey"
 		) {
-			throw new Error(
-				`☠️Answer.getSubAnswer: Identifier ${identifier} is not a survey+survey`
-			);
+			throw new Error(`Invalid sub-answer identifier: ${identifier}`);
 		}
+
 		if (!answerData.process?.length) return [];
+
 		const { uuids } = JSON.parse(answerData.process[0]);
-		const wait = (uuids.length > 1 && Math.min(waitTime ?? 100, 100)) || 0;
-		const subAnswers = [];
-		for (const uuid of uuids) {
-			// eslint-disable-next-line @typescript-eslint/no-loop-func
-			await new Promise((resolve) => setTimeout(resolve, wait));
-			subAnswers.push(await Answer.fromId(this.API, uuid));
-		}
-		return subAnswers;
+
+		return Promise.all(
+			uuids.map(
+				(uuid) =>
+					new Promise<Answer>((resolve) =>
+						setTimeout(
+							async () => resolve(await Answer.fromId(uuid)),
+							waitTime
+						)
+					)
+			)
+		);
 	}
 
 	async getUser(): Promise<COTUser> {
-		const user = await this.API.getUser(this.user);
-		return user;
+		return answersAPI.getUser(this.user);
 	}
 }
