@@ -10,6 +10,8 @@ import {
 import { COTPropertyType } from "@customTypes/COTTypes/COTPropertyType";
 import { COTUser } from "@customTypes/COTTypes/COTUser";
 import HttpClient from "@utils/HttpClient";
+import { ScheduleBody, SchedulePostResponse } from "@customTypes/scheduler";
+import { AxiosRequestConfig } from "axios";
 
 type IsActiveOptions = "true" | "false" | "all";
 type JSONPatchBody = {
@@ -138,6 +140,77 @@ export class CotalkerAPI extends HttpClient {
 		extensionKey: string
 	): Promise<T> {
 		return propertiesAPI.getExtensionProperty(taskId, extensionKey);
+	}
+	// Scheduler
+	public async postSchedule(
+		body: ScheduleBody
+	): Promise<SchedulePostResponse> {
+		return (await this.instance.post("/api/uservices/scheduler", body))
+			.data;
+	}
+
+	public async runSchedule(
+		body: ScheduleBody
+	): Promise<SchedulePostResponse> {
+		return (await this.instance.post("/api/uservices/scheduler/run", body))
+			.data;
+	}
+
+	public async getScheduleById(scheduleId: string) {
+		return (await this.instance.get(`/api/v3/schedules/${scheduleId}`))
+			.data;
+	}
+
+	public async getSchedules() {
+		return (await this.instance.get("/api/v3/schedules")).data;
+	}
+
+	public async runByCode(code: string) {
+		return (await this.instance.post(`/api/v3/schedules/run/${code}`)).data;
+	}
+
+	public async getDetailsByCode(code: string) {
+		return (await this.instance.get(`/api/v3/schedules/details/${code}`))
+			.data;
+	}
+
+	public async getScheduleHistory() {
+		return (await this.instance.get("/api/v3/schedules/history")).data;
+	}
+
+	public async getSchedulePriority(code: string) {
+		return (await this.instance.get(`/api/v3/schedules/priority/${code}`))
+			.data;
+	}
+
+	public async getMaxIterations(code: string) {
+		return (
+			await this.instance.get(`/api/v3/schedules/max-iterations/${code}`)
+		).data;
+	}
+
+	public async getScheduleConfig(code: string) {
+		return (await this.instance.get(`/api/v3/schedules/config/${code}`))
+			.data;
+	}
+
+	// Legacy support
+	public async getScheduleLegacyById(scheduleId: string) {
+		return (await this.instance.get(`/schedule/${scheduleId}`)).data;
+	}
+
+	public async getScheduleByCodeLegacy(code: string) {
+		return (await this.instance.get(`/schedule/code/${code}`)).data;
+	}
+
+	public async runLegacySchedule(body: Record<string, unknown>) {
+		return (await this.instance.post(`/schedule/run`, body)).data;
+	}
+
+	public async getScheduleLogs(scheduleIds: string[], limit = 100) {
+		const query = scheduleIds.join(",");
+		const url = `/log?schedule=${query}&limit=${limit}`;
+		return (await this.instance.get(url)).data;
 	}
 }
 
