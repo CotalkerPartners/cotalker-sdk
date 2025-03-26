@@ -32,3 +32,4 @@ export const channelsQueryParams = channelsQueryParamsSpecific
 	.merge(genericQueryParams)
 	.merge(dateQueryParams);
 export type ChannelsQueryParams = z.infer<typeof channelsQueryParams>;
+export type COTChannelPostBody = Omit<COTChannel, "_id">;
