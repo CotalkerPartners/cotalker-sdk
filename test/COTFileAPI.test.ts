@@ -1,43 +1,44 @@
-import { COTFileAPI } from "../src/libs/COTFileAPI";
-jest.mock("../src/libs/COTFileAPI", () => {
+import COTFileClient from "../src/libs/models/COTFileClient";
+import axios from "axios";
+jest.mock("../src/libs/models/COTFileClient", () => {
 	return {
-		COTFileAPI: jest.fn().mockImplementation(() => ({
-			getFileById: jest.fn(),
+		default: jest.fn().mockImplementation(() => ({
+			getFileObjectById: jest.fn(),
 			uploadFile: jest.fn(),
-			downloadFile: jest.fn()
+			downloadFileByFileId: jest.fn()
 		}))
 	};
 });
 
 describe("File model", () => {
-	let file: COTFileAPI;
+	let file: COTFileClient;
+	const mockAxios = axios.create();
 	beforeEach(() => {
 		jest.clearAllMocks();
-		file = new COTFileAPI("");
+		file = new COTFileClient(mockAxios);
 	});
 
 	test("Debe subir un archivo y devolver la información del archivo subido", async () => {
 		const fileData = Buffer.from("Contenido del archivo");
-		const filename = "archivo_nuevo.txt";
-		const mockUploadedFile = { fileId: "file456", name: filename };
+		const mockUploadedFile = { fileId: "file456" };
 		(file.uploadFile as jest.Mock).mockResolvedValue(mockUploadedFile);
-		const uploadedFile = await file.uploadFile(fileData, filename);
+		const uploadedFile = await file.uploadFile(fileData);
 		expect(uploadedFile).toHaveProperty("fileId");
 	});
 
 	test("Debe obtener un archivo por su ID desde la API", async () => {
 		const fileId = "file789";
 		const mockFileData = { fileId, content: "contenido del archivo" };
-		(file.getFileById as jest.Mock).mockResolvedValue(mockFileData);
-		const fileData = await file.getFileById(fileId);
+		(file.getFileObjectById as jest.Mock).mockResolvedValue(mockFileData);
+		const fileData = await file.getFileObjectById(fileId);
 		expect(fileData).toHaveProperty("fileId", fileId);
 	});
 
 	test("Debe descargar un archivo y devolver un buffer", async () => {
 		const fileId = "file101";
 		const mockBuffer = Buffer.from("Contenido descargado");
-		(file.downloadFile as jest.Mock).mockResolvedValue(mockBuffer);
-		const downloadedBuffer = await file.downloadFile(fileId);
+		(file.downloadFileByFileId as jest.Mock).mockResolvedValue(mockBuffer);
+		const downloadedBuffer = await file.downloadFileByFileId(fileId);
 		expect(downloadedBuffer).toBeInstanceOf(Buffer);
 	});
 });
