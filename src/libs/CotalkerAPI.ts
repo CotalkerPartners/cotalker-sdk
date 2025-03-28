@@ -268,10 +268,8 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	/* COTChannels */
-
-	async getChannel(body: COTChannel) {
-		const channel = await this._cotchannelClient.createChannel(body);
-		return channel;
+	getCOTChannelClient(): COTChannelClient {
+		return this._cotchannelClient;
 	}
 
 	/* COTFiles */
@@ -417,10 +415,6 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	//channels
-	async getChannelsQuery(query: ChannelsQueryParams) {
-		const property = await this._cotchannelClient.getChannelsQuery(query);
-		return property;
-	}
 
 	//properties
 	async getPropertiesQuery(query: PropertiesQueryParams) {
