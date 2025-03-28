@@ -276,10 +276,8 @@ export class CotalkerAPI extends HttpClient {
 		return channel;
 	}
 
-	/* COTFiles */
-	async getFileObjectById(fileId: ObjectId) {
-		const file = await this._cotfileClient.getFileObjectById(fileId);
-		return file;
+	getCOTFileClient(): COTFileClient {
+		return this._cotfileClient;
 	}
 
 	/* COTMessages */
