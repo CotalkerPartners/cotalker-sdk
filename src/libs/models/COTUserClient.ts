@@ -20,13 +20,13 @@ export type AllowedRelation =
 	| "relateduser";
 
 export default class COTUserClient {
-	protected readonly _instance: AxiosInstance;
+	protected readonly axiosInstance: AxiosInstance;
 
 	private queryHandler;
 
 	public constructor(instance: AxiosInstance) {
-		this._instance = instance;
-		this.queryHandler = new QueryHandler("users", this._instance);
+		this.axiosInstance = instance;
+		this.queryHandler = new QueryHandler("users", this.axiosInstance);
 	}
 
 	public async getUsersQuery(query: UsersQueryParams): Promise<COTUser[]> {
@@ -41,22 +41,21 @@ export default class COTUserClient {
 		return this.queryHandler.getAllInQuery(query);
 	}
 
-	public async getUser(_id: ObjectId): Promise<COTUser> {
-		return (await this._instance.get(`/api/v2/users/${_id}`)).data;
-	}
-
-	public async getUsersByAccessRole(
-		accessRole: ObjectId
-	): Promise<COTUser[]> {
-		return this.getAllUsersInQuery({ accessRole });
-	}
-
 	public async getUsersByJob(job: ObjectId): Promise<COTUser[]> {
-		return this.getAllUsersInQuery({ job });
-	}
-
-	public async getUserByEmail(email: string): Promise<COTUser> {
-		return this.getUsersQuery({ email })[0];
+		let count = 1;
+		let page = 1;
+		const users: COTUser[] = [];
+		do {
+			const response = await this.axiosInstance.get<{
+				data: { count: number; users: COTUser[] };
+			}>(
+				`/api/v2/users?job=${job}&count=true&limit=100&page=${page}&isActive=true`
+			);
+			users.push(...response.data.users);
+			count = response.data.count;
+			page++;
+		} while (users.length < count);
+		return users;
 	}
 
 	public async getUsersByEmail(email: string[] | string): Promise<COTUser[]> {
@@ -69,7 +68,7 @@ export default class COTUserClient {
 	): Promise<COTUser[]> {
 		return (
 			(
-				await this._instance.get(
+				await this.axiosInstance.get(
 					`/api/v2/users/relations/${type}/${_id}?limit=100&isActive=true`
 				)
 			)?.data?.users ?? ""
@@ -77,17 +76,8 @@ export default class COTUserClient {
 	}
 
 	public async getUserActivity(_id: ObjectId): Promise<COTUserActivity> {
-		return (await this._instance.get(`/api/v2/user-activities/${_id}`))
+		return (await this.axiosInstance.get(`/api/v2/user-activities/${_id}`))
 			.data;
-	}
-
-	public async getSubordiantes(user: COTUser): Promise<COTUser[]> {
-		const qParams = querystring.encode({
-			id: user.companies[0].hierarchy.subordinate,
-			limit: "100"
-		});
-		return (await this._instance.get(`/api/v2/users?${qParams}`)).data
-			.users;
 	}
 
 	public async jsonPatchUser<T extends COTUser>(
@@ -95,10 +85,48 @@ export default class COTUserClient {
 		body: JSONPatchBody
 	): Promise<T> {
 		return (
-			await this._instance.patch<{ data: T }>(
+			await this.axiosInstance.patch<{ data: T }>(
 				`/api/v2/users/jsonpatch/${userId}`,
 				body
 			)
 		).data;
+	}
+
+	public async getUsersById(ids: ObjectId[]): Promise<COTUser[]> {
+		const limit = 30;
+		const chunks = [];
+		for (let i = 0; i < ids.length; i += limit) {
+			chunks.push(ids.slice(i, i + limit));
+		}
+
+		const results = await Promise.all(
+			chunks.map(async (idChunk) => {
+				const qParams = querystring.encode({ id: idChunk, limit });
+				const response = await this.axiosInstance.get(
+					`/api/v2/users?${qParams}`
+				);
+				return response?.data?.users ?? [];
+			})
+		);
+
+		return results.flat();
+	}
+
+	public async findUsers(query): Promise<COTUser[]> {
+		return this.axiosInstance.post(`/api/users/find?allFields=true`, {
+			"companies.companyId": "627400d234b48d5b6667db18",
+			isActive: true,
+			...query
+		});
+	}
+
+	public async getBossUsers(userId: ObjectId): Promise<COTUser[]> {
+		return (
+			(
+				await this.axiosInstance.get(
+					`/api/v2/users?relatedUser=${userId}`
+				)
+			).data?.users ?? []
+		);
 	}
 }
