@@ -144,8 +144,8 @@ export class CotalkerAPI extends HttpClient {
 		return accessRole;
 	}
 
-	getCOTFileClient(): COTFileClient {
-		return this._cotfileClient;
+	getCOTTaskClient(): COTTaskClient {
+		return this._cottaskClient;
 	}
 
 	/* COTUser */
