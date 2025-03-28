@@ -144,48 +144,8 @@ export class CotalkerAPI extends HttpClient {
 		return accessRole;
 	}
 
-	async patchTask(
-		taskId: ObjectId,
-		taskGroupId: ObjectId,
-		body: COTTaskPatchData
-	) {
-		const task = await this._cottaskClient.patchTask(
-			taskId,
-			taskGroupId,
-			body
-		);
-		return task;
-	}
-
-	async patchMultiTasks(taskGroupId: ObjectId, body: MultiTaskBody) {
-		const task = await this._cottaskClient.patchMultiTasks(
-			taskGroupId,
-			body
-		);
-		return task;
-	}
-
-	async findTasks(taskGroupId: ObjectId, query: COTTaskQuery) {
-		const task = await this._cottaskClient.findTasks(taskGroupId, query);
-		return task;
-	}
-
-	async queryTasksFilter(
-		taskGroupId: string,
-		filterId: string,
-		options?: QueryTaskFilterOptions
-	) {
-		const task = await this._cottaskClient.queryTasksFilter(
-			taskGroupId,
-			filterId,
-			options
-		);
-		return task;
-	}
-
-	async postTask(taskData: COTTaskPostData) {
-		const task = await this._cottaskClient.postTask(taskData);
-		return task;
+	getCOTFileClient(): COTFileClient {
+		return this._cotfileClient;
 	}
 
 	/* COTUser */
