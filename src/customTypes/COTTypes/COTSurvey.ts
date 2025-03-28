@@ -18,6 +18,16 @@ export declare interface Question {
 	contentType: string;
 	code: string;
 }
+export declare interface COTSurveyChat {
+	_id?: ObjectId;
+	isActive: boolean;
+	isSystemModel: false;
+	contentType: "application/vnd.cotalker.survey";
+	sender: "#system" | "#user";
+	survey: ObjectId;
+	contentArray: ObjectId[];
+	order: number;
+}
 
 const surveysQueryParamsSpecific = z
 	.object({
