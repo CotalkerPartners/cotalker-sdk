@@ -27,6 +27,8 @@ import {
 import { COTUser, UsersQueryParams } from "@customTypes/COTTypes/COTUser";
 import { ScheduleBody } from "@customTypes/COTTypes/scheduler";
 import { ObjectId } from "@customTypes/custom";
+import COTTaskClient from "@libs/models/COTTaskClient";
+import COTUserClient, { AllowedRelation } from "@libs/models/COTUserClient";
 import COTAnswerClient from "@models/COTAnswerClient";
 import COTChannelClient from "@models/COTChannelClient";
 import COTFileClient from "@models/COTFileClient";
@@ -36,8 +38,6 @@ import COTPropertyTypeClient from "@models/COTPropertyTypeClient";
 import COTSchedulerClient from "@models/COTSchedulerClient";
 import COTSMStateClient from "@models/COTSMStateClient";
 import COTSurveyClient from "@models/COTSurveyClient";
-import COTTaskClient from "@models/COTTaskClient";
-import COTUserClient, { AllowedRelation } from "@models/COTUserClient";
 import HttpClient from "@utils/HttpClient";
 import { InternalAxiosRequestConfig } from "axios";
 

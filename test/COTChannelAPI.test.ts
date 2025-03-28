@@ -1,7 +1,8 @@
-import { COTChannelAPI } from "../src/libs/COTChannelAPI";
-jest.mock("../src/libs/COTChannelAPI", () => {
+import COTChannelClient from "../src/libs/models/COTChannelClient";
+import axios from "axios";
+jest.mock("../src/libs/models/COTChannelClient", () => {
 	return {
-		COTChannelAPI: jest.fn().mockImplementation(() => ({
+		default: jest.fn().mockImplementation(() => ({
 			createChannel: jest.fn(),
 			getChannelAnswers: jest.fn(),
 			getChannelsByGroup: jest.fn(),
@@ -14,12 +15,13 @@ jest.mock("../src/libs/COTChannelAPI", () => {
 });
 
 describe("Channel model", () => {
-	let channel: COTChannelAPI;
+	let channel: COTChannelClient;
+	const mockAxios = axios.create();
 	beforeEach(() => {
 		jest.clearAllMocks();
-		channel = new COTChannelAPI("");
+		channel = new COTChannelClient(mockAxios);
 	});
-	test("Debe crear un nuevo canal", () => {
+	test("Debe crear un nuevo canal", async () => {
 		const channelData = {
 			group: "group123",
 			nameCode: "canal-prueba",
@@ -27,11 +29,11 @@ describe("Channel model", () => {
 			userIds: ["user1", "user2"]
 		};
 		const mockChannel = { channelId: "123", ...channelData };
-		(channel.createChannel as jest.Mock).mockReturnValue(mockChannel);
-		const newChannel = channel.createChannel(channelData);
+		(channel.createChannel as jest.Mock).mockResolvedValue(mockChannel);
+		const newChannel = await channel.createChannel(channelData);
 		expect(newChannel).toHaveProperty("channelId");
 	});
-	test("Obtener respuestas asociadas a un canal", async () => {
+	test("Debe obtener respuestas asociadas a un canal", async () => {
 		const surveryId = "123";
 		const channelId = "456";
 		const mockAnswers = [
@@ -42,7 +44,7 @@ describe("Channel model", () => {
 		const answers = await channel.getChannelAnswers(surveryId, channelId);
 		expect(answers).toBeInstanceOf(Array);
 	});
-	test("Obtener todos los canales asociados a un grupo", async () => {
+	test("Debe obtener todos los canales asociados a un grupo", async () => {
 		const group = "789";
 		const mockChannels = [
 			{ channelId: "123", name: "Canal 1" },
@@ -54,7 +56,7 @@ describe("Channel model", () => {
 		const channels = await channel.getChannelsByGroup(group);
 		expect(channels).toBeInstanceOf(Array);
 	});
-	test("Obtener archivos asociados a un canal", async () => {
+	test("Debe obtener archivos asociados a un canal", async () => {
 		const channelId = "456";
 		const contentType = "image";
 		const mockFiles = [
