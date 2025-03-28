@@ -19,8 +19,7 @@ export default class COTFileClient {
 	public async uploadFile(payload: any): Promise<any> {
 		return this.axiosInstance.post(`/api/v3/media/file/upload`, payload, {
 			headers: {
-				...payload.getHeaders(),
-				Authorization: `Bearer ${process.env.COTALKER_TOKEN}`
+				...payload.getHeaders()
 			}
 		});
 	}
