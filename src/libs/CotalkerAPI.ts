@@ -144,20 +144,6 @@ export class CotalkerAPI extends HttpClient {
 		return accessRole;
 	}
 
-	/* COTTask */
-	async getTask(taskId: ObjectId, taskGroupId: ObjectId) {
-		const task = await this._cottaskClient.getTask(taskId, taskGroupId);
-		return task;
-	}
-
-	async getTaskBySerial(taskSerial: number, taskGroupId: ObjectId) {
-		const task = await this._cottaskClient.getTaskBySerial(
-			taskSerial,
-			taskGroupId
-		);
-		return task;
-	}
-
 	async patchTask(
 		taskId: ObjectId,
 		taskGroupId: ObjectId,
