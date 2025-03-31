@@ -24,7 +24,6 @@ import {
 	MultiTaskBody,
 	QueryTaskFilterOptions
 } from "@customTypes/COTTypes/COTTask";
-import { COTUser, UsersQueryParams } from "@customTypes/COTTypes/COTUser";
 import { ScheduleBody } from "@customTypes/COTTypes/scheduler";
 import { ObjectId } from "@customTypes/custom";
 import COTAnswerClient from "@models/COTAnswerClient";
@@ -37,7 +36,7 @@ import COTSchedulerClient from "@models/COTSchedulerClient";
 import COTSMStateClient from "@models/COTSMStateClient";
 import COTSurveyClient from "@models/COTSurveyClient";
 import COTTaskClient from "@models/COTTaskClient";
-import COTUserClient, { AllowedRelation } from "@models/COTUserClient";
+import COTUserClient from "@models/COTUserClient";
 import HttpClient from "@utils/HttpClient";
 import { InternalAxiosRequestConfig } from "axios";
 
