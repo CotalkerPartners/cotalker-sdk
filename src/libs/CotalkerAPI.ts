@@ -281,22 +281,8 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	/* COTMessages */
-	async sendMessage(body: SendMsgBody) {
-		const message = await this._cotmessageClient.sendMessage(body);
-		return message;
-	}
-
-	async removeMessage(_messageId: ObjectId) {
-		const message = await this._cotmessageClient.removeMessage(_messageId);
-		return message;
-	}
-
-	async editMessage(_messageId: ObjectId, body: EditMsgBody) {
-		const message = await this._cotmessageClient.editMessage(
-			_messageId,
-			body
-		);
-		return message;
+	getCOTMesaggeClient(): COTMessageClient {
+		return this._cotmessageClient;
 	}
 
 	/* COTSurvey */
