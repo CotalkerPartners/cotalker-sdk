@@ -24,14 +24,14 @@ describe("Messages model", () => {
 		channel: mockChannelId,
 		content: "Test message",
 		contentType: "text/plain",
-		isSaved: 2, // Cambiado de false a 2
+		isSaved: 2,
 		sentBy: "user123"
 	};
 
 	const mockEditMsgBody: EditMsgBody = {
 		channel: mockChannelId,
 		content: "Edited message",
-		isSaved: 2 // Cambiado de false a 2
+		isSaved: 2
 	};
 
 	const mockMessage = {
@@ -44,7 +44,7 @@ describe("Messages model", () => {
 		sender: "user123",
 		status: "sent",
 		contentType: "text/plain",
-		isSaved: 2 // Cambiado de false a 2
+		isSaved: 2
 	};
 	const mockMessages = [mockMessage];
 	const mockAxios = axios.create();
