@@ -21,6 +21,7 @@ export type AllowedRelation =
 
 export default class COTUserClient {
 	protected readonly axiosInstance: AxiosInstance;
+	protected readonly axiosInstance: AxiosInstance;
 
 	private queryHandler;
 
@@ -78,15 +79,6 @@ export default class COTUserClient {
 	public async getUserActivity(_id: ObjectId): Promise<COTUserActivity> {
 		return (await this.axiosInstance.get(`/api/v2/user-activities/${_id}`))
 			.data;
-	}
-
-	public async getSubordinates(user: COTUser): Promise<COTUser[]> {
-		const qParams = querystring.encode({
-			id: user.companies[0].hierarchy.subordinate,
-			limit: "100"
-		});
-		return (await this.axiosInstance.get(`/api/v2/users?${qParams}`)).data
-			.users;
 	}
 
 	public async jsonPatchUser<T extends COTUser>(
