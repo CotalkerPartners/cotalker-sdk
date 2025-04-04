@@ -9,31 +9,26 @@ import { queryValidator } from "@utils/QueryValidator";
 import { AxiosInstance } from "axios";
 
 export default class COTAnswerClient {
-	protected readonly _instance: AxiosInstance;
+	private readonly _instance: AxiosInstance;
 
-	private queryHandler;
-
-	public constructor(instance: AxiosInstance) {
+	constructor(instance: AxiosInstance) {
 		this._instance = instance;
-		this.queryHandler = new QueryHandler("answers", this._instance);
 	}
 
-	public async getAnswer(answerId: ObjectId): Promise<COTAnswer> {
-		return (
-			await this._instance.get<{ data: COTAnswer }>(
-				`/api/v2/answers/${answerId}`
-			)
-		)?.data;
+	async getAnswerById(id: ObjectId): Promise<COTAnswer> {
+		const { data } = await this._instance.get<{ data: COTAnswer }>(
+			`/api/v2/answers/${id}`
+		);
+		return data;
 	}
 
-	public async getAnswersQuery(
-		query: AnswersQueryParams
-	): Promise<COTAnswer[]> {
+	async getAnswersQuery(query: AnswersQueryParams): Promise<COTAnswer[]> {
 		queryValidator(answersQueryParams, query);
-		return (await this.queryHandler.getQuery(query)).answers;
-	}
-
-	public async getAnswersfromSurvey(surveyId: string): Promise<COTAnswer[]> {
-		return (await this.queryHandler.getQuery({ surveyId })).answers;
+		const handler = new QueryHandler<{ answers: COTAnswer[] }>(
+			"answers",
+			this._instance
+		);
+		const result = await handler.getQuery(query);
+		return result[0].answers;
 	}
 }
