@@ -146,62 +146,8 @@ export class CotalkerAPI extends HttpClient {
 		return accessRole;
 	}
 
-	/* COTTask */
-	async getTask(taskId: ObjectId, taskGroupId: ObjectId) {
-		const task = await this._cottaskClient.getTask(taskId, taskGroupId);
-		return task;
-	}
-
-	async getTaskBySerial(taskSerial: number, taskGroupId: ObjectId) {
-		const task = await this._cottaskClient.getTaskBySerial(
-			taskSerial,
-			taskGroupId
-		);
-		return task;
-	}
-
-	async patchTask(
-		taskId: ObjectId,
-		taskGroupId: ObjectId,
-		body: COTTaskPatchData
-	) {
-		const task = await this._cottaskClient.patchTask(
-			taskId,
-			taskGroupId,
-			body
-		);
-		return task;
-	}
-
-	async patchMultiTasks(taskGroupId: ObjectId, body: MultiTaskBody) {
-		const task = await this._cottaskClient.patchMultiTasks(
-			taskGroupId,
-			body
-		);
-		return task;
-	}
-
-	async findTasks(taskGroupId: ObjectId, query: COTTaskQuery) {
-		const task = await this._cottaskClient.findTasks(taskGroupId, query);
-		return task;
-	}
-
-	async queryTasksFilter(
-		taskGroupId: string,
-		filterId: string,
-		options?: QueryTaskFilterOptions
-	) {
-		const task = await this._cottaskClient.queryTasksFilter(
-			taskGroupId,
-			filterId,
-			options
-		);
-		return task;
-	}
-
-	async postTask(taskData: COTTaskPostData) {
-		const task = await this._cottaskClient.postTask(taskData);
-		return task;
+	getCOTTaskClient(): COTTaskClient {
+		return this._cottaskClient;
 	}
 
 	/* COTUser */
