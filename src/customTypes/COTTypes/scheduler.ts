@@ -24,7 +24,26 @@ declare interface BotStage {
 }
 
 export interface SchedulePostResponse {
-	_id: ObjectId;
+	company: string;
+	user: string;
+	owner: string;
+	code: string;
+	time: Date;
+	timeoutMinutes: number;
+	cronTimeZone: string;
+	body: Body;
+	isSystem: boolean;
+	execPath: string;
+	status: string;
+	priority: number;
+	hooks: any[];
+	tags: any[];
+	createdAt: Date;
+	jobModifiedAt: Date;
+	runVersion: string;
+	_id: string;
+	modifiedAt: Date;
+	__v: number;
 }
 
 export declare interface ScheduleBotBody {

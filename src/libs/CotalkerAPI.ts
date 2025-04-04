@@ -1,20 +1,8 @@
 /* eslint-disable no-param-reassign */
-import {
-	IsActiveOptions,
-	JSONPatchBody
-} from "@customTypes/COTTypes/APIGenerics";
 import { AccessRolesQueryParams } from "@customTypes/COTTypes/COTAccessRole";
-import { AnswersQueryParams } from "@customTypes/COTTypes/COTAnswer";
-import { EditMsgBody, SendMsgBody } from "@customTypes/COTTypes/COTMessage";
-import {
-	COTProperty,
-	PropertiesQueryParams,
-	SearchPropertyQueryOptions
-} from "@customTypes/COTTypes/COTProperty";
-import { PropertyTypesQueryParams } from "@customTypes/COTTypes/COTPropertyType";
-import { ScheduleBody } from "@customTypes/COTTypes/scheduler";
-import { ObjectId } from "@customTypes/custom";
+import COTAccessRolesClient from "@models/COTAccessRolesClient";
 import COTAnswerClient from "@models/COTAnswerClient";
+import COTBotClient from "@models/COTBotClient";
 import COTChannelClient from "@models/COTChannelClient";
 import COTFileClient from "@models/COTFileClient";
 import COTMessageClient from "@models/COTMessageClient";
@@ -28,8 +16,6 @@ import COTUserClient from "@models/COTUserClient";
 import HttpClient from "@utils/HttpClient";
 import { InternalAxiosRequestConfig } from "axios";
 
-import COTAccessRolesClient from "./models/COTAccessRolesClient";
-
 export class CotalkerAPI extends HttpClient {
 	private _cotfileClient: COTFileClient;
 
@@ -38,6 +24,8 @@ export class CotalkerAPI extends HttpClient {
 	private _cotuserClient: COTUserClient;
 
 	private _cotsurveyClient: COTSurveyClient;
+
+	private _cotbotClient: COTBotClient;
 
 	private _cotanswerClient: COTAnswerClient;
 
@@ -99,6 +87,7 @@ export class CotalkerAPI extends HttpClient {
 	};
 
 	/* COTLogin*/
+
 	static async login(email: string, password: string): Promise<string> {
 		return (
 			await super.post<{ token: string }>(
@@ -110,43 +99,37 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	/* COTScheduler*/
-	async runSchedule(body: ScheduleBody) {
-		const schedule = await this._cotschedulerClient.runSchedule(body);
-		return schedule;
-	}
-
-	async postSchedule(body: ScheduleBody) {
-		const schedule = await this._cotschedulerClient.postSchedule(body);
-		return schedule;
-	}
-
-	/* COTAnswer */
-	async getAnswer(answerId: ObjectId) {
-		const answer = await this._cotanswerClient.getAnswer(answerId);
-		return answer;
+	getCOTSchedulerClient(): COTSchedulerClient {
+		return this._cotschedulerClient;
 	}
 
 	/* COTAccessRole */
-	async searchAccessRole(search: string) {
-		const accessRole =
-			await this._cotaccessRolesClient.searchAccessRoles(search);
-		return accessRole;
+
+	getCOTAccessRolesClient(): COTAccessRolesClient {
+		return this._cotaccessRolesClient;
 	}
+
+	/* COTAnswerClient */
+
+	getCOTAnswerClient(): COTAnswerClient {
+		return this._cotanswerClient;
+	}
+
+	/* COTTaskClient */
 
 	getCOTTaskClient(): COTTaskClient {
 		return this._cottaskClient;
 	}
 
 	/* COTUser */
-
 	getCOTUserClient(): COTUserClient {
 		return this._cotuserClient;
 	}
 
 	/* COTSMStates */
-	async getSmStates(taskGroup: ObjectId) {
-		const smState = await this._cotsmStateClient.getSmStates(taskGroup);
-		return smState;
+
+	getCOTSMStateClient(): COTSMStateClient {
+		return this._cotsmStateClient;
 	}
 
 	/* COTChannels */
@@ -159,107 +142,13 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	/* COTMessages */
-	async sendMessage(body: SendMsgBody) {
-		const message = await this._cotmessageClient.sendMessage(body);
-		return message;
-	}
-
-	async removeMessage(_messageId: ObjectId) {
-		const message = await this._cotmessageClient.removeMessage(_messageId);
-		return message;
-	}
-
-	async editMessage(_messageId: ObjectId, body: EditMsgBody) {
-		const message = await this._cotmessageClient.editMessage(
-			_messageId,
-			body
-		);
-		return message;
-	}
-
-	/* COTSurvey */
-	getCOTSurveyClient(): COTSurveyClient {
-		return this._cotsurveyClient;
+	getCOTMesaggeClient(): COTMessageClient {
+		return this._cotmessageClient;
 	}
 
 	/* COTProperty */
-	async getProperty(id: ObjectId) {
-		const property = await this._cotpropertyClient.getProperty(id);
-		return property;
-	}
-
-	async getPropertyByCode(code: string) {
-		const property = await this._cotpropertyClient.getPropertyByCode(code);
-		return property;
-	}
-
-	async getSubproperties(
-		property: COTProperty | COTProperty,
-		isActive?: IsActiveOptions
-	) {
-		const subproperty = await this._cotpropertyClient.getSubproperties(
-			property,
-			isActive
-		);
-		return subproperty;
-	}
-
-	async postPropety(_property: COTProperty) {
-		const property = await this._cotpropertyClient.postProperty(_property);
-		return property;
-	}
-
-	async patchPropety(propertyId: ObjectId, body: Partial<COTProperty>) {
-		const property = await this._cotpropertyClient.patchProperty(
-			propertyId,
-			body
-		);
-		return property;
-	}
-
-	async jsonPatchPropety(propertyId: ObjectId, body: JSONPatchBody) {
-		const property = await this._cotpropertyClient.jsonPatchProperty(
-			propertyId,
-			body
-		);
-		return property;
-	}
-
-	/* COTPropertyType */
-
-	async getPropertyTypeByCode(code: string) {
-		const property =
-			await this._cotpropertyTypeClient.getPropertyTypeByCode(code);
-		return property;
-	}
-
-	async getAllFromPropertyType(propertyType: string) {
-		const property =
-			await this._cotpropertyTypeClient.getAllFromPropertyType(
-				propertyType
-			);
-		return property;
-	}
-
-	async getExtensionProperty(taskId: ObjectId, extensionKey: string) {
-		const property = await this._cotpropertyTypeClient.getExtensionProperty(
-			taskId,
-			extensionKey
-		);
-		return property;
-	}
-
-	async searchProperty(
-		search: string,
-		propertyType?: string,
-		options?: SearchPropertyQueryOptions
-	) {
-		const property = await this._cotpropertyTypeClient.searchProperty(
-			search,
-			propertyType,
-			options
-		);
-		return property;
+	getCOTPropertyClient(): COTPropertyClient {
+		return this._cotpropertyClient;
 	}
 
 	/* QUERIES */
@@ -277,33 +166,19 @@ export class CotalkerAPI extends HttpClient {
 		return accessRoles;
 	}
 
-	//channels
-
-	//properties
-	async getPropertiesQuery(query: PropertiesQueryParams) {
-		const property =
-			await this._cotpropertyClient.getPropertiesQuery(query);
-		return property;
+	getCOTPropertyTypeClient(): COTPropertyTypeClient {
+		return this._cotpropertyTypeClient;
 	}
 
-	//propertyTypes
-	async getPropertyTypeQuery(query: PropertyTypesQueryParams) {
-		const property =
-			await this._cotpropertyTypeClient.getPropertyTypeQuery(query);
-		return property;
+	//COTSurveyClient
+
+	getCOTSurveyClient(): COTSurveyClient {
+		return this._cotsurveyClient;
 	}
 
-	async getAllPropertyTypesInQuery(query: PropertyTypesQueryParams) {
-		const property =
-			await this._cotpropertyTypeClient.getAllPropertyTypesInQuery(query);
-		return property;
-	}
+	// COTBotClient
 
-	//users
-
-	//answers
-	async getAnswersQuery(query: AnswersQueryParams) {
-		const answers = await this._cotanswerClient.getAnswersQuery(query);
-		return answers;
+	getCOTBotClient(): COTBotClient {
+		return this._cotbotClient;
 	}
 }
