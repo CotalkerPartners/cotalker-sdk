@@ -21,7 +21,6 @@ export type AllowedRelation =
 
 export default class COTUserClient {
 	protected readonly axiosInstance: AxiosInstance;
-	protected readonly axiosInstance: AxiosInstance;
 
 	private queryHandler;
 
