@@ -19,5 +19,4 @@ module.exports = {
 	  '^@models/(.*)$': '<rootDir>/src/libs/models/$1'
 	},
 	testMatch: ['**/test/**/*.test.[jt]s?(x)', '**/test/**/*.spec.[jt]s?(x)']
-  };
-  
+};

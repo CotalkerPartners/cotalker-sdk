@@ -10,7 +10,7 @@ import {
 import { COTUser } from "@customTypes/COTTypes/COTUser";
 import { ObjectId } from "@customTypes/custom";
 import { AxiosInstance } from "axios";
-import * as querystring from "querystring"; // ✅
+import * as querystring from "querystring";
 import { URLSearchParams } from "url";
 
 export default class COTPropertyClient {
