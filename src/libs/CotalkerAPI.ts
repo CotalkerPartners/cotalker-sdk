@@ -298,25 +298,8 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	/* COTSurvey */
-	async getSurvey(surveyId: ObjectId) {
-		const survey = await this._cotsurveyClient.getSurvey(surveyId);
-		return survey;
-	}
-
-	async getSurveys() {
-		const survey = await this._cotsurveyClient.getSurveys();
-		return survey;
-	}
-
-	async getSurveysCodes() {
-		const survey = await this._cotsurveyClient.getSurveysCodes();
-		return survey;
-	}
-
-	async getSurveysByAnswer(answerUuid: string | string[]) {
-		const survey =
-			await this._cotsurveyClient.getSurveysByAnswer(answerUuid);
-		return survey;
+	getCOTSurveyClient(): COTSurveyClient {
+		return this._cotsurveyClient;
 	}
 
 	/* COTProperty */
@@ -434,17 +417,6 @@ export class CotalkerAPI extends HttpClient {
 		const property =
 			await this._cotpropertyTypeClient.getAllPropertyTypesInQuery(query);
 		return property;
-	}
-
-	//surveys
-	async getSurveyQuery(query: SurveysQueryParams) {
-		const survey = await this._cotsurveyClient.getSurveyQuery(query);
-		return survey;
-	}
-
-	async getAllSurveysInQuery(query: SurveysQueryParams) {
-		const survey = await this._cotsurveyClient.getAllSurveysInQuery(query);
-		return survey;
 	}
 
 	//users
