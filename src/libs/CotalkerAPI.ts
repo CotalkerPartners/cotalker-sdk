@@ -92,7 +92,7 @@ export class CotalkerAPI extends HttpClient {
 		this._cotpropertyTypeClient = new COTPropertyTypeClient(this.instance);
 	}
 
-	private _initializeRequestInterceptor = () => {
+	private readonly _initializeRequestInterceptor = () => {
 		this.instance.interceptors.request.use(
 			this._handleRequest,
 			this._handleError
@@ -100,7 +100,9 @@ export class CotalkerAPI extends HttpClient {
 	};
 
 	// eslint-disable-next-line require-await, @typescript-eslint/require-await
-	private _handleRequest = async (config: InternalAxiosRequestConfig) => {
+	private readonly _handleRequest = async (
+		config: InternalAxiosRequestConfig
+	) => {
 		if (!config.headers) return;
 		config.headers.Authorization = `Bearer ${this._cotalkerToken}`;
 		config.headers["Content-Type"] = "application/json";
@@ -272,10 +274,8 @@ export class CotalkerAPI extends HttpClient {
 		return this._cotchannelClient;
 	}
 
-	/* COTFiles */
-	async getFileObjectById(fileId: ObjectId) {
-		const file = await this._cotfileClient.getFileObjectById(fileId);
-		return file;
+	getCOTFileClient(): COTFileClient {
+		return this._cotfileClient;
 	}
 
 	/* COTMessages */
