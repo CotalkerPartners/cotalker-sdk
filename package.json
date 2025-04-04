@@ -1,6 +1,6 @@
 {
 	"name": "cotalker-sdk",
-	"version": "0.0.4",
+	"version": "1.0.0",
 	"description": "Cotalker's partners lib",
 	"main": "lib/index.js",
 	"author": "cotalker",
@@ -14,6 +14,7 @@
 	},
 	"scripts": {
 		"build": "tsc && tsc-alias",
+		"pack": "npm run build && npm pack",
 		"pre-push": "",
 		"prepare": "husky",
 		"version": "git add -A src",

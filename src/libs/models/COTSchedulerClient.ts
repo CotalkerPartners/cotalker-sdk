@@ -1,8 +1,11 @@
+import {
+	ScheduleBody,
+	SchedulePostResponse
+} from "@customTypes/COTTypes/scheduler";
 import { ObjectId } from "@customTypes/custom";
-import { ScheduleBody, SchedulePostResponse } from "@customTypes/scheduler";
 import { AxiosInstance } from "axios";
 
-export class COTSchedulerClient {
+export default class COTSchedulerClient {
 	protected readonly _instance: AxiosInstance;
 
 	constructor(instance: AxiosInstance) {
@@ -31,13 +34,13 @@ export class COTSchedulerClient {
 
 	public async getScheduleById(scheduleId: ObjectId) {
 		const { data } = await this._instance.get(
-			`/api/v3/schedules/${scheduleId}`
+			`/api/v3/scheduler/schedule/${scheduleId}`
 		);
 		return data;
 	}
 
 	public async getSchedules() {
-		const { data } = await this._instance.get("/api/v3/schedules");
+		const { data } = await this._instance.get("/api/v3/scheduler/schedule");
 		return data;
 	}
 
@@ -81,21 +84,6 @@ export class COTSchedulerClient {
 		return data;
 	}
 
-	public async getScheduleLegacyById(scheduleId: ObjectId) {
-		const { data } = await this._instance.get(`/schedule/${scheduleId}`);
-		return data;
-	}
-
-	public async getScheduleByCodeLegacy(code: string) {
-		const { data } = await this._instance.get(`/schedule/code/${code}`);
-		return data;
-	}
-
-	public async runLegacySchedule(body: Record<string, unknown>) {
-		const { data } = await this._instance.post(`/schedule/run`, body);
-		return data;
-	}
-
 	public async getScheduleLogs(scheduleIds: ObjectId[], limit = 100) {
 		const query = scheduleIds.join(",");
 		const url = `/log?schedule=${query}&limit=${limit}`;
@@ -103,5 +91,3 @@ export class COTSchedulerClient {
 		return data;
 	}
 }
-
-export default COTSchedulerClient;
