@@ -24,7 +24,6 @@ import {
 	MultiTaskBody,
 	QueryTaskFilterOptions
 } from "@customTypes/COTTypes/COTTask";
-import { COTUser, UsersQueryParams } from "@customTypes/COTTypes/COTUser";
 import { ScheduleBody } from "@customTypes/COTTypes/scheduler";
 import { ObjectId } from "@customTypes/custom";
 import COTTaskClient from "@libs/models/COTTaskClient";
@@ -38,6 +37,8 @@ import COTPropertyTypeClient from "@models/COTPropertyTypeClient";
 import COTSchedulerClient from "@models/COTSchedulerClient";
 import COTSMStateClient from "@models/COTSMStateClient";
 import COTSurveyClient from "@models/COTSurveyClient";
+import COTTaskClient from "@models/COTTaskClient";
+import COTUserClient from "@models/COTUserClient";
 import HttpClient from "@utils/HttpClient";
 import { InternalAxiosRequestConfig } from "axios";
 
@@ -152,61 +153,8 @@ export class CotalkerAPI extends HttpClient {
 
 	/* COTUser */
 
-	static async getUserMe(_token: string): Promise<COTUser> {
-		const token = _token.replace(/^Bearer /, "");
-		const me: COTUser = await super.get(
-			`${process.env.BASE_URL}/api/users/me`,
-			{
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`
-			}
-		);
-		return me;
-	}
-
-	async getUser(id: ObjectId) {
-		const user = await this._cotuserClient.getUser(id);
-		return user;
-	}
-
-	async getUsersByAccessRole(accessRole: ObjectId) {
-		const user = await this._cotuserClient.getUsersByAccessRole(accessRole);
-		return user;
-	}
-
-	async getUsersByRelation(type: AllowedRelation, id: ObjectId) {
-		const user = await this._cotuserClient.getUsersByRelation(type, id);
-		return user;
-	}
-
-	async getUsersByJob(job: ObjectId) {
-		const user = await this._cotuserClient.getUsersByJob(job);
-		return user;
-	}
-
-	async getUsersByEmail(email: string[] | string) {
-		const user = await this._cotuserClient.getUsersByEmail(email);
-		return user;
-	}
-
-	async getUserByEmail(email: string) {
-		const user = await this._cotuserClient.getUserByEmail(email);
-		return user;
-	}
-
-	async getUserActivity(id: ObjectId) {
-		const user = await this._cotuserClient.getUserActivity(id);
-		return user;
-	}
-
-	async getSubordinates(user: COTUser) {
-		const subordinate = await this._cotuserClient.getSubordiantes(user);
-		return subordinate;
-	}
-
-	async jsonPatchUser(userId: ObjectId, body: JSONPatchBody) {
-		const user = await this._cotuserClient.jsonPatchUser(userId, body);
-		return user;
+	getCOTUserClient(): COTUserClient {
+		return this._cotuserClient;
 	}
 
 	/* COTSMStates */
@@ -366,15 +314,6 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	//users
-	async getUsersQuery(query: UsersQueryParams) {
-		const property = await this._cotuserClient.getUsersQuery(query);
-		return property;
-	}
-
-	async getAllUsersInQuery(query: UsersQueryParams) {
-		const property = await this._cotuserClient.getAllUsersInQuery(query);
-		return property;
-	}
 
 	//answers
 	async getAnswersQuery(query: AnswersQueryParams) {
