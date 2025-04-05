@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import { AccessRolesQueryParams } from "@customTypes/COTTypes/COTAccessRole";
 import COTAccessRolesClient from "@models/COTAccessRolesClient";
 import COTAnswerClient from "@models/COTAnswerClient";
 import COTBotClient from "@models/COTBotClient";
@@ -99,6 +98,7 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	/* COTScheduler*/
+
 	getCOTSchedulerClient(): COTSchedulerClient {
 		return this._cotschedulerClient;
 	}
@@ -152,19 +152,6 @@ export class CotalkerAPI extends HttpClient {
 	}
 
 	/* QUERIES */
-
-	//accessRoles
-	async getAccessRoleQuery(query: AccessRolesQueryParams) {
-		const accessRoles =
-			await this._cotaccessRolesClient.getAccessRoleQuery(query);
-		return accessRoles;
-	}
-
-	async getAllAccessRolesInQuery(query: AccessRolesQueryParams) {
-		const accessRoles =
-			await this._cotaccessRolesClient.getAllAccessRolesInQuery(query);
-		return accessRoles;
-	}
 
 	getCOTPropertyTypeClient(): COTPropertyTypeClient {
 		return this._cotpropertyTypeClient;

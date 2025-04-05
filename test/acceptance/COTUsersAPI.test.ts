@@ -1,7 +1,7 @@
-import COTUserClient from "../src/libs/models/COTUserClient";
+import COTUserClient from "../../src/libs/models/COTUserClient";
 import axios from "axios";
 
-jest.mock("../src/libs/models/COTUserClient", () => {
+jest.mock("../../src/libs/models/COTUserClient", () => {
 	return {
 		default: jest.fn().mockImplementation(() => ({
 			getAllUsersInQuery: jest.fn(),

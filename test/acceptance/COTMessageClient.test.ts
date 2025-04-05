@@ -1,11 +1,11 @@
-import COTMessageClient from "../src/libs/models/COTMessageClient";
+import COTMessageClient from "../../src/libs/models/COTMessageClient";
 import axios from "axios";
 import {
 	SendMsgBody,
 	EditMsgBody
-} from "../src/customTypes/COTTypes/COTMessage";
+} from "../../src/customTypes/COTTypes/COTMessage";
 
-jest.mock("../src/libs/models/COTMessageClient", () => {
+jest.mock("../../src/libs/models/COTMessageClient", () => {
 	return {
 		default: jest.fn().mockImplementation(() => ({
 			sendMessage: jest.fn(),

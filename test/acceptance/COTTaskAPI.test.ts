@@ -1,7 +1,7 @@
-import COTTaskClient from "../src/libs/models/COTTaskClient";
+import COTTaskClient from "../../src/libs/models/COTTaskClient";
 import axios from "axios";
 
-jest.mock("../src/libs/models/COTTaskClient", () => {
+jest.mock("../../src/libs/models/COTTaskClient", () => {
 	return {
 		default: jest.fn().mockImplementation(() => ({
 			getTasksSMStateChanges: jest.fn(),

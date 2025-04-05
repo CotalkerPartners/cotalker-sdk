@@ -1,6 +1,6 @@
-import COTSurveyClient from "../src/libs/models/COTSurveyClient";
+import COTSurveyClient from "../../src/libs/models/COTSurveyClient";
 import axios from "axios";
-jest.mock("..src/libs/models/COTSurveyClient", () => {
+jest.mock("../../src/libs/models/COTSurveyClient", () => {
 	return {
 		default: jest.fn().mockImplementation(() => ({
 			getSurvey: jest.fn(),
@@ -65,29 +65,33 @@ describe("Survey model", () => {
 		expect(result).toEqual(mockSurveys);
 	});
 
-	test("Debe obtener surveys con query parameters", async () => {
-		const query = { isActive: true };
+	test("✅ Debe obtener surveys con query parameters", async () => {
+		const query: { isActive: "true" } = { isActive: "true" };
 		const mockSurveys = [mockSurvey];
 
 		(surveysAPI.getSurveys as jest.Mock).mockResolvedValue(mockSurveys);
 
+		console.debug("[TEST] getSurveys - input query:", query);
 		const result = await surveysAPI.getSurveys(query);
+		console.debug("[TEST] getSurveys - output result:", result);
 
 		expect(result).toEqual(mockSurveys);
 	});
 
-	test("Debe obtener un survey usando query parameters", async () => {
-		const query = { code: "TS001" };
+	test("✅ Debe obtener un survey usando query parameters", async () => {
+		const query: { search?: string; code?: string } = { code: "TS001" };
 
 		(surveysAPI.getSurveyQuery as jest.Mock).mockResolvedValue(mockSurvey);
 
+		console.debug("[TEST] getSurveyQuery - input query:", query);
 		const result = await surveysAPI.getSurveyQuery(query);
+		console.debug("[TEST] getSurveyQuery - output result:", result);
 
 		expect(result).toEqual(mockSurvey);
 	});
 
 	test("Debe obtener todos los surveys que coincidan con un query", async () => {
-		const query = { isActive: true };
+		const query: { isActive: "true" } = { isActive: "true" };
 		const mockSurveys = [
 			mockSurvey,
 			{

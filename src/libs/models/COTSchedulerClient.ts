@@ -44,50 +44,78 @@ export default class COTSchedulerClient {
 		return data;
 	}
 
-	public async runByCode(code: string) {
+	// GET /api/v3/schedule/code/:code
+	public async getScheduleByCode(code: string) {
+		const { data } = await this._instance.get(
+			`/api/v3/schedule/code/${code}`
+		);
+		return data;
+	}
+
+	// POST /api/v3/schedule/
+	public async createSchedule(
+		body: ScheduleBody
+	): Promise<SchedulePostResponse> {
+		const { data } = await this._instance.post("/api/v3/schedule/", body);
+		return data;
+	}
+
+	// POST /api/v3/schedule/:scheduleId (restart a running cron)
+	public async restartSchedule(scheduleId: ObjectId) {
 		const { data } = await this._instance.post(
-			`/api/v3/schedules/run/${code}`
+			`/api/v3/schedule/${scheduleId}`
 		);
 		return data;
 	}
 
-	public async getDetailsByCode(code: string) {
-		const { data } = await this._instance.get(
-			`/api/v3/schedules/details/${code}`
+	// PATCH /api/v3/schedule/ (update by code)
+	public async updateScheduleByCode(body: {
+		_code: string;
+		time?: Date;
+		timeoutMinutes?: number;
+		body?: any;
+		endDate?: Date;
+		cron?: string;
+		priority?: string;
+		cronTimeZone?: string;
+		isSystem?: boolean;
+		keepStatus?: boolean;
+		execPath?: string;
+		hooks?: any[];
+		tags?: any[];
+		exponentialBackoff?: any;
+	}) {
+		const { data } = await this._instance.patch("/api/v3/schedule/", body);
+		return data;
+	}
+
+	// PATCH /api/v3/schedule/:scheduleId (update by ID)
+	public async updateScheduleById(
+		scheduleId: ObjectId,
+		body: Partial<ScheduleBody>
+	) {
+		const { data } = await this._instance.patch(
+			`/api/v3/schedule/${scheduleId}`,
+			body
 		);
 		return data;
 	}
 
-	public async getScheduleHistory() {
-		const { data } = await this._instance.get("/api/v3/schedules/history");
-		return data;
-	}
-
-	public async getSchedulePriority(code: string) {
-		const { data } = await this._instance.get(
-			`/api/v3/schedules/priority/${code}`
+	// PATCH /api/v3/schedule/deactivate/:scheduleId
+	public async deactivateSchedule(scheduleId: ObjectId) {
+		const { data } = await this._instance.patch(
+			`/api/v3/schedule/deactivate/${scheduleId}`,
+			{}
 		);
 		return data;
 	}
 
-	public async getMaxIterations(code: string) {
-		const { data } = await this._instance.get(
-			`/api/v3/schedules/max-iterations/${code}`
+	// PATCH /api/v3/schedule/activate/:scheduleId
+	public async activateSchedule(scheduleId: ObjectId) {
+		const { data } = await this._instance.patch(
+			`/api/v3/schedule/activate/${scheduleId}`,
+			{}
 		);
-		return data;
-	}
-
-	public async getScheduleConfig(code: string) {
-		const { data } = await this._instance.get(
-			`/api/v3/schedules/config/${code}`
-		);
-		return data;
-	}
-
-	public async getScheduleLogs(scheduleIds: ObjectId[], limit = 100) {
-		const query = scheduleIds.join(",");
-		const url = `/log?schedule=${query}&limit=${limit}`;
-		const { data } = await this._instance.get(url);
 		return data;
 	}
 }
