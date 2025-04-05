@@ -1,6 +1,6 @@
-import COTFileClient from "../src/libs/models/COTFileClient";
+import COTFileClient from "../../src/libs/models/COTFileClient";
 import axios from "axios";
-jest.mock("../src/libs/models/COTFileClient", () => {
+jest.mock("../../src/libs/models/COTFileClient", () => {
 	return {
 		default: jest.fn().mockImplementation(() => ({
 			getFileObjectById: jest.fn(),

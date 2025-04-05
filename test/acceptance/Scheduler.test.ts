@@ -1,8 +1,7 @@
 import COTSchedulerClient from "../../src/libs/models/COTSchedulerClient";
-import { ScheduleBody } from "../../src/customTypes/COTTypes/scheduler";
 import { AxiosInstance } from "axios";
+import { ScheduleBody } from "../../src/customTypes/COTTypes/scheduler";
 
-// Simulación parcial de Axios
 const mockAxios: Partial<AxiosInstance> = {
 	get: jest.fn(),
 	post: jest.fn(),
@@ -10,129 +9,106 @@ const mockAxios: Partial<AxiosInstance> = {
 };
 
 describe("COTSchedulerClient API", () => {
-	let schedulerClient: COTSchedulerClient;
-
-	beforeEach(() => {
-		jest.clearAllMocks();
-		schedulerClient = new COTSchedulerClient(mockAxios as AxiosInstance);
-	});
-
-	// Datos base para ScheduleBody
+	let client: COTSchedulerClient;
+	const scheduleId = "123456789012345678901234";
 	const fullSchedule: ScheduleBody = {
 		code: "test-code",
 		owner: "user123",
 		execPath: "exec/path"
 	};
 
-	it("postSchedule", async () => {
-		const mockResponse: any = { code: "new_schedule" };
-		(mockAxios.post as jest.Mock).mockResolvedValue({ data: mockResponse });
+	beforeEach(() => {
+		jest.clearAllMocks();
+		client = new COTSchedulerClient(mockAxios as AxiosInstance);
+	});
 
-		console.debug("[TEST] postSchedule - input:", fullSchedule);
-		const result = await schedulerClient.postSchedule(fullSchedule);
-		console.debug("[TEST] postSchedule - result:", result);
-		result;
-		expect(result.code).toBe("new_schedule");
+	it("postSchedule", async () => {
+		const response = { code: "created" };
+		(mockAxios.post as jest.Mock).mockResolvedValue({ data: response });
+
+		const result = await client.postSchedule(fullSchedule);
+		expect(result).toEqual(response);
 	});
 
 	it("runSchedule", async () => {
-		const mockResponse = {
-			code: "test2",
-			status: "tick",
-			execPath: "./../scripts/parametrizedBots/pb.controller.js"
-		};
+		const response = { code: "executed" };
+		(mockAxios.post as jest.Mock).mockResolvedValue({ data: response });
 
-		(mockAxios.post as jest.Mock).mockResolvedValue({ data: mockResponse });
-
-		console.debug("[TEST] runSchedule - input:", fullSchedule);
-		const result = await schedulerClient.runSchedule(fullSchedule);
-		console.debug("[TEST] runSchedule - result:", result);
-
-		expect(result.code).toBe("test2");
-		expect(result.status).toBe("tick");
-		expect(result.execPath).toBe(mockResponse.execPath);
+		const result = await client.runSchedule(fullSchedule);
+		expect(result).toEqual(response);
 	});
 
 	it("getScheduleById", async () => {
-		const id = "schedule123";
-		const mockResponse = { _id: id, name: "Test Schedule" };
-		(mockAxios.get as jest.Mock).mockResolvedValue({ data: mockResponse });
+		const response = { _id: scheduleId };
+		(mockAxios.get as jest.Mock).mockResolvedValue({ data: response });
 
-		console.debug("[TEST] getScheduleById - input:", id);
-		const result = await schedulerClient.getScheduleById(id);
-		console.debug("[TEST] getScheduleById - result:", result);
-
-		expect(result._id).toBe(id);
+		const result = await client.getScheduleById(scheduleId);
+		expect(result._id).toBe(scheduleId);
 	});
 
 	it("getSchedules", async () => {
-		const mockSchedules = [{ code: "s1" }, { code: "s2" }];
-		(mockAxios.get as jest.Mock).mockResolvedValue({ data: mockSchedules });
+		const response = [{ code: "a" }, { code: "b" }];
+		(mockAxios.get as jest.Mock).mockResolvedValue({ data: response });
 
-		console.debug("[TEST] getSchedules - expecting list");
-		const result = await schedulerClient.getSchedules();
-		console.debug("[TEST] getSchedules - result:", result);
-
+		const result = await client.getSchedules();
 		expect(result.length).toBe(2);
 	});
 
-	it("runByCode", async () => {
-		const code = "run-code";
-		const mockResponse = { executed: true };
-		(mockAxios.post as jest.Mock).mockResolvedValue({ data: mockResponse });
+	it("getScheduleByCode", async () => {
+		const response = { code: "by-code" };
+		(mockAxios.get as jest.Mock).mockResolvedValue({ data: response });
 
-		console.debug("[TEST] runByCode - input:", code);
-		const result = await schedulerClient.runByCode(code);
-		console.debug("[TEST] runByCode - result:", result);
-
-		expect(result.executed).toBe(true);
+		const result = await client.getScheduleByCode("by-code");
+		expect(result.code).toBe("by-code");
 	});
 
-	it("getDetailsByCode", async () => {
-		const code = "details-code";
-		const mockResponse = { code, details: "info" };
-		(mockAxios.get as jest.Mock).mockResolvedValue({ data: mockResponse });
+	it("createSchedule", async () => {
+		const response = { code: "new" };
+		(mockAxios.post as jest.Mock).mockResolvedValue({ data: response });
 
-		console.debug("[TEST] getDetailsByCode - input:", code);
-		const result = await schedulerClient.getDetailsByCode(code);
-		console.debug("[TEST] getDetailsByCode - result:", result);
-
-		expect(result.code).toBe(code);
+		const result = await client.createSchedule(fullSchedule);
+		expect(result).toEqual(response);
 	});
 
-	it("getScheduleHistory", async () => {
-		const mockHistory = [{ run: 1 }, { run: 2 }];
-		(mockAxios.get as jest.Mock).mockResolvedValue({ data: mockHistory });
+	it("restartSchedule", async () => {
+		const response = { restarted: true };
+		(mockAxios.post as jest.Mock).mockResolvedValue({ data: response });
 
-		console.debug("[TEST] getScheduleHistory - expecting 2 items");
-		const result = await schedulerClient.getScheduleHistory();
-		console.debug("[TEST] getScheduleHistory - result:", result);
-
-		expect(result.length).toBe(2);
+		const result = await client.restartSchedule(scheduleId);
+		expect(result.restarted).toBe(true);
 	});
 
-	it("getScheduleConfig", async () => {
-		const code = "config-code";
-		const mockResponse = { retries: 2 };
-		(mockAxios.get as jest.Mock).mockResolvedValue({ data: mockResponse });
+	it("updateScheduleByCode", async () => {
+		const response = { updated: true };
+		const updateBody = { _code: "test-code", priority: "high" };
+		(mockAxios.patch as jest.Mock).mockResolvedValue({ data: response });
 
-		console.debug("[TEST] getScheduleConfig - input:", code);
-		const result = await schedulerClient.getScheduleConfig(code);
-		console.debug("[TEST] getScheduleConfig - result:", result);
-
-		expect(result.retries).toBe(2);
+		const result = await client.updateScheduleByCode(updateBody);
+		expect(result.updated).toBe(true);
 	});
 
-	it("getScheduleLogs", async () => {
-		const ids = ["id1", "id2"];
-		const mockLogs = [{ log: "line 1" }];
-		(mockAxios.get as jest.Mock).mockResolvedValue({ data: mockLogs });
+	it("updateScheduleById", async () => {
+		const response = { updated: true };
+		const updateBody = { execPath: "new/path" };
+		(mockAxios.patch as jest.Mock).mockResolvedValue({ data: response });
 
-		console.debug("[TEST] getScheduleLogs - input:", ids);
-		const result = await schedulerClient.getScheduleLogs(ids, 100);
-		console.debug("[TEST] getScheduleLogs - result:", result);
+		const result = await client.updateScheduleById(scheduleId, updateBody);
+		expect(result.updated).toBe(true);
+	});
 
-		expect(result.length).toBe(1);
-		expect(result[0].log).toBe("line 1");
+	it("deactivateSchedule", async () => {
+		const response = { status: "deactivated" };
+		(mockAxios.patch as jest.Mock).mockResolvedValue({ data: response });
+
+		const result = await client.deactivateSchedule(scheduleId);
+		expect(result.status).toBe("deactivated");
+	});
+
+	it("activateSchedule", async () => {
+		const response = { status: "activated" };
+		(mockAxios.patch as jest.Mock).mockResolvedValue({ data: response });
+
+		const result = await client.activateSchedule(scheduleId);
+		expect(result.status).toBe("activated");
 	});
 });

@@ -1,6 +1,6 @@
-import COTChannelClient from "../src/libs/models/COTChannelClient";
+import COTChannelClient from "../../src/libs/models/COTChannelClient";
 import axios from "axios";
-jest.mock("../src/libs/models/COTChannelClient", () => {
+jest.mock("../../src/libs/models/COTChannelClient", () => {
 	return {
 		default: jest.fn().mockImplementation(() => ({
 			createChannel: jest.fn(),
