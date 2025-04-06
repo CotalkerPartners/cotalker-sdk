@@ -24,7 +24,8 @@
 		"prettier": "prettier ./src --check",
 		"prettier:fix": "prettier ./src --write",
 		"test": "jest",
-		"test:watch": "jest --watchAll"
+		"test:watch": "jest --watchAll",
+		"docs": "typedoc ./src/libs/models/*.ts "
 	},
 	"keywords": [
 		"cotalker"
