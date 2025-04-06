@@ -12,16 +12,29 @@ import { queryValidator } from "@utils/QueryValidator";
 import { AxiosInstance } from "axios";
 import * as querystring from "querystring";
 
+/**
+ * Handling channel-related operations.
+ * Uses Axios to make HTTP requests to the backend.
+ */
 export default class COTChannelClient {
 	protected axiosInstance: AxiosInstance;
 
 	private queryHandler;
 
+	/**
+	 * Creates a new instance of the channel client.
+	 * @param instance Axios instance to make HTTP requests.
+	 */
 	public constructor(instance: AxiosInstance) {
 		this.axiosInstance = instance;
 		this.queryHandler = new QueryHandler("channels", this.axiosInstance);
 	}
 
+	/**
+	 * Gets a list of channels based on the query parameters.
+	 * @param query Parameters to filter channels.
+	 * @returns List of channels.
+	 */
 	public async getChannelsQuery(
 		query: ChannelsQueryParams
 	): Promise<COTChannel[]> {
@@ -29,6 +42,11 @@ export default class COTChannelClient {
 		return (await this.queryHandler.getQuery(query)).channels;
 	}
 
+	/**
+	 * Creates a new channel in the system.
+	 * @param body with the details of the channel to be created.
+	 * @returns The created channel.
+	 */
 	async createChannel<T extends COTChannel>(
 		body: COTChannelPostBody
 	): Promise<T> {
@@ -37,6 +55,12 @@ export default class COTChannelClient {
 		).data;
 	}
 
+	/**
+	 * Gets the responses associated with a channel within a survey.
+	 * @param surveyId Survey ID.
+	 * @param channelId Channel ID.
+	 * @returns List of responses.
+	 */
 	async getChannelAnswers(
 		surveyId: ObjectId,
 		channelId: ObjectId
@@ -51,6 +75,11 @@ export default class COTChannelClient {
 		return (await this.axiosInstance.post(url, data)).data;
 	}
 
+	/**
+	 * Gets all channels belonging to a specific group, using pagination.
+	 * @param group group ID.
+	 * @returns A list of channels in the group.
+	 */
 	async getChannelsByGroup(group: ObjectId): Promise<COTChannel[]> {
 		let count = true;
 		let page = 1;
@@ -74,6 +103,12 @@ export default class COTChannelClient {
 		return channels;
 	}
 
+	/**
+	 * Gets files associated with a channel based on its content type.
+	 * @param channelId Channel ID.
+	 * @param contentType Content type (image, video, or document).
+	 * @returns List of files in the channel.
+	 */
 	async getChannelFiles(
 		channelId: ObjectId,
 		contentType: "image" | "video" | "document"
