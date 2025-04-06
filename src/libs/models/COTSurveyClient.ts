@@ -9,16 +9,28 @@ import { QueryHandler } from "@utils/QueryHandler";
 import { queryValidator } from "@utils/QueryValidator";
 import { AxiosInstance } from "axios";
 
+/**
+ * Manages requests related to the encounters.
+ */
 export default class COTSurveyClient {
 	protected readonly axiosInstance: AxiosInstance;
 
 	private queryHandler;
 
+	/**
+	 * Constructs a new instance of the COTSurveyClient.
+	 * @param instance Axios instance used for HTTP requests.
+	 */
 	public constructor(instance: AxiosInstance) {
 		this.axiosInstance = instance;
 		this.queryHandler = new QueryHandler("surveys", this.axiosInstance);
 	}
 
+	/**
+	 * Fetches a survey by its ID.
+	 * @param surveyId The ID of the survey.
+	 * @returns The survey object.
+	 */
 	public async getSurvey(surveyId: ObjectId): Promise<COTSurvey> {
 		return (
 			await this.axiosInstance.get<{ data: COTSurvey }>(
@@ -27,6 +39,11 @@ export default class COTSurveyClient {
 		)?.data;
 	}
 
+	/**
+	 * Fetches surveys matching query params or returns all active surveys.
+	 * @param query Optional search filters.
+	 * @returns An array of surveys.
+	 */
 	public async getSurveys(query?: SurveysQueryParams): Promise<COTSurvey[]> {
 		if (query) {
 			queryValidator(surveysQueryParams, query);
@@ -51,11 +68,21 @@ export default class COTSurveyClient {
 		return surveys;
 	}
 
+	/**
+	 * Fetches a single survey using a query.
+	 * @param query Query parameters to find the survey.
+	 * @returns The matched survey.
+	 */
 	public async getSurveyQuery(query: SurveysQueryParams): Promise<COTSurvey> {
 		queryValidator(surveysQueryParams, query);
 		return (await this.queryHandler.getQuery(query)).surveys[0];
 	}
 
+	/**
+	 * Fetches all surveys matching a given query.
+	 * @param query Query parameters to filter surveys.
+	 * @returns An array of matching surveys.
+	 */
 	public async getAllSurveysInQuery(
 		query: SurveysQueryParams
 	): Promise<COTSurvey[]> {
@@ -63,16 +90,30 @@ export default class COTSurveyClient {
 		return this.queryHandler.getAllInQuery(query);
 	}
 
+	/**
+	 * Fetches only survey codes.
+	 * @returns An array of surveys containing only their code.
+	 */
 	public async getSurveysCodes(): Promise<COTSurvey[]> {
 		return this.queryHandler.getAllInQuery({ select: "code" });
 	}
 
+	/**
+	 * Fetches surveys related to a specific answer UUID.
+	 * @param answerUuid The UUID of the answer(s).
+	 * @returns Surveys linked to the answer.
+	 */
 	public async getSurveysByAnswer(
 		answerUuid: string | string[]
 	): Promise<COTSurvey[]> {
 		return this.queryHandler.getAllInQuery({ answer: answerUuid });
 	}
 
+	/**
+	 * Searches surveys by their name.
+	 * @param name The name or pattern to search for.
+	 * @returns An array of surveys matching the name.
+	 */
 	public async getSurveysByName(name: string): Promise<COTSurvey[]> {
 		const queryParams = name ? `?search=.*${name}` : "";
 		return (
@@ -84,6 +125,11 @@ export default class COTSurveyClient {
 		);
 	}
 
+	/**
+	 * Retrieves all chat messages related to a given survey.
+	 * @param surveyID The ID of the survey.
+	 * @returns An array of survey chats.
+	 */
 	public async getSurveyChats(surveyID: ObjectId): Promise<COTSurveyChat[]> {
 		const surveyChats = (
 			await this.axiosInstance.get(
@@ -93,6 +139,11 @@ export default class COTSurveyClient {
 		return surveyChats;
 	}
 
+	/**
+	 * Creates a new chat entry for a survey.
+	 * @param surveyChat The survey chat data (content, order, and survey reference).
+	 * @returns The created survey chat.
+	 */
 	public async postSurveyChat(
 		surveyChat: Pick<COTSurveyChat, "contentArray" | "order" | "survey">
 	): Promise<COTSurveyChat> {
