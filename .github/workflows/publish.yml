@@ -21,6 +21,3 @@ jobs:
 
             - name: Build
               run: npm run build
-
-            - name: docs
-              run: npm run docs
