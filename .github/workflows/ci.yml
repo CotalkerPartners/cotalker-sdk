@@ -1,4 +1,4 @@
-name: Cotalker-SDK
+name: ci
 
 on:
     push:
