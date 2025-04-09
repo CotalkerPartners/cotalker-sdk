@@ -56,6 +56,7 @@ export class CotalkerAPI extends HttpClient {
 		this._cottaskClient = new COTTaskClient(this.instance);
 		this._cotuserClient = new COTUserClient(this.instance);
 		this._cotsurveyClient = new COTSurveyClient(this.instance);
+		this._cotbotClient = new COTBotClient(this.instance);
 		this._cotanswerClient = new COTAnswerClient(this.instance);
 		this._cotmessageClient = new COTMessageClient(this.instance);
 		this._cotchannelClient = new COTChannelClient(this.instance);

@@ -1,0 +1,32 @@
+{
+    "entryPoints": [
+      "src/libs/CotalkerAPI.ts",
+      "src/libs/models/index.ts",
+  
+      // Tipos principales y auxiliares
+      "src/customTypes/COTTypes/COTAccessRole.ts",
+      "src/customTypes/COTTypes/COTAnswer.ts",
+      "src/customTypes/COTTypes/COTChannel.ts",
+      "src/customTypes/COTTypes/COTFile.ts",
+      "src/customTypes/COTTypes/COTMessage.ts",
+      "src/customTypes/COTTypes/COTProperty.ts",
+      "src/customTypes/COTTypes/COTPropertyType.ts",
+      "src/customTypes/COTTypes/COTSMState.ts",
+      "src/customTypes/COTTypes/COTSurvey.ts",
+      "src/customTypes/COTTypes/COTTask.ts",
+      "src/customTypes/COTTypes/COTUser.ts",
+      "src/customTypes/COTTypes/COTQuestion.ts",
+      "src/customTypes/COTTypes/scheduler.ts",
+      "src/customTypes/COTTypes/APIGenerics.ts",
+      "src/customTypes/custom.ts",
+  
+      // Para evitar warnings adicionales (tipos usados en propiedades)
+      "src/libs/models/COTUserClient.ts"
+    ],
+    "out": "docs",
+    "excludePrivate": true,
+    "excludeInternal": true,
+    "includeVersion": true,
+    "readme": "none"
+  }
+  
