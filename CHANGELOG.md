@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.2...v2.0.3) (2025-04-09)
+
+
+### Bug Fixes
+
+* **bot:** fix bug in bot execution logic ([d6f6d0e](https://github.com/Cotalker/cotalker-sdk/commit/d6f6d0e71c8b182bdbb70af91ea8884b4a71d28d))
+
 # [0.2.0](https://github.com/Cotalker/cotalker-sdk/compare/v0.1.0...v0.2.0) (2025-04-09)
 
 
