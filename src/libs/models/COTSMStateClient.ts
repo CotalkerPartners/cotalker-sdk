@@ -8,6 +8,8 @@ export default class COTSMStateClient {
 	public constructor(instance: AxiosInstance) {
 		this._instance = instance;
 	}
+	/**
+	 * Uploads a file to the backend.*/
 
 	public async getSmStates(taskGroup: ObjectId): Promise<COTSMState[]> {
 		const smState = await this._instance.get(
