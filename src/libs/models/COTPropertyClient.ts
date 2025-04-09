@@ -13,6 +13,10 @@ import { AxiosInstance } from "axios";
 import * as querystring from "querystring";
 import { URLSearchParams } from "url";
 
+/**
+ * Handling channel-related operations.
+ * Uses Axios to make HTTP requests to the backend.
+ */
 export default class COTPropertyClient {
 	private readonly _instance: AxiosInstance;
 
