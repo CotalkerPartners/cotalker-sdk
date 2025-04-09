@@ -1,6 +1,6 @@
 {
 	"name": "cotalker-sdk",
-	"version": "0.2.0",
+	"version": "2.0.3",
 	"description": "Cotalker's partners lib",
 	"main": "lib/index.js",
 	"author": "cotalker",
