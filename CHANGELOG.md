@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.3...v2.0.4) (2025-04-10)
+
+
+### Bug Fixes
+
+* **bot:** bot return solution ([73ce944](https://github.com/Cotalker/cotalker-sdk/commit/73ce94407826ec63555f03357e9281eb1b6a61bd))
+
 ## [2.0.3](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.2...v2.0.3) (2025-04-09)
 
 
