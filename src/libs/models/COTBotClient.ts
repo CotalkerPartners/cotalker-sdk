@@ -1,3 +1,4 @@
+import { COTBot } from "@customTypes/COTTypes/COTBot";
 import { AxiosInstance } from "axios";
 
 export class COTBotClient {
@@ -10,10 +11,10 @@ export class COTBotClient {
 	public async runBotById(
 		botId: string,
 		body: Record<string, unknown> = {}
-	): Promise<any> {
+	): Promise<COTBot> {
 		const endpoint = `/api/v1/bots/run/${botId}`;
-		const { data } = await this._instance.post(endpoint, body);
-		return data;
+		const response = await this._instance.post(endpoint, body);
+		return response;
 	}
 }
 
