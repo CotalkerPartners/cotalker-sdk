@@ -21,3 +21,6 @@ jobs:
 
             - name: Build
               run: npm run build
+
+            - name: Generate documentation with TypeDoc
+              run: npx typedoc ./src/libs/models/*.ts --out docs
