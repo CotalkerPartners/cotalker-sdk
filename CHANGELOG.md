@@ -1,3 +1,10 @@
+## [2.0.5](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.4...v2.0.5) (2025-04-14)
+
+
+### Bug Fixes
+
+* **test:** versioning test ([69e3a3e](https://github.com/Cotalker/cotalker-sdk/commit/69e3a3e5476ec449df654319dce9f38481650fe0))
+
 ## [2.0.4](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.3...v2.0.4) (2025-04-10)
 
 
