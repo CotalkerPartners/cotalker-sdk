@@ -123,6 +123,4 @@ export default class COTChannelClient {
 		return (await this.axiosInstance.get(`/api/v2/channels/${channelId}`))
 			.data;
 	}
-
-	//revisar tipado
 }
