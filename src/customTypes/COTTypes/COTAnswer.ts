@@ -4,30 +4,30 @@ import { z } from "zod";
 import { COTQuestionContentType } from "./COTQuestion";
 
 export declare interface COTAnswerData {
-	code: string[];
+	code?: string[];
 	identifier: string;
 	contentType: COTQuestionContentType;
 	process: string[];
-	responses: string[];
-	group: string;
-	user: ObjectId;
+	responses?: string[];
+	group?: string;
+	user?: ObjectId;
 }
 
 export declare interface COTAnswer {
 	_id: ObjectId;
 	uuid: string;
-	channel: ObjectId;
+	channel?: ObjectId;
 	user: ObjectId;
 	properties: ObjectId[];
-	propertyTypes: string[];
-	identifiersNeeded: string[];
-	extendsAnswer: ObjectId[];
-	rExtendsAnswer: ObjectId[];
+	propertyTypes?: string[];
+	identifiersNeeded?: string[];
+	extendsAnswer?: ObjectId[];
+	rExtendsAnswer?: ObjectId[];
 	data: COTAnswerData[];
 	createdAt: string;
 	modifiedAt: string;
-
-	score: {
+	company?: ObjectId;
+	score?: {
 		main: number;
 		scores: {
 			key: string;

@@ -118,4 +118,11 @@ export default class COTChannelClient {
 		);
 		return response.data;
 	}
+
+	async getChannelById(channelId: ObjectId): Promise<COTChannel> {
+		return (await this.axiosInstance.get(`/api/v2/channels/${channelId}`))
+			.data;
+	}
+
+	//revisar tipado
 }
