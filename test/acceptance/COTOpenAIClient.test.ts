@@ -1,4 +1,4 @@
-import COTOpenAIClient from "../src/libs/models/COTOpenAiClient";
+import COTOpenAIClient from "../../src/libs/models/COTOpenAiClient";
 import { AxiosInstance } from "axios";
 
 const mockOpenAI = {
@@ -16,7 +16,7 @@ jest.mock("openai", () => ({
 	default: jest.fn(() => mockOpenAI)
 }));
 
-jest.mock("../src/libs/models/COTMessageClient", () => {
+jest.mock("../../src/libs/models/COTMessageClient", () => {
 	return {
 		__esModule: true,
 		default: jest.fn().mockImplementation(() => ({
