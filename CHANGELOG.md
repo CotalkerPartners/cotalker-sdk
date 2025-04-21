@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.5...v2.1.0) (2025-04-21)
+
+
+### Features
+
+* **openai:** error solution ([29d7f90](https://github.com/Cotalker/cotalker-sdk/commit/29d7f90d066d61bf7c1dff24bc751d4afeb7ef85))
+* **openai:** Routine implementation for channel summary ([2bc7c6c](https://github.com/Cotalker/cotalker-sdk/commit/2bc7c6ce6a845621876ccbfdc16a4d6942e06583))
+* **openai:** Routine implementation for channel summary ([6b251c3](https://github.com/Cotalker/cotalker-sdk/commit/6b251c3ab5958d713b90bc4b34ed8cb29d75f680))
+
 ## [2.0.5](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.4...v2.0.5) (2025-04-14)
 
 
