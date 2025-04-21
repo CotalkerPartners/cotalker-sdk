@@ -1,4 +1,4 @@
-import COTOpenAIClient from "../../src/libs/models/COTOpenAiClient";
+import COTOpenAIClient from "../../src/libs/models/COTOpenAIClient";
 import { AxiosInstance } from "axios";
 
 const mockOpenAI = {
