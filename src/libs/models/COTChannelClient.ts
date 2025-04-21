@@ -1,14 +1,11 @@
 import { COTAnswer } from "@customTypes/COTTypes/COTAnswer";
 import {
 	ChannelsQueryParams,
-	channelsQueryParams,
 	COTChannel,
 	COTChannelPostBody
 } from "@customTypes/COTTypes/COTChannel";
 import { COTFile } from "@customTypes/COTTypes/COTFile";
 import { ObjectId } from "@customTypes/custom";
-import { QueryHandler } from "@utils/QueryHandler";
-import { queryValidator } from "@utils/QueryValidator";
 import { AxiosInstance } from "axios";
 import * as querystring from "querystring";
 
@@ -16,10 +13,9 @@ import * as querystring from "querystring";
  * Handling channel-related operations.
  * Uses Axios to make HTTP requests to the backend.
  */
+
 export default class COTChannelClient {
 	protected axiosInstance: AxiosInstance;
-
-	private queryHandler;
 
 	/**
 	 * Creates a new instance of the channel client.
@@ -27,19 +23,14 @@ export default class COTChannelClient {
 	 */
 	public constructor(instance: AxiosInstance) {
 		this.axiosInstance = instance;
-		this.queryHandler = new QueryHandler("channels", this.axiosInstance);
 	}
 
-	/**
-	 * Gets a list of channels based on the query parameters.
-	 * @param query Parameters to filter channels.
-	 * @returns List of channels.
-	 */
-	public async getChannelsQuery(
-		query: ChannelsQueryParams
-	): Promise<COTChannel[]> {
-		queryValidator(channelsQueryParams, query);
-		return (await this.queryHandler.getQuery(query)).channels;
+	async getChannelsByQuery(
+		query: ChannelsQueryParams = {}
+	): Promise<COTChannel> {
+		const queryString = querystring.encode(query);
+		return (await this.axiosInstance.get(`/api/v2/channels?${queryString}`))
+			.data;
 	}
 
 	/**

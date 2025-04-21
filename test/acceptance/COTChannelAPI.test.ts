@@ -7,6 +7,7 @@ jest.mock("../../src/libs/models/COTChannelClient", () => {
 			getChannelAnswers: jest.fn(),
 			getChannelsByGroup: jest.fn(),
 			getChannelFiles: jest.fn(),
+			getChannelById: jest.fn(),
 			_filesAPI: {
 				getChannelFiles: jest.fn()
 			}
@@ -56,6 +57,17 @@ describe("Channel model", () => {
 		const channels = await channel.getChannelsByGroup(group);
 		expect(channels).toBeInstanceOf(Array);
 	});
+	test("Debe obtener un canal por su ID", async () => {
+		const channelId = "789";
+		const mockChannel = {
+			channelId,
+			name: "Canal Individual"
+		};
+		(channel.getChannelById as jest.Mock).mockResolvedValue(mockChannel);
+		const result = await channel.getChannelById(channelId);
+		expect(result).toHaveProperty("channelId", channelId);
+	});
+
 	test("Debe obtener archivos asociados a un canal", async () => {
 		const channelId = "456";
 		const contentType = "image";

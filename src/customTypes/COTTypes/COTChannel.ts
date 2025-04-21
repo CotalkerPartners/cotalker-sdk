@@ -28,8 +28,25 @@ const channelsQueryParamsSpecific = z
 	.partial()
 	.strict();
 
+const channelsQuery = z.object({
+	extra: z.array(z.string().optional()),
+	user: z.array(objectId.optional()),
+	survey: objectId,
+	surveyIds: z.array(objectId),
+	properties: z.array(objectId),
+	answerUuids: z.array(objectId),
+	modifiedAtGte: z.string().optional(),
+	modifiedAtLte: z.string().optional(),
+	fullMatchProperties: z.boolean().optional(),
+	limit: z.number().optional(),
+	page: z.number().optional(),
+	count: z.boolean(),
+	ordenBy: z.string().optional(),
+	sortBy: z.string().optional(),
+	debug: z.string().optional()
+});
 export const channelsQueryParams = channelsQueryParamsSpecific
 	.merge(genericQueryParams)
 	.merge(dateQueryParams);
-export type ChannelsQueryParams = z.infer<typeof channelsQueryParams>;
+export type ChannelsQueryParams = z.infer<typeof channelsQuery>;
 export type COTChannelPostBody = Omit<COTChannel, "_id">;
