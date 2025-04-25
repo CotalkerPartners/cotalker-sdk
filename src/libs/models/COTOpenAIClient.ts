@@ -19,22 +19,26 @@ type MessageWithText = {
 export default class COTOpenAIClient {
 	private readonly messageClient: COTMessageClient;
 
+	private openaiToken?: string;
+
 	public constructor(axiosInstance: AxiosInstance) {
 		this.messageClient = new COTMessageClient(axiosInstance);
 	}
 
+	public setToken(token: string) {
+		this.openaiToken = token;
+	}
+
 	async generateSummary({
 		channelId,
-		openaiToken,
 		model = "gpt-3.5-turbo",
 		systemPrompt = "Eres un asistente que resume conversaciones largas. Resume brevemente lo siguiente:"
-	}: SummaryParams): Promise<void> {
-		if (!channelId || !openaiToken) {
+	}: Omit<SummaryParams, "openaiToken">): Promise<string | undefined> {
+		if (!this.openaiToken) {
 			throw new Error(
-				"Missing required parameters: channelId and openaiToken are required"
+				"Debes setear un token de OpenAI con setToken() antes de llamar a generateSummary()."
 			);
 		}
-
 		try {
 			const messages = await this.messageClient.getMessages(channelId);
 			const fullText = messages
@@ -42,15 +46,9 @@ export default class COTOpenAIClient {
 				.map((msg: MessageWithText) => msg.body.text)
 				.join("\n");
 
-			if (!fullText || fullText.trim() === "") {
-				await this.messageClient.sendMessage({
-					channel: channelId,
-					content: "No hay mensajes de texto para resumir.",
-					contentType: "text/plain"
-				});
-				return;
-			}
-			const openai = new OpenAI({ apiKey: openaiToken });
+			if (!fullText.trim()) return undefined;
+
+			const openai = new OpenAI({ apiKey: this.openaiToken });
 
 			const summaryResponse = await openai.chat.completions.create({
 				model,
@@ -65,31 +63,14 @@ export default class COTOpenAIClient {
 					}
 				]
 			});
-			const resumen =
-				summaryResponse.choices[0]?.message?.content ??
-				"No se generó resumen.";
-			await this.messageClient.sendMessage({
-				channel: channelId,
-				content: `**Resumen del canal:**\n${resumen}`,
-				contentType: "text/plain"
-			});
+			const resumen = summaryResponse.choices[0]?.message?.content;
+			return resumen?.trim() || undefined;
 		} catch (error) {
 			console.error(
 				"Error generating summary:",
 				error instanceof Error ? error.message : String(error)
 			);
-
-			let errorMessage = "Error al generar el resumen del canal.";
-			if (error instanceof OpenAI.APIError) {
-				errorMessage += ` (${error.status}: ${error.message})`;
-			}
-
-			await this.messageClient.sendMessage({
-				channel: channelId,
-				content: errorMessage,
-				contentType: "text/plain"
-			});
-			throw error;
+			return undefined;
 		}
 	}
 }

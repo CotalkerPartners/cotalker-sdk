@@ -33,15 +33,25 @@ describe("COTOpenAIClient", () => {
 		jest.clearAllMocks();
 	});
 
-	test("debe generar y enviar resumen correctamente", async () => {
+	test("debe generar resumen correctamente", async () => {
 		const mockAxios = {} as AxiosInstance;
 		const client = new COTOpenAIClient(mockAxios);
 
-		await client.generateSummary({
-			channelId: "id_123",
-			openaiToken: "test-token"
+		client.setToken("test-token");
+
+		const resumen = await client.generateSummary({
+			channelId: "id_123"
 		});
 
 		expect(mockOpenAI.chat.completions.create).toHaveBeenCalled();
+		expect(resumen).toBe("resumen generado");
+	});
+	test("lanza error si no se ha seteado el token", async () => {
+		const mockAxios = {} as AxiosInstance;
+		const client = new COTOpenAIClient(mockAxios);
+
+		await expect(
+			client.generateSummary({ channelId: "id_123" })
+		).rejects.toThrow("Debes setear un token de OpenAI");
 	});
 });
