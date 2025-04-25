@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.1.0...v2.2.0) (2025-04-25)
+
+
+### Features
+
+* **openai:** Token setting added ([d1d9861](https://github.com/Cotalker/cotalker-sdk/commit/d1d9861d7d1c7b39b8757f9c4bb1213cd99e8c14))
+
 # [2.1.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.5...v2.1.0) (2025-04-21)
 
 
