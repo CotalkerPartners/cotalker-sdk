@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/Cotalker/cotalker-sdk/compare/v2.2.0...v2.2.1) (2025-04-29)
+
+
+### Bug Fixes
+
+* **message:** typing update ([7f3a625](https://github.com/Cotalker/cotalker-sdk/commit/7f3a6254ef1f1999ccf506e0ab839ea60a0045f4))
+
 # [2.2.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.1.0...v2.2.0) (2025-04-25)
 
 
