@@ -10,12 +10,6 @@ type SummaryParams = {
 	systemPrompt?: string;
 };
 
-type MessageWithText = {
-	body: {
-		text: string;
-	};
-};
-
 export default class COTOpenAIClient {
 	private readonly messageClient: COTMessageClient;
 
@@ -42,8 +36,8 @@ export default class COTOpenAIClient {
 		try {
 			const messages = await this.messageClient.getMessages(channelId);
 			const fullText = messages
-				.filter((msg: MessageWithText) => msg.body?.text)
-				.map((msg: MessageWithText) => msg.body.text)
+				.filter((msg) => msg.contentType === "text/plain")
+				.map((msg) => msg.content)
 				.join("\n");
 
 			if (!fullText.trim()) return undefined;

@@ -86,19 +86,15 @@ describe("Messages model", () => {
 	});
 
 	test("Debe obtener mensajes de un canal con fecha por defecto", async () => {
-		(messagesAPI.getMessages as jest.Mock).mockResolvedValue({
-			data: mockMessages
-		});
+		(messagesAPI.getMessages as jest.Mock).mockResolvedValue(mockMessages);
 		const result = await messagesAPI.getMessages(mockChannelId);
-		expect(result.data).toEqual(mockMessages);
+		expect(result).toEqual(mockMessages);
 	});
 
 	test("Debe obtener mensajes de un canal con fecha específica", async () => {
 		const testDate = new Date();
-		(messagesAPI.getMessages as jest.Mock).mockResolvedValue({
-			data: mockMessages
-		});
+		(messagesAPI.getMessages as jest.Mock).mockResolvedValue(mockMessages);
 		const result = await messagesAPI.getMessages(mockChannelId, testDate);
-		expect(result.data).toEqual(mockMessages);
+		expect(result).toEqual(mockMessages);
 	});
 });

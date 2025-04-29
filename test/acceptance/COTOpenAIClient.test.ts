@@ -22,7 +22,9 @@ jest.mock("../../src/libs/models/COTMessageClient", () => {
 		default: jest.fn().mockImplementation(() => ({
 			getMessages: jest
 				.fn()
-				.mockResolvedValue([{ body: { text: "Mensaje de prueba" } }]),
+				.mockResolvedValue([
+					{ contentType: "text/plain", content: "Mensaje de prueba" }
+				]),
 			sendMessage: jest.fn().mockResolvedValue({})
 		}))
 	};

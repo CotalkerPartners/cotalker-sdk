@@ -66,9 +66,13 @@ export default class COTMessageClient {
 	 * @param modifiedAt Optional date to filter messages modified since that date. Defaults to 1 day ago.
 	 * @returns A promise resolving to the list of messages.
 	 */
-	public async getMessages(channel: ObjectId, modifiedAt?: Date) {
+	public async getMessages(
+		channel: ObjectId,
+		modifiedAt?: Date
+	): Promise<SendMsgBody[]> {
 		const dateStr = (modifiedAt ?? addDays(new Date(), -1)).toISOString();
 		const url = `/api/v1/messages/channel/${channel}/modified/${dateStr}`;
-		return this.axiosInstance.get(url);
+		return (await this.axiosInstance.get<{ data: SendMsgBody[] }>(url))
+			.data;
 	}
 }
