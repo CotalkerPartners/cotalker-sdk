@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.2.2...v2.3.0) (2025-05-03)
+
+
+### Features
+
+* **openai:** Added call by date and character limit ([2cea797](https://github.com/Cotalker/cotalker-sdk/commit/2cea7973cbefb67c845e4df3a40680221b1e9d66))
+
 ## [2.2.2](https://github.com/Cotalker/cotalker-sdk/compare/v2.2.1...v2.2.2) (2025-04-30)
 
 
