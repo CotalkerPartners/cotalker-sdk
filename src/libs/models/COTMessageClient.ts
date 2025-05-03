@@ -5,9 +5,13 @@ import { AxiosInstance } from "axios";
 import { addDays } from "date-fns";
 
 /**
- * Handles operations related to messages.
+ * Client to handle operations related to Cotalker messages.
  */
 export default class COTMessageClient {
+	/**
+	 * Axios instance used for HTTP requests.
+	 * @protected
+	 */
 	protected readonly axiosInstance: AxiosInstance;
 
 	/**
@@ -33,9 +37,9 @@ export default class COTMessageClient {
 	/**
 	 * Edits an existing message.
 	 * @typeParam T - Expected response data type.
-	 * @param _messageId The ID of the message to edit.
-	 * @param body The new content for the message.
-	 * @returns A promise resolving to the response data.
+	 * @param _messageId - The ID of the message to edit.
+	 * @param body - The new content for the message.
+	 * @returns A promise that resolves to the updated message.
 	 */
 	async editMessage<T>(_messageId: ObjectId, body: EditMsgBody): Promise<T> {
 		return (
@@ -49,8 +53,8 @@ export default class COTMessageClient {
 	/**
 	 * Removes a message by marking it as removed.
 	 * @typeParam T - Expected response data type.
-	 * @param _messageId The ID of the message to remove.
-	 * @returns A promise resolving to the response data.
+	 * @param _messageId - The ID of the message to remove.
+	 * @returns A promise that resolves to the removed message object.
 	 */
 	async removeMessage<T>(_messageId: ObjectId): Promise<T> {
 		return (
@@ -61,10 +65,12 @@ export default class COTMessageClient {
 	}
 
 	/**
-	 * Retrieves messages from a channel, optionally filtering by modification date.
-	 * @param channel The ID of the channel.
-	 * @param modifiedAt Optional date to filter messages modified since that date. Defaults to 1 day ago.
-	 * @returns A promise resolving to the list of messages.
+	 * Retrieves messages from a given channel.
+	 * @param channel - The ID of the channel to fetch messages from.
+	 * @param modifiedAt - Optional date to filter messages modified since that date. Defaults to one day ago.
+	 * @returns A promise resolving to an array of messages.
+	 * @remarks
+	 * The method fetches messages modified after the provided `modifiedAt` date.
 	 */
 	public async getMessages(
 		channel: ObjectId,

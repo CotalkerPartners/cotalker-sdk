@@ -10,21 +10,24 @@ import { AxiosInstance } from "axios";
 import * as querystring from "querystring";
 
 /**
- * Handling channel-related operations.
- * Uses Axios to make HTTP requests to the backend.
+ * Client for handling channel-related operations in Cotalker.
  */
-
 export default class COTChannelClient {
 	protected axiosInstance: AxiosInstance;
 
 	/**
 	 * Creates a new instance of the channel client.
-	 * @param instance Axios instance to make HTTP requests.
+	 * @param instance - Axios instance used to perform HTTP requests.
 	 */
 	public constructor(instance: AxiosInstance) {
 		this.axiosInstance = instance;
 	}
 
+	/**
+	 * Retrieves channels based on optional query parameters.
+	 * @param query - An object containing search filters (optional).
+	 * @returns A promise that resolves to a {@link COTChannel} object.
+	 */
 	async getChannelsByQuery(
 		query: ChannelsQueryParams = {}
 	): Promise<COTChannel> {
@@ -35,8 +38,8 @@ export default class COTChannelClient {
 
 	/**
 	 * Creates a new channel in the system.
-	 * @param body with the details of the channel to be created.
-	 * @returns The created channel.
+	 * @param body - The channel creation payload.
+	 * @returns A promise that resolves to the newly created channel.
 	 */
 	async createChannel<T extends COTChannel>(
 		body: COTChannelPostBody
@@ -47,10 +50,10 @@ export default class COTChannelClient {
 	}
 
 	/**
-	 * Gets the responses associated with a channel within a survey.
-	 * @param surveyId Survey ID.
-	 * @param channelId Channel ID.
-	 * @returns List of responses.
+	 * Retrieves answers associated with a channel within a given survey.
+	 * @param surveyId - The ID of the survey.
+	 * @param channelId - The ID of the channel.
+	 * @returns A promise that resolves to a list of {@link COTAnswer} objects.
 	 */
 	async getChannelAnswers(
 		surveyId: ObjectId,
@@ -67,9 +70,9 @@ export default class COTChannelClient {
 	}
 
 	/**
-	 * Gets all channels belonging to a specific group, using pagination.
-	 * @param group group ID.
-	 * @returns A list of channels in the group.
+	 * Retrieves all channels that belong to a specific group using pagination.
+	 * @param group - The group ID.
+	 * @returns A promise that resolves to a list of {@link COTChannel} objects.
 	 */
 	async getChannelsByGroup(group: ObjectId): Promise<COTChannel[]> {
 		let count = true;
@@ -95,10 +98,10 @@ export default class COTChannelClient {
 	}
 
 	/**
-	 * Gets files associated with a channel based on its content type.
-	 * @param channelId Channel ID.
-	 * @param contentType Content type (image, video, or document).
-	 * @returns List of files in the channel.
+	 * Retrieves files from a channel based on content type.
+	 * @param channelId - The ID of the channel.
+	 * @param contentType - The type of content to filter (image, video, or document).
+	 * @returns A promise that resolves to a list of {@link COTFile} objects.
 	 */
 	async getChannelFiles(
 		channelId: ObjectId,
@@ -110,6 +113,11 @@ export default class COTChannelClient {
 		return response.data;
 	}
 
+	/**
+	 * Retrieves a single channel by its ID.
+	 * @param channelId - The ID of the channel to retrieve.
+	 * @returns A promise that resolves to the {@link COTChannel} object.
+	 */
 	async getChannelById(channelId: ObjectId): Promise<COTChannel> {
 		return (await this.axiosInstance.get(`/api/v2/channels/${channelId}`))
 			.data;
