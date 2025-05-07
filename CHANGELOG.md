@@ -1,3 +1,48 @@
+# [2.4.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.3.0...v2.4.0) (2025-05-07)
+
+
+### Bug Fixes
+
+* add missing word in test:watch ([63f319d](https://github.com/Cotalker/cotalker-sdk/commit/63f319daf831a143ace5338741a107347e3d2a72))
+* **bot:** bot return solution ([c1976f1](https://github.com/Cotalker/cotalker-sdk/commit/c1976f1fc2aff16261ccb3ee5c04725941603525))
+* **bot:** fix bug in bot execution logic ([497bd8a](https://github.com/Cotalker/cotalker-sdk/commit/497bd8ae712a6b668352f5d3d37408e7af431405))
+* **bot:** resolve error in COTBotClient initialization ([fbaa572](https://github.com/Cotalker/cotalker-sdk/commit/fbaa572e9ee8cc78a9ec68f45516ce6c85504860))
+* change project path in .eslintrc.json ([426a752](https://github.com/Cotalker/cotalker-sdk/commit/426a7522a24652d0a58a7442cb68c322174d2d00))
+* **ci:** update Node.js version to support semantic-release ([ee8f78c](https://github.com/Cotalker/cotalker-sdk/commit/ee8f78c1383dfe668e3a618772774b0d97526f39))
+* **CotalkerAPI:** correct broken module imports ([011dda0](https://github.com/Cotalker/cotalker-sdk/commit/011dda0387c631d33b750d4c7aafaa352efe4b1b))
+* **COTTipe:** delete unused import ([37bea6a](https://github.com/Cotalker/cotalker-sdk/commit/37bea6a00720c2c7b27846a5e224bf70e9a92c2d))
+* import ([b971ea5](https://github.com/Cotalker/cotalker-sdk/commit/b971ea50df6df711d94497605c928db623a6907f))
+* **setup:** remove unnecessary endpoints and add types for reference ([cf183b3](https://github.com/Cotalker/cotalker-sdk/commit/cf183b34ab1ac473af4b44384c278984167a4ac9))
+* version ([93ef744](https://github.com/Cotalker/cotalker-sdk/commit/93ef744916130b9b7a4160da69aa9302e97e85d6))
+
+
+### Features
+
+* **api:** add answer and properties tests, update API methods ([159a618](https://github.com/Cotalker/cotalker-sdk/commit/159a618ff83e4ca8f7e8fc78a657a6346595fcd2))
+* **api:** add scheduler integration to CotalkerAPI ([78405fd](https://github.com/Cotalker/cotalker-sdk/commit/78405fd868b2b93404e660803ef38304115ca53c))
+* **assistant:** add GPT-based task assistant client ([3e4b357](https://github.com/Cotalker/cotalker-sdk/commit/3e4b357d89557911418f25ffd034fa2c2b718158))
+* **assistant:** agrega cliente assistant para resolver intenciones ([5f21e8c](https://github.com/Cotalker/cotalker-sdk/commit/5f21e8c22d838874a63612371447fc756811df12))
+* **assistant:** clean commit without secrets ([9b4b56b](https://github.com/Cotalker/cotalker-sdk/commit/9b4b56b40dddd5ab3a7780d473096ac58bf94385))
+* **assistant:** merge assistant with OpenAI client logic ([7968ebd](https://github.com/Cotalker/cotalker-sdk/commit/7968ebd321d8b7aed20c7b46144bf594fa3ae4c4))
+* **bot:** add COTBotClient module with tests and API simplification ([731555e](https://github.com/Cotalker/cotalker-sdk/commit/731555e48710fd47bdeac3aa10f93b07cd993ca6))
+* **cd:** YML added for npm publishing ([519b3fd](https://github.com/Cotalker/cotalker-sdk/commit/519b3fd7c1550bc9a44dcace09043785cfe6146b))
+* **channel:** add channel model and test channel ([6f7ccff](https://github.com/Cotalker/cotalker-sdk/commit/6f7ccffc94a5f69c23f36b60593da76bc4240679))
+* **CI:** add workflow ([d27b37e](https://github.com/Cotalker/cotalker-sdk/commit/d27b37e8e2518c56f14825eaec372343fe9761c3))
+* **clients:** add scheduler, property and answer clients ([939913e](https://github.com/Cotalker/cotalker-sdk/commit/939913e0b33c6198067e82975848d8040d4f37d8))
+* cotalker api middleware tamplate ([6525763](https://github.com/Cotalker/cotalker-sdk/commit/6525763acd237f94d438a866048ba6f6eb80bc92))
+* **cotalkerAPI:** integration ([55be55e](https://github.com/Cotalker/cotalker-sdk/commit/55be55ee29946244e866fccfa1bca92e3d2a903b))
+* create .nvmrc file with lts/hydrogen version ([127be1c](https://github.com/Cotalker/cotalker-sdk/commit/127be1c0d1d88fb2ebae7c9f9ea6a4d8ba21194b))
+* **File:** add File model and test File ([2532acb](https://github.com/Cotalker/cotalker-sdk/commit/2532acb5d76deceff33f67ed093bf5ac054a5965))
+* **File:** add new features and their tests ([b98e76d](https://github.com/Cotalker/cotalker-sdk/commit/b98e76d8afd375b7c4e57bdf918f0e7ea8b76e7b))
+* **File:** integrate COTFileAPI into BranchJocelynIntegration ([d482186](https://github.com/Cotalker/cotalker-sdk/commit/d4821862ccdfb0a5b728007a0fd006f09cac4a07))
+* **message:** add new features and their tests ([8961c28](https://github.com/Cotalker/cotalker-sdk/commit/8961c28ab88ec2625293de31255c58b5e62810f8))
+* **survey:** add new features and their tests ([41d7c5c](https://github.com/Cotalker/cotalker-sdk/commit/41d7c5cf3ad84ad2e640930d515c2547e6e0b81c))
+* **survey:** integrate COTSurveyAPI into BranchJocelynIntegration ([14a1c51](https://github.com/Cotalker/cotalker-sdk/commit/14a1c51387c5a2d62a8e26e6488b53f4c3556696))
+* **task:** improve implementation and file update ([5fb1ce0](https://github.com/Cotalker/cotalker-sdk/commit/5fb1ce0120800421e3ebe74c5351e57780610ec8))
+* **task:** integrate COTTaskAPI into BranchJocelynIntegration ([cc35348](https://github.com/Cotalker/cotalker-sdk/commit/cc35348184da203f1a08220aebbd43e3c92463f9))
+* **user:** add new features and their tests ([2e3cfb9](https://github.com/Cotalker/cotalker-sdk/commit/2e3cfb9610f07cd2721c36d23ec589c3bc2f9f5f))
+* **user:** integrate COTUserAPI into BranchJocelynIntegration ([5e68f75](https://github.com/Cotalker/cotalker-sdk/commit/5e68f759ccef3f51ae704aae705d6de9848298fb))
+
 <<<<<<< HEAD
 # [2.3.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.2.2...v2.3.0) (2025-05-03)
 
