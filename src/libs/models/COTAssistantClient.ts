@@ -62,7 +62,10 @@ export class COTAssistantClient {
 			userId = me._id;
 		}
 
-		const { intent, date } = await resolveIntent(message);
+		const { intent, date } = await resolveIntent(
+			message,
+			this.openai.apiKey
+		);
 		const validDate = date ?? new Date();
 		const taskClient = this.api.getCOTTaskClient();
 		const [user] = await this.api.getCOTUserClient().getUsersById([userId]);

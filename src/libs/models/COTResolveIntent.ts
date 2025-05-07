@@ -18,14 +18,15 @@ export interface IntentResult {
 	date?: Date;
 }
 
-export const openai = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY!
-});
-
 /**
  * GPT-powered resolver
  */
-async function resolveIntentGPT(message: string): Promise<IntentResult> {
+async function resolveIntentGPT(
+	message: string,
+	apiKey: string
+): Promise<IntentResult> {
+	const openai = new OpenAI({ apiKey });
+
 	const systemPrompt = `
 Eres un clasificador de intenciones para un asistente en Cotalker.
 Basado en el mensaje del usuario, debes identificar qué acción se desea realizar.
@@ -65,6 +66,9 @@ Si no entiendes la intención, responde: unknown
 /**
  * Resolver principal usando SOLO GPT
  */
-export async function resolveIntent(message: string): Promise<IntentResult> {
-	return resolveIntentGPT(message);
+export async function resolveIntent(
+	message: string,
+	apiKey: string
+): Promise<IntentResult> {
+	return resolveIntentGPT(message, apiKey);
 }
