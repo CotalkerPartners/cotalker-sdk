@@ -10,6 +10,18 @@ import {
 import { ObjectId } from "@customTypes/custom";
 import { AxiosInstance } from "axios";
 
+export interface State {
+	_id: string;
+	property: {
+		_id: string;
+		name: string;
+		translations?: Record<string, string>;
+	};
+	stateMachine: string;
+	subtask?: any;
+	next?: any[];
+}
+
 /**
  * Managing tasks through the API.
  */
@@ -46,6 +58,21 @@ export default class COTTaskClient {
 		} catch (error) {
 			return;
 		}
+	}
+
+	public async getTasksGroupedByProperty(
+		filters: Record<string, any>,
+		taskGroupId: string,
+		groupBy: string
+	): Promise<any[]> {
+		const response = await this.axiosInstance.post(
+			`/api/tasks/${taskGroupId}/task/group`,
+			{
+				filters,
+				groupBy
+			}
+		);
+		return response?.data?.tasks ?? [];
 	}
 
 	/**
@@ -97,6 +124,80 @@ export default class COTTaskClient {
 	}
 
 	/**
+	 * Retrieves tasks filtered by standard parameters like assignedTo, state, etc.
+	 * @param filters Filters for retrieving tasks (assignedTo, state, etc.)
+	 * @param taskGroupId Optional task group ID (if known). If not provided, throws.
+	 */
+	/*
+	public async getTasks(
+		query: COTTaskQuery,
+		taskGroupId: string
+	): Promise<COTTask[]> {
+		const response = await this.axiosInstance.post(
+			`/api/tasks/${taskGroupId}/task`,
+			query
+		);
+		return response?.data?.tasks ?? [];
+	}*/
+	public async getTasks(
+		filters: Record<string, any>,
+		taskGroupId: string
+	): Promise<COTTask[]> {
+		const limit = 1000;
+		let page = 1;
+		const allTasks: COTTask[] = [];
+
+		try {
+			let hasMore = true;
+
+			do {
+				const response = await this.axiosInstance.get(
+					`/api/v2/task-groups/${taskGroupId}/tasks`,
+					{
+						params: {
+							limit,
+							page,
+							isActive: true,
+							orderBy: "desc",
+							...filters
+						}
+					}
+				);
+
+				const rawData = response.data;
+				const data = rawData?.data || rawData; // por si "data" viene al nivel superior
+				const values: COTTask[] = data?.values ?? [];
+
+				console.debug(`📦 Página ${page}: ${values.length} tareas`);
+				allTasks.push(...values);
+
+				hasMore = values.length === limit;
+				page++;
+			} while (hasMore);
+
+			console.debug(`✅ Total tareas encontradas: ${allTasks.length}`);
+			return allTasks;
+		} catch (error) {
+			console.error("❌ Error en getTasks:", error?.message || error);
+			return [];
+		}
+	}
+
+	public async getStates(taskGroupId: string): Promise<State[]> {
+		try {
+			const response = await this.axiosInstance.get(
+				`/api/tasks/${taskGroupId}/sm/smstate/`
+			);
+			//console.debug("📦 Estados recibidos del endpoint:", response);
+
+			return response;
+		} catch (error) {
+			console.error("Error al obtener estados del taskGroup:", error);
+			return [];
+		}
+	}
+
+	/**
 	 * Finds multiple tasks by query within a task group.
 	 * @param taskGroupId The ID of the task group.
 	 * @param query Query parameters to filter tasks.
@@ -107,7 +208,7 @@ export default class COTTaskClient {
 		query: COTTaskQuery
 	): Promise<T[]> {
 		const task = await this.axiosInstance.post<T[]>(
-			`/api/tasks/${taskGroupId}/task/all`,
+			`/api/tasks/${taskGroupId}/task/`,
 			query
 		);
 		return task;

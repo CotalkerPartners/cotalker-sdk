@@ -40,6 +40,26 @@ export default class COTPropertyClient {
 		).data;
 	}
 
+	public async getAllProperties<T extends COTProperty>(): Promise<T[]> {
+		let count = 1;
+		let page = 1;
+		const properties: T[] = [];
+
+		do {
+			const response = await this._instance.get<{
+				data: { count: number; properties: T[] };
+			}>(
+				`/api/v2/properties?page=${page}&limit=100&isActive=true&count=true`
+			);
+
+			properties.push(...(response.data?.properties ?? []));
+			count = response.data?.count ?? properties.length;
+			page += 1;
+		} while (properties.length < count);
+
+		return properties;
+	}
+
 	public async postProperty<T extends COTProperty>(
 		property: COTPropertyPostBody,
 		debug = false

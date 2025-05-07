@@ -2,6 +2,7 @@ import COTFileClient from "../../src/libs/models/COTFileClient";
 import axios from "axios";
 jest.mock("../../src/libs/models/COTFileClient", () => {
 	return {
+		__esModule: true, // 👈 Necesario para importar como default class
 		default: jest.fn().mockImplementation(() => ({
 			getFileObjectById: jest.fn(),
 			uploadFile: jest.fn(),

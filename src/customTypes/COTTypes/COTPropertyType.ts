@@ -7,6 +7,7 @@ import {
 import { z } from "zod";
 
 export interface COTPropertyType {
+	name: any;
 	_id: ObjectId;
 	code: string;
 	company: string;

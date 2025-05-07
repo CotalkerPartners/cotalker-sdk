@@ -3,18 +3,21 @@ import axios from "axios";
 
 jest.mock("../../src/libs/models/COTUserClient", () => {
 	return {
-		default: jest.fn().mockImplementation(() => ({
-			getAllUsersInQuery: jest.fn(),
-			getUsersByAccessRole: jest.fn(),
-			getUsersByJob: jest.fn(),
-			getUsersByEmail: jest.fn(),
-			getUsersByRelation: jest.fn(),
-			getUserActivity: jest.fn(),
-			jsonPatchUser: jest.fn(),
-			getUsersById: jest.fn(),
-			findUsers: jest.fn(),
-			getBossUsers: jest.fn()
-		}))
+		__esModule: true,
+		default: jest.fn().mockImplementation(() => {
+			return {
+				getAllUsersInQuery: jest.fn(),
+				getUsersByAccessRole: jest.fn(),
+				getUsersByJob: jest.fn(),
+				getUsersByEmail: jest.fn(),
+				getUsersByRelation: jest.fn(),
+				getUserActivity: jest.fn(),
+				jsonPatchUser: jest.fn(),
+				getUsersById: jest.fn(),
+				findUsers: jest.fn(),
+				getBossUsers: jest.fn()
+			};
+		})
 	};
 });
 

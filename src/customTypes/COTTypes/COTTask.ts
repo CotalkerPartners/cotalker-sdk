@@ -128,6 +128,8 @@ type DateQuery =
 	| string
 	| Partial<Record<"$gt" | "$gte" | "$lt" | "$lte", string | Date>>;
 export declare interface COTTaskQuery {
+	dueDate?: string;
+	assignedTo?: string;
 	isActive?: boolean;
 	_id?: SingleOrMultiObjectId;
 	userList?: SingleOrMultiObjectId;

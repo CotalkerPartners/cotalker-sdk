@@ -2,6 +2,7 @@ import COTChannelClient from "../../src/libs/models/COTChannelClient";
 import axios from "axios";
 jest.mock("../../src/libs/models/COTChannelClient", () => {
 	return {
+		__esModule: true, // 👈 Importante para que `default` sea tratada como clase
 		default: jest.fn().mockImplementation(() => ({
 			createChannel: jest.fn(),
 			getChannelAnswers: jest.fn(),
