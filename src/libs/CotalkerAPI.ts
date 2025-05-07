@@ -14,7 +14,7 @@ import COTSurveyClient from "@models/COTSurveyClient";
 import COTTaskClient from "@models/COTTaskClient";
 import COTUserClient from "@models/COTUserClient";
 import HttpClient from "@utils/HttpClient";
-import { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 export class CotalkerAPI extends HttpClient {
 	private axiosInstance: AxiosInstance;
@@ -50,12 +50,22 @@ export class CotalkerAPI extends HttpClient {
 	private _cotalkerToken: string;
 
 	public constructor(token: string, baseURL?: string) {
-		super(baseURL ?? "https://staging.cotalker.com", false);
+		const resolvedBaseURL = baseURL ?? "https://staging.cotalker.com";
+		super(resolvedBaseURL, false);
+
 		this._cotalkerToken = (
 			token ??
 			process.env.COTALKER_TOKEN ??
 			""
 		).replace(/^Bearer /g, "");
+
+		this.axiosInstance = axios.create({
+			baseURL: resolvedBaseURL,
+			headers: {
+				Authorization: `Bearer ${this._cotalkerToken}`,
+				"Content-Type": "application/json"
+			}
+		});
 		this._initializeRequestInterceptor();
 		this._cotfileClient = new COTFileClient(this.instance);
 		this._cottaskClient = new COTTaskClient(this.instance);

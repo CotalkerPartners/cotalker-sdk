@@ -49,7 +49,8 @@ describe("COTAssistantClient", () => {
 		});
 
 		const resumen = await client.generateSummary({
-			channelId: "id_123"
+			channelId: "id_123",
+			openaiToken: "sk-xxxx"
 		});
 
 		expect(mockOpenAI.chat.completions.create).toHaveBeenCalled();

@@ -15,6 +15,21 @@ interface AssistantClientOptions {
 	axiosInstance: AxiosInstance;
 }
 
+type SummaryParams = {
+	channelId: ObjectId;
+	openaiToken: string;
+	date?: Date;
+	limit_char?: number;
+	model?: string;
+	systemPrompt?: string;
+};
+
+type Message = {
+	content: string;
+	contentType: string;
+	// puedes agregar otros campos si los necesitas
+};
+
 export class COTAssistantClient {
 	private api: CotalkerAPI;
 
@@ -244,26 +259,38 @@ Nunca respondas "no entendí", "no pude", "no puedo" o similares.
 
 	public async generateSummary({
 		channelId,
+		openaiToken,
 		date = subYears(new Date(), 1),
 		limit_char = 100000,
 		model = "gpt-3.5-turbo",
 		systemPrompt = "Resume los siguientes mensajes de canal interno. Agrupa las ideas principales y expresa cada una como un bullet. Si hay ideas repetidas, fusiónalas. Ignora mensajes irrelevantes como saludos, links o imágenes. Destaca acciones importantes, decisiones tomadas o recomendaciones técnicas."
-	}: {
-		channelId: ObjectId;
-		date?: Date;
-		limit_char?: number;
-		model?: string;
-		systemPrompt?: string;
-	}): Promise<string | undefined> {
-		const messages = await this.messageClient.getMessages(channelId, date);
+	}: SummaryParams): Promise<string | undefined> {
+		// aseguramos el token para este uso
+		this.setToken(openaiToken);
+
+		// obtenemos mensajes desde el canal
+		const result = await this.messageClient.getMessages(channelId, date);
+		const messages: Message[] = Array.isArray(result)
+			? result
+			: ((result as any)?.messages ?? []);
+
+		if (!Array.isArray(messages)) {
+			throw new Error(
+				"La respuesta de getMessages no es un array válido."
+			);
+		}
+
+		// concatenamos el contenido de mensajes de texto plano
 		const fullText = messages
 			.filter((m) => m.contentType === "text/plain")
 			.map((m) => m.content)
 			.join("\n");
 
 		if (!fullText.trim()) return undefined;
+
 		const limitedText = fullText.slice(-limit_char);
 
+		// generamos el resumen con OpenAI
 		const summaryResponse = await this.openai.chat.completions.create({
 			model,
 			messages: [
