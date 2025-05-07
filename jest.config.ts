@@ -1,11 +1,12 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
+export default {
 	preset: "ts-jest/presets/default-esm",
 	testEnvironment: "node",
 	transform: {
 		"^.+\\.ts$": "ts-jest"
 	},
 	extensionsToTreatAsEsm: [".ts"],
+	setupFiles: ["<rootDir>/jest.setup.ts"], // esto apunta al otro archivo
 	globals: {
 		"ts-jest": {
 			useESM: true,

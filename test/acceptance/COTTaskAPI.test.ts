@@ -3,6 +3,7 @@ import axios from "axios";
 
 jest.mock("../../src/libs/models/COTTaskClient", () => {
 	return {
+		__esModule: true,
 		default: jest.fn().mockImplementation(() => ({
 			getTasksSMStateChanges: jest.fn(),
 			getTask: jest.fn(),

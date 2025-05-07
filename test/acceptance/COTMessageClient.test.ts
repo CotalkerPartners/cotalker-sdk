@@ -7,6 +7,7 @@ import {
 
 jest.mock("../../src/libs/models/COTMessageClient", () => {
 	return {
+		__esModule: true, // 👈 Necesario para que Jest reconozca correctamente el `default`
 		default: jest.fn().mockImplementation(() => ({
 			sendMessage: jest.fn(),
 			editMessage: jest.fn(),

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # [2.3.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.2.2...v2.3.0) (2025-05-03)
 
 
@@ -42,6 +43,8 @@
 
 * **test:** versioning test ([69e3a3e](https://github.com/Cotalker/cotalker-sdk/commit/69e3a3e5476ec449df654319dce9f38481650fe0))
 
+=======
+>>>>>>> feature/AssistantClient
 ## [2.0.4](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.3...v2.0.4) (2025-04-10)
 
 

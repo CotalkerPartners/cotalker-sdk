@@ -3,7 +3,11 @@ import { ObjectId } from "@customTypes/custom";
 import axios, { AxiosInstance } from "axios";
 
 /**
+<<<<<<< HEAD
  * Client for managing file-related operations in Cotalker.
+=======
+ * Manage file-related operations.
+>>>>>>> feature/AssistantClient
  */
 export default class COTFileClient {
 	/**
@@ -21,9 +25,15 @@ export default class COTFileClient {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Retrieves metadata of a file stored in the backend.
 	 * @param fileId - The ID of the file to retrieve.
 	 * @returns A promise that resolves to a {@link COTFileUploaded} object containing file metadata.
+=======
+	 * Retrieves a file object from the backend by its ID.
+	 * @param fileId - The ID of the file to retrieve.
+	 * @returns A promise that resolves to the file object metadata.
+>>>>>>> feature/AssistantClient
 	 */
 	public async getFileObjectById(fileId: ObjectId): Promise<COTFileUploaded> {
 		const file = await this.axiosInstance.get(

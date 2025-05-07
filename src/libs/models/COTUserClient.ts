@@ -9,7 +9,6 @@ import { ObjectId } from "@customTypes/custom";
 import { QueryHandler } from "@utils/QueryHandler";
 import { queryValidator } from "@utils/QueryValidator";
 import { AxiosInstance } from "axios";
-import * as querystring from "querystring";
 
 /**
  * Manages user-related requests.
@@ -34,6 +33,17 @@ export default class COTUserClient {
 	public constructor(instance: AxiosInstance) {
 		this.axiosInstance = instance;
 		this.queryHandler = new QueryHandler("users", this.axiosInstance);
+	}
+
+	/**
+	 * Gets the currently authenticated user using the token.
+	 * @returns Promise that resolves to the current user
+	 */
+	public async getMe(): Promise<COTUser> {
+		const response = await this.axiosInstance.get<{ data: COTUser }>(
+			"/api/v2/users/me"
+		);
+		return response.data;
 	}
 
 	/**
@@ -143,23 +153,25 @@ export default class COTUserClient {
 	 * @returns Promise that resolves to an array of found users
 	 */
 	public async getUsersById(ids: ObjectId[]): Promise<COTUser[]> {
-		const limit = 30;
-		const chunks = [];
-		for (let i = 0; i < ids.length; i += limit) {
-			chunks.push(ids.slice(i, i + limit));
-		}
-
 		const results = await Promise.all(
-			chunks.map(async (idChunk) => {
-				const qParams = querystring.encode({ id: idChunk, limit });
-				const response = await this.axiosInstance.get(
-					`/api/v2/users?${qParams}`
-				);
-				return response?.data?.users ?? [];
+			ids.map(async (id) => {
+				try {
+					const response = await this.axiosInstance.get(
+						`/api/v2/users/${id}`
+					);
+					return response?.data ?? null;
+				} catch (error) {
+					console.warn(
+						`❌ Error al obtener el usuario con id ${id}:`,
+						error
+					);
+					return null;
+				}
 			})
 		);
 
-		return results.flat();
+		// Filtrar nulos por si hubo errores
+		return results.filter((u): u is COTUser => u !== null);
 	}
 
 	/**

@@ -2,7 +2,8 @@ import { COTFile, COTFileUploaded } from "@customTypes/COTTypes/COTFile";
 import { ObjectId } from "@customTypes/custom";
 import HttpClient from "@utils/HttpClient";
 import axios, { AxiosRequestConfig } from "axios";
-import * as FormData from "form-data";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import FormData from "form-data";
 
 export default class COTFilesAPI extends HttpClient {
 	private _cotalkerToken: string;

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import COTAccessRolesClient from "@models/COTAccessRolesClient";
 import COTAnswerClient from "@models/COTAnswerClient";
+import { COTAssistantClient } from "@models/COTAssistantClient";
 import COTBotClient from "@models/COTBotClient";
 import COTChannelClient from "@models/COTChannelClient";
 import COTFileClient from "@models/COTFileClient";
@@ -25,6 +26,8 @@ export class CotalkerAPI extends HttpClient {
 
 	private _cotsurveyClient: COTSurveyClient;
 
+	private _cotassistantClient: COTAssistantClient;
+
 	private _cotbotClient: COTBotClient;
 
 	private _cotanswerClient: COTAnswerClient;
@@ -43,9 +46,9 @@ export class CotalkerAPI extends HttpClient {
 
 	private _cotpropertyTypeClient: COTPropertyTypeClient;
 
-	private _cotalkerToken: string;
-
 	private _cotopenaiClient: COTOpenAIClient;
+
+	private _cotalkerToken: string;
 
 	public constructor(token: string, baseURL?: string) {
 		super(baseURL ?? "https://staging.cotalker.com", false);
@@ -124,6 +127,32 @@ export class CotalkerAPI extends HttpClient {
 
 	getCOTTaskClient(): COTTaskClient {
 		return this._cottaskClient;
+	}
+
+	public getCOTAssistantClient(taskGroupId?: string): COTAssistantClient {
+		const resolvedTaskGroupId = taskGroupId ?? process.env.TASK_GROUP_ID;
+		const openaiKey = process.env.OPENAI_API_KEY;
+
+		if (!resolvedTaskGroupId) {
+			throw new Error(
+				"Falta el taskGroupId para inicializar COTAssistantClient."
+			);
+		}
+
+		if (!openaiKey) {
+			throw new Error(
+				"Falta OPENAI_API_KEY en las variables de entorno."
+			);
+		}
+
+		if (!this._cotassistantClient) {
+			this._cotassistantClient = new COTAssistantClient(this, {
+				taskGroupId: resolvedTaskGroupId,
+				openaiKey: openaiKey
+			});
+		}
+
+		return this._cotassistantClient;
 	}
 
 	/* COTUser */

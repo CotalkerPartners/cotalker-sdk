@@ -2,6 +2,7 @@ import COTSurveyClient from "../../src/libs/models/COTSurveyClient";
 import axios from "axios";
 jest.mock("../../src/libs/models/COTSurveyClient", () => {
 	return {
+		__esModule: true, // 👈 Necesario para que `default` funcione como clase
 		default: jest.fn().mockImplementation(() => ({
 			getSurvey: jest.fn(),
 			getSurveys: jest.fn(),
