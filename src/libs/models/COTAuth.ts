@@ -185,6 +185,10 @@ export interface BotAuthConfig {
 	isDevMode?: boolean;
 }
 
+/**
+ * Validates bot authentication and authorization.
+ * Ensures the bot belongs to the specified company and has the required permissions.
+ */
 export class BotAuthValidator {
 	readonly #companyId: string;
 
@@ -196,6 +200,10 @@ export class BotAuthValidator {
 
 	#token?: string;
 
+	/**
+	 * Creates a new instance of the BotAuthValidator.
+	 * @param botAuthConfig Configuration options for bot authentication.
+	 */
 	constructor(botAuthConfig: BotAuthConfig) {
 		this.#companyId = botAuthConfig.companyId;
 		this.#cotalkerApi = botAuthConfig.cotalkerApi;
@@ -203,6 +211,11 @@ export class BotAuthValidator {
 		this.#isDevMode = botAuthConfig.isDevMode || false;
 	}
 
+	/**
+	 * Checks if the bot belongs to the specified company.
+	 * @returns `true` if the bot's company matches, `false` otherwise.
+	 * @throws Error if the token has not been set.
+	 */
 	async isInCompany(): Promise<boolean> {
 		if (!this.#token) throw new Error("Empty Token");
 		if (this.#isDevMode) return true;
@@ -216,6 +229,11 @@ export class BotAuthValidator {
 		}
 	}
 
+	/**
+	 * Checks if the bot has all required permissions.
+	 * @returns `true` if all required permissions are present, `false` otherwise.
+	 * @throws Error if the token has not been set.
+	 */
 	async hasPermissions(): Promise<boolean> {
 		if (!this.#token) throw new Error("Empty Token");
 		if (this.#isDevMode) return true;
@@ -231,6 +249,10 @@ export class BotAuthValidator {
 		}
 	}
 
+	/**
+	 * Sets the bot's authentication token.
+	 * @param token A valid JWT token.
+	 */
 	set token(token: string) {
 		this.#token = token;
 	}
@@ -247,6 +269,10 @@ export interface UserAuthConfig {
 	isDevMode?: boolean;
 }
 
+/**
+ * Validates user authentication and authorization.
+ * Ensures the user belongs to the specified company and has the required access role.
+ */
 export class UserAuthValidator {
 	readonly #companyId: string;
 
@@ -258,6 +284,10 @@ export class UserAuthValidator {
 
 	#userId?: string;
 
+	/**
+	 * Creates a new instance of the UserAuthValidator.
+	 * @param userAuthConfig Configuration options for user authentication.
+	 */
 	constructor(userAuthConfig: UserAuthConfig) {
 		this.#companyId = userAuthConfig.companyId;
 		this.#cotalkerApi = userAuthConfig.cotalkerApi;
@@ -265,6 +295,11 @@ export class UserAuthValidator {
 		this.#isDevMode = userAuthConfig.isDevMode || false;
 	}
 
+	/**
+	 * Checks if the user belongs to the specified company.
+	 * @returns `true` if the user belongs to the company, `false` otherwise.
+	 * @throws Error if the user ID has not been set.
+	 */
 	async isInCompany(): Promise<boolean> {
 		if (!this.#userId) throw new Error("Empty userId");
 		if (this.#isDevMode) return true;
@@ -278,6 +313,11 @@ export class UserAuthValidator {
 		}
 	}
 
+	/**
+	 * Checks if the user has the required access role.
+	 * @returns `true` if the role is present, `false` otherwise.
+	 * @throws Error if the user ID has not been set.
+	 */
 	async hasAccessRoles(): Promise<boolean> {
 		if (!this.#userId) throw new Error("Empty userId");
 		if (this.#isDevMode) return true;
@@ -291,6 +331,10 @@ export class UserAuthValidator {
 		}
 	}
 
+	/**
+	 * Sets the user ID to validate.
+	 * @param userId Cotalker user ID.
+	 */
 	set userId(userId: string) {
 		this.#userId = userId;
 	}
