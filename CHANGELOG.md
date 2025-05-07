@@ -1,3 +1,11 @@
+## [2.4.1](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.0...v2.4.1) (2025-05-07)
+
+
+### Bug Fixes
+
+* **tests:** remove code throw expectation from assistant test ([eedeb40](https://github.com/Cotalker/cotalker-sdk/commit/eedeb4081750e42380387428a2f6be48842c593c))
+* **tests:** remove code throw expectation from assistant test ([78cbffd](https://github.com/Cotalker/cotalker-sdk/commit/78cbffd424adad97914f21632917b50dd458fd51))
+
 # [2.4.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.3.0...v2.4.0) (2025-05-07)
 
 
