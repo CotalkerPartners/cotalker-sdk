@@ -6,7 +6,6 @@ import COTBotClient from "@models/COTBotClient";
 import COTChannelClient from "@models/COTChannelClient";
 import COTFileClient from "@models/COTFileClient";
 import COTMessageClient from "@models/COTMessageClient";
-import COTOpenAIClient from "@models/COTOpenAIClient";
 import COTPropertyClient from "@models/COTPropertyClient";
 import COTPropertyTypeClient from "@models/COTPropertyTypeClient";
 import COTSchedulerClient from "@models/COTSchedulerClient";
@@ -48,8 +47,6 @@ export class CotalkerAPI extends HttpClient {
 
 	private _cotpropertyTypeClient: COTPropertyTypeClient;
 
-	private _cotopenaiClient: COTOpenAIClient;
-
 	private _cotalkerToken: string;
 
 	public constructor(token: string, baseURL?: string) {
@@ -73,7 +70,6 @@ export class CotalkerAPI extends HttpClient {
 		this._cotschedulerClient = new COTSchedulerClient(this.instance);
 		this._cotaccessRolesClient = new COTAccessRolesClient(this.instance);
 		this._cotpropertyTypeClient = new COTPropertyTypeClient(this.instance);
-		this._cotopenaiClient = new COTOpenAIClient(this.instance);
 	}
 
 	private readonly _initializeRequestInterceptor = () => {
@@ -204,9 +200,5 @@ export class CotalkerAPI extends HttpClient {
 
 	getCOTBotClient(): COTBotClient {
 		return this._cotbotClient;
-	}
-
-	getOpenAIClient(): COTOpenAIClient {
-		return this._cotopenaiClient;
 	}
 }
