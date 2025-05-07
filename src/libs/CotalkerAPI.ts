@@ -15,9 +15,11 @@ import COTSurveyClient from "@models/COTSurveyClient";
 import COTTaskClient from "@models/COTTaskClient";
 import COTUserClient from "@models/COTUserClient";
 import HttpClient from "@utils/HttpClient";
-import { InternalAxiosRequestConfig } from "axios";
+import { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 export class CotalkerAPI extends HttpClient {
+	private axiosInstance: AxiosInstance;
+
 	private _cotfileClient: COTFileClient;
 
 	private _cottaskClient: COTTaskClient;
@@ -148,7 +150,8 @@ export class CotalkerAPI extends HttpClient {
 		if (!this._cotassistantClient) {
 			this._cotassistantClient = new COTAssistantClient(this, {
 				taskGroupId: resolvedTaskGroupId,
-				openaiKey: openaiKey
+				openaiKey: openaiKey,
+				axiosInstance: this.axiosInstance
 			});
 		}
 

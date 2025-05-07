@@ -1,6 +1,8 @@
 {
 	"extends": "./tsconfig.paths.json",
 	"compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
 		"declaration": true,
 		"lib": ["ESNext", "DOM"],
 		"moduleResolution": "node",

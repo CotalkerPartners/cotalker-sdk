@@ -28,7 +28,6 @@ const channelsQueryParamsSpecific = z
 	.partial()
 	.strict();
 
-<<<<<<< HEAD
 const channelsQuery = z.object({
 	extra: z.array(z.string().optional()),
 	user: z.array(objectId.optional()),
@@ -50,10 +49,4 @@ export const channelsQueryParams = channelsQueryParamsSpecific
 	.merge(genericQueryParams)
 	.merge(dateQueryParams);
 export type ChannelsQueryParams = z.infer<typeof channelsQuery>;
-=======
-export const channelsQueryParams = channelsQueryParamsSpecific
-	.merge(genericQueryParams)
-	.merge(dateQueryParams);
-export type ChannelsQueryParams = z.infer<typeof channelsQueryParams>;
->>>>>>> feature/AssistantClient
 export type COTChannelPostBody = Omit<COTChannel, "_id">;

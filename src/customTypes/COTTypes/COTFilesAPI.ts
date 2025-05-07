@@ -5,7 +5,7 @@ import axios, { AxiosRequestConfig } from "axios";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import FormData from "form-data";
 
-export default class COTFilesAPI extends HttpClient {
+export class COTFilesAPI extends HttpClient {
 	private _cotalkerToken: string;
 
 	private static _resolveBaseURL(baseURL?: string) {
