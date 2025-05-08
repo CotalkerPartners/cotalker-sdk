@@ -137,15 +137,8 @@ export class CotalkerAPI extends HttpClient {
 		return this._cottaskClient;
 	}
 
-	public getCOTAssistantClient(taskGroupId?: string): COTAssistantClient {
-		const resolvedTaskGroupId = taskGroupId ?? process.env.TASK_GROUP_ID;
+	public getCOTAssistantClient(): COTAssistantClient {
 		const openaiKey = process.env.OPENAI_API_KEY;
-
-		if (!resolvedTaskGroupId) {
-			throw new Error(
-				"Falta el taskGroupId para inicializar COTAssistantClient."
-			);
-		}
 
 		if (!openaiKey) {
 			throw new Error(
@@ -155,7 +148,6 @@ export class CotalkerAPI extends HttpClient {
 
 		if (!this._cotassistantClient) {
 			this._cotassistantClient = new COTAssistantClient(this, {
-				taskGroupId: resolvedTaskGroupId,
 				openaiKey: openaiKey,
 				axiosInstance: this.axiosInstance
 			});

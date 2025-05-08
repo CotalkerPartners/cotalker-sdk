@@ -43,7 +43,6 @@ describe("COTAssistantClient", () => {
 
 	test("debe generar resumen correctamente", async () => {
 		const client = new COTAssistantClient(mockAPI, {
-			taskGroupId: "grupo123",
 			openaiKey: "test-token",
 			axiosInstance: mockAxios
 		});

@@ -10,7 +10,6 @@ import COTMessageClient from "./COTMessageClient";
 import { resolveIntent } from "./COTResolveIntent";
 
 interface AssistantClientOptions {
-	taskGroupId: string;
 	openaiKey: string;
 	axiosInstance: AxiosInstance;
 }
@@ -33,8 +32,6 @@ type Message = {
 export class COTAssistantClient {
 	private api: CotalkerAPI;
 
-	private taskGroupId: string;
-
 	private openai: OpenAI;
 
 	private openaiToken: string;
@@ -49,7 +46,6 @@ export class COTAssistantClient {
 
 	constructor(api: CotalkerAPI, options: AssistantClientOptions) {
 		this.api = api;
-		this.taskGroupId = options.taskGroupId;
 		this.openaiToken = options.openaiKey;
 		this.openai = new OpenAI({ apiKey: this.openaiToken });
 		this.messageClient = new COTMessageClient(options.axiosInstance);
@@ -68,10 +64,8 @@ export class COTAssistantClient {
 		});
 	}
 
-	public async loadStates(): Promise<void> {
-		const states = await this.api
-			.getCOTTaskClient()
-			.getStates(this.taskGroupId);
+	public async loadStates(taskGroupId: string): Promise<void> {
+		const states = await this.api.getCOTTaskClient().getStates(taskGroupId);
 		states.forEach((state) => {
 			const name =
 				state?.property?.name?.trim() ||
@@ -84,6 +78,7 @@ export class COTAssistantClient {
 
 	public async interpretMessage(
 		message: string,
+		taskGroupId: string,
 		userId?: string
 	): Promise<string> {
 		let effectiveUserId = userId;
@@ -113,7 +108,7 @@ export class COTAssistantClient {
 						startDate: validDate.toISOString().split("T")[0],
 						endDate: validDate.toISOString().split("T")[0]
 					},
-					this.taskGroupId
+					taskGroupId
 				);
 				this.extractStatusMapFromTasks(tasks);
 				break;
@@ -125,7 +120,7 @@ export class COTAssistantClient {
 						startDate: "2020-01-01",
 						endDate: today
 					},
-					this.taskGroupId
+					taskGroupId
 				);
 				this.extractStatusMapFromTasks(allTasks);
 				tasks = allTasks.filter(
@@ -138,7 +133,7 @@ export class COTAssistantClient {
 			default:
 				tasks = await taskClient.getTasks(
 					{ assignedTo: effectiveUserId },
-					this.taskGroupId
+					taskGroupId
 				);
 				break;
 		}
@@ -174,7 +169,8 @@ export class COTAssistantClient {
 		if (!tasks.length) {
 			return `Hola ${nameUser}, no se encontraron tareas relevantes para tu solicitud.`;
 		}
-		await this.loadStates();
+
+		await this.loadStates(taskGroupId);
 
 		return this.summarizeTasksWithGPT(nameUser, tasks, message);
 	}
