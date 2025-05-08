@@ -1,6 +1,6 @@
 # cotalker-sdk
 
-For Cotalker Partners, this library will help you communicate with Cotalker's API.
+Cotalker SDK is the official SDK for Cotalker Partners. It allows easy and secure communication with the Cotalker's API 
  
 
 
@@ -42,3 +42,54 @@ You can now import Cotalker's API and use its methods to communicate with your w
     const  helloAPI = new CotalkerAPI(token)
 
 ```
+
+Each API module is exposed through a specific client. To access a client:
+
+```typescript
+    const client = cotalkerapi.getCOT<Model>Client();
+    const result = await client.<methodName>({
+       // required parameters
+    });
+```
+* Replace <Model> with the desired module, for example: OpenAI, User, Form, etc.
+
+## How to install and run the project locally
+
+For local testing (development version)
+
+If you've made local changes and want to test the SDK before publishing:
+
+1. Run the pack command to generate a .tgz file:
+
+   ```
+    npm run pack
+   ```
+
+2. Install the generated package in your test project:
+
+   ```
+    npm install cotalker-sdk/cotalker-sdk-x.y.z.tgz
+   ```
+   * Replace x.y.z with the actual version number of the generated package.
+   * check the correct route of the package
+
+ ## Committing and Publishing Changes
+
+When finalizing your changes, make sure to commit using semantic versioning in your commit message. This ensures the correct version bump and successful publishing to NPM.
+
+Use one of the following conventional commit types:
+
+* BREAKING CHANGE
+  
+* FEAT
+
+* FIX
+
+Example:
+
+   ```
+    git commit -m "feat(<scope>): add <new feature>"
+
+   ```
+
+ Once committed and pushed, the version will automatically be updated and published to NPM (if using a release workflow).
