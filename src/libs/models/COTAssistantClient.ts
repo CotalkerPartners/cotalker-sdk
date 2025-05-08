@@ -263,7 +263,6 @@ Nunca respondas "no entendí", "no pude", "no puedo" o similares.
 
 			const messages: SendMsgBody[] =
 				await this.messageClient.getMessages(channelId, date);
-			console.debug(messages);
 			// concatenamos el contenido de mensajes de texto plano
 			const fullText = messages
 				.filter((m) => m.contentType === "text/plain")
