@@ -1,3 +1,11 @@
+## [2.4.3](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.2...v2.4.3) (2025-05-08)
+
+
+### Bug Fixes
+
+* **assistant:** remove unused taskGroupId property ([dfc2c0e](https://github.com/Cotalker/cotalker-sdk/commit/dfc2c0e2d1241f553c4688dd1842f0481f758148))
+* **assistant:** remove unused taskGroupId property ([126d58c](https://github.com/Cotalker/cotalker-sdk/commit/126d58c8b7ebddeeb0019411c58de7391f9169c9))
+
 ## [2.4.2](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.1...v2.4.2) (2025-05-07)
 
 
