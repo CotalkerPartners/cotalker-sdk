@@ -1,3 +1,10 @@
+## [2.4.4](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.3...v2.4.4) (2025-05-08)
+
+
+### Bug Fixes
+
+* **summary:** return data array from getMessages correctly ([6100ae8](https://github.com/Cotalker/cotalker-sdk/commit/6100ae84390e511763b0243fa2555705cb1e8cbc))
+
 ## [2.4.3](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.2...v2.4.3) (2025-05-08)
 
 
