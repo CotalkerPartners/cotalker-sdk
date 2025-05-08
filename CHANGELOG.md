@@ -1,3 +1,11 @@
+## [2.4.5](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.4...v2.4.5) (2025-05-08)
+
+
+### Bug Fixes
+
+* **summary:** delete console.debug ([0e52639](https://github.com/Cotalker/cotalker-sdk/commit/0e526391aa1d6a7ab4a628c4a5ca3a1159473ccb))
+* **summary:** delete console.debug ([434a7a6](https://github.com/Cotalker/cotalker-sdk/commit/434a7a62510c61a306f584a061f33402490ece7c))
+
 ## [2.4.4](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.3...v2.4.4) (2025-05-08)
 
 
