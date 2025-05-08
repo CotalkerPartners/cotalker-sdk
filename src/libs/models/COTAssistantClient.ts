@@ -1,3 +1,4 @@
+import type { SendMsgBody } from "@customTypes/COTTypes/COTMessage";
 import { COTTask } from "@customTypes/COTTypes/COTTask";
 import { COTUser } from "@customTypes/COTTypes/COTUser";
 import { ObjectId } from "@customTypes/custom";
@@ -21,12 +22,6 @@ type SummaryParams = {
 	limit_char?: number;
 	model?: string;
 	systemPrompt?: string;
-};
-
-type Message = {
-	content: string;
-	contentType: string;
-	// puedes agregar otros campos si los necesitas
 };
 
 export class COTAssistantClient {
@@ -263,38 +258,38 @@ Nunca respondas "no entendí", "no pude", "no puedo" o similares.
 	}: SummaryParams): Promise<string | undefined> {
 		// aseguramos el token para este uso
 		this.setToken(openaiToken);
+		try {
+			// obtenemos mensajes desde el canal
 
-		// obtenemos mensajes desde el canal
-		const result = await this.messageClient.getMessages(channelId, date);
-		const messages: Message[] = Array.isArray(result)
-			? result
-			: ((result as any)?.messages ?? []);
+			const messages: SendMsgBody[] =
+				await this.messageClient.getMessages(channelId, date);
+			console.debug(messages);
+			// concatenamos el contenido de mensajes de texto plano
+			const fullText = messages
+				.filter((m) => m.contentType === "text/plain")
+				.map((m) => m.content)
+				.join("\n");
 
-		if (!Array.isArray(messages)) {
-			throw new Error(
-				"La respuesta de getMessages no es un array válido."
+			if (!fullText.trim()) return undefined;
+
+			const limitedText = fullText.slice(-limit_char);
+
+			// generamos el resumen con OpenAI
+			const summaryResponse = await this.openai.chat.completions.create({
+				model,
+				messages: [
+					{ role: "system", content: systemPrompt },
+					{ role: "user", content: limitedText }
+				]
+			});
+			const resumen = summaryResponse.choices[0]?.message?.content;
+			return resumen?.trim() || undefined;
+		} catch (error) {
+			console.error(
+				"Error generating summary:",
+				error instanceof Error ? error.message : String(error)
 			);
+			return undefined;
 		}
-
-		// concatenamos el contenido de mensajes de texto plano
-		const fullText = messages
-			.filter((m) => m.contentType === "text/plain")
-			.map((m) => m.content)
-			.join("\n");
-
-		if (!fullText.trim()) return undefined;
-
-		const limitedText = fullText.slice(-limit_char);
-
-		// generamos el resumen con OpenAI
-		const summaryResponse = await this.openai.chat.completions.create({
-			model,
-			messages: [
-				{ role: "system", content: systemPrompt },
-				{ role: "user", content: limitedText }
-			]
-		});
-
-		return summaryResponse.choices[0]?.message?.content?.trim();
 	}
 }

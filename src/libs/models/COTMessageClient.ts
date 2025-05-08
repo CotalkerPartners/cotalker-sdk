@@ -78,6 +78,7 @@ export default class COTMessageClient {
 	): Promise<SendMsgBody[]> {
 		const dateStr = (modifiedAt ?? addDays(new Date(), -1)).toISOString();
 		const url = `/api/v1/messages/channel/${channel}/modified/${dateStr}`;
-		return this.axiosInstance.get(url);
+		const response = await this.axiosInstance.get(url);
+		return response.data;
 	}
 }
