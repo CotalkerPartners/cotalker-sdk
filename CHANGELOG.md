@@ -1,3 +1,10 @@
+## [2.4.2](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.1...v2.4.2) (2025-05-07)
+
+
+### Bug Fixes
+
+* **assistant:** remove summary generation bug in production ([98b3745](https://github.com/Cotalker/cotalker-sdk/commit/98b3745c1a4dd407f7e8b0caea0cd025da6c7d0e))
+
 ## [2.4.1](https://github.com/Cotalker/cotalker-sdk/compare/v2.4.0...v2.4.1) (2025-05-07)
 
 
