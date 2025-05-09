@@ -39,9 +39,10 @@ export default class COTUserClient {
 	 * Gets the currently authenticated user using the token.
 	 * @returns Promise that resolves to the current user
 	 */
-	public async getMe(): Promise<COTUser> {
+	public async getMe(token: string): Promise<COTUser> {
 		const response = await this.axiosInstance.get<{ data: COTUser }>(
-			"/api/v2/users/me"
+			"/api/v2/users/me",
+			{ headers: { Authorization: token } }
 		);
 		return response.data;
 	}
@@ -179,9 +180,8 @@ export default class COTUserClient {
 	 * @param query Object with the search parameters
 	 * @returns Promise that resolves to an array of found users
 	 */
-	public async findUsers(query): Promise<COTUser[]> {
+	public async findUsers(query: UsersQueryParams): Promise<COTUser[]> {
 		return this.axiosInstance.post(`/api/users/find?allFields=true`, {
-			"companies.companyId": "627400d234b48d5b6667db18",
 			isActive: true,
 			...query
 		});

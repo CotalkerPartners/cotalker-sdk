@@ -42,10 +42,14 @@ describe("COTAssistantClient", () => {
 	});
 
 	test("debe generar resumen correctamente", async () => {
-		const client = new COTAssistantClient(mockAPI, {
-			openaiKey: "test-token",
-			axiosInstance: mockAxios
-		});
+		const client = new COTAssistantClient(
+			mockAPI,
+			{
+				openaiKey: "test-token",
+				axiosInstance: mockAxios
+			},
+			"token"
+		);
 
 		const resumen = await client.generateSummary({
 			channelId: "id_123",

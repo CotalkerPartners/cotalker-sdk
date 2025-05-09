@@ -72,9 +72,7 @@ describe("Survey model", () => {
 
 		(surveysAPI.getSurveys as jest.Mock).mockResolvedValue(mockSurveys);
 
-		console.debug("[TEST] getSurveys - input query:", query);
 		const result = await surveysAPI.getSurveys(query);
-		console.debug("[TEST] getSurveys - output result:", result);
 
 		expect(result).toEqual(mockSurveys);
 	});
@@ -84,9 +82,7 @@ describe("Survey model", () => {
 
 		(surveysAPI.getSurveyQuery as jest.Mock).mockResolvedValue(mockSurvey);
 
-		console.debug("[TEST] getSurveyQuery - input query:", query);
 		const result = await surveysAPI.getSurveyQuery(query);
-		console.debug("[TEST] getSurveyQuery - output result:", result);
 
 		expect(result).toEqual(mockSurvey);
 	});
