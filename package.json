@@ -7,7 +7,7 @@
 	"homepage": "https://github.com/CotalkerPartners/cotalker-sdk#readme",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:Cotalker/cotalker-sdk.git"
+		"url": "git@github.com:CotalkerPartners/cotalker-sdk.git"
 	},
 	"bugs": {
 		"url": "https://github.com/CotalkerPartners/cotalker-sdk/issues"
