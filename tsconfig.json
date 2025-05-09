@@ -1,36 +1,39 @@
 {
-  "extends": "./tsconfig.paths.json",
-  "compilerOptions": {
-    "declaration": true,
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "target": "ES2020",
-    "module": "commonjs",
-    "skipLibCheck": true,  
-    "typeRoots": ["node_modules/@types"],
-    "outDir": "lib",
-    "baseUrl": ".",
-    "paths": {
-      "@libs/*": ["src/libs/*"],
-      "@utils/*": ["src/utils/*"],
-      "@customTypes/*": ["src/customTypes/*"],
-      "@models/*": ["src/libs/models/*"]
-    }
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": [
-    "node_modules/**/*",
-    ".serverless/**/*",
-    ".webpack/**/*",
-    "_warmup/**/*",
-    ".vscode/**/*"
-  ],
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  }
+	"extends": "./tsconfig.paths.json",
+	"compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"lib": ["ESNext", "DOM"],
+		"moduleResolution": "node",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"removeComments": true,
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"target": "ES2020",
+		"module": "commonjs",
+		"skipLibCheck": true,
+		"typeRoots": ["node_modules/@types"],
+		"outDir": "lib",
+		"baseUrl": ".",
+		"paths": {
+			"@libs/*": ["src/libs/*"],
+			"@utils/*": ["src/utils/*"],
+			"@customTypes/*": ["src/customTypes/*"],
+			"@models/*": ["src/libs/models/*"],
+			"@services/*": ["src/libs/services/*"]
+		}
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": [
+		"node_modules/**/*",
+		".serverless/**/*",
+		".webpack/**/*",
+		"_warmup/**/*",
+		".vscode/**/*"
+	],
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
+	}
 }

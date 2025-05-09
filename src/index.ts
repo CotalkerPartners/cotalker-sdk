@@ -8,4 +8,3 @@ export * from "./customTypes/COTTypes/COTFile";
 export * from "./customTypes/COTTypes/COTProperty";
 export * from "./customTypes/COTTypes/COTTask";
 export * from "./customTypes/COTTypes/COTUser";
-export * from "./libs/Answer";

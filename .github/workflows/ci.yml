@@ -1,0 +1,26 @@
+name: ci
+
+on:
+    push:
+        branches: ["main"]
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run tests
+              run: npm run test
+
+            - name: Build
+              run: npm run build
+
+            - name: Generate documentation with TypeDoc
+              run: npx typedoc ./src/libs/models/*.ts --out docs

@@ -6,7 +6,7 @@ import {
 } from "@customTypes/custom";
 import { z } from "zod";
 
-export declare interface COTPropertyType {
+export interface COTPropertyType {
 	_id: ObjectId;
 	code: string;
 	company: string;
@@ -18,7 +18,7 @@ export declare interface COTPropertyType {
 	viewPermissions: string[];
 }
 
-export declare interface COTPropertyTypeSchemaNode {
+export interface COTPropertyTypeSchemaNode {
 	validators: COTPropertyTypeValidator;
 	isArray: boolean;
 	weight: number;
@@ -30,7 +30,7 @@ export declare interface COTPropertyTypeSchemaNode {
 	subType: string;
 }
 
-export declare interface COTPropertyTypeValidator {
+export interface COTPropertyTypeValidator {
 	required: boolean;
 }
 
@@ -51,4 +51,5 @@ const propertyTypesQueryParamsSpecific = z
 export const propertyTypesQueryParams = propertyTypesQueryParamsSpecific
 	.merge(genericQueryParams)
 	.merge(dateQueryParams);
+
 export type PropertyTypesQueryParams = z.infer<typeof propertyTypesQueryParams>;
