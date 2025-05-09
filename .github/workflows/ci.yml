@@ -2,7 +2,7 @@ name: ci
 
 on:
     push:
-        branches: ["BranchIntegration"]
+        branches: ["main"]
 
 jobs:
     publish:
