@@ -4,13 +4,13 @@
 	"description": "Cotalker's partners lib",
 	"main": "lib/index.js",
 	"author": "cotalker",
-	"homepage": "https://github.com/Cotalker/cotalker-sdk#readme",
+	"homepage": "https://github.com/CotalkerPartners/cotalker-sdk#readme",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:Cotalker/cotalker-sdk.git"
 	},
 	"bugs": {
-		"url": "https://github.com/Cotalker/cotalker-sdk/issues"
+		"url": "https://github.com/CotalkerPartners/cotalker-sdk/issues"
 	},
 	"scripts": {
 		"test": "jest",
