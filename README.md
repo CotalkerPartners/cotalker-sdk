@@ -47,8 +47,8 @@ You can now import Cotalker's API and use its methods to communicate with your w
 Each API module is exposed through a specific client. To access a client:
 
 ```typescript
-    const client = cotalkerapi.getCOT<Model>Client();
-    const result = await client.<methodName>({
+    const client = cotalkerapi.getCOTModelClient();
+    const result = await client.methodName({
        // required parameters
     });
 ```
