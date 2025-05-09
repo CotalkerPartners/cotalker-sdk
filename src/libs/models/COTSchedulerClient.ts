@@ -88,7 +88,8 @@ export default class COTSchedulerClient {
 	 * Creates a new schedule using the current scheduler endpoint.
 	 * @param body - The schedule configuration payload.
 	 * @returns The created schedule response.
-	 */ public async createSchedule(
+	 */
+	public async createSchedule(
 		body: ScheduleBody
 	): Promise<SchedulePostResponse> {
 		const { data } = await this.AxiosInstance.post(
@@ -102,7 +103,8 @@ export default class COTSchedulerClient {
 	 * Restarts an existing schedule (e.g. a running cron job).
 	 * @param scheduleId - The ID of the schedule to restart.
 	 * @returns The updated schedule data.
-	 */ public async restartSchedule(scheduleId: ObjectId) {
+	 */
+	public async restartSchedule(scheduleId: ObjectId) {
 		const { data } = await this.AxiosInstance.post(
 			`/api/v3/schedule/${scheduleId}`
 		);
