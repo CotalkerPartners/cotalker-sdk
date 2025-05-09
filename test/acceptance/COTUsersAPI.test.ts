@@ -109,12 +109,16 @@ describe("Users model", () => {
 		(usersAPI.getUsersByJob as jest.Mock).mockResolvedValue(mockUsers);
 		const result = await usersAPI.getUsersByJob(mockJobId);
 		expect(result).toEqual(mockUsers);
+		expect(usersAPI.getUsersByJob).toHaveBeenCalledWith(mockJobId);
 	});
 
 	test("Debe retornar usuarios por emails", async () => {
 		(usersAPI.getUsersByEmail as jest.Mock).mockResolvedValue(mockUsers);
 		const result = await usersAPI.getUsersByEmail(["test@example.com"]);
 		expect(result).toEqual(mockUsers);
+		expect(usersAPI.getUsersByEmail).toHaveBeenCalledWith([
+			"test@example.com"
+		]);
 	});
 
 	test("Debe retornar usuarios por relación", async () => {
@@ -124,6 +128,10 @@ describe("Users model", () => {
 			mockRelationId
 		);
 		expect(result).toEqual(mockUsers);
+		expect(usersAPI.getUsersByRelation).toHaveBeenCalledWith(
+			mockRelationType,
+			mockRelationId
+		);
 	});
 
 	test("Debe retornar actividad del usuario", async () => {
@@ -132,6 +140,7 @@ describe("Users model", () => {
 		);
 		const result = await usersAPI.getUserActivity(mockUserId);
 		expect(result).toEqual(mockUserActivity);
+		expect(usersAPI.getUserActivity).toHaveBeenCalledWith(mockUserId);
 	});
 
 	test("Debe aplicar cambios parciales al usuario", async () => {
@@ -139,17 +148,19 @@ describe("Users model", () => {
 		(usersAPI.jsonPatchUser as jest.Mock).mockResolvedValue(updatedUser);
 		const result = await usersAPI.jsonPatchUser(mockUserId, []);
 		expect(result.name).toBe("New Name");
+		expect(usersAPI.jsonPatchUser).toHaveBeenCalledWith(mockUserId, []);
 	});
 
 	test("Debe retornar usuarios por sus IDs", async () => {
 		(usersAPI.getUsersById as jest.Mock).mockResolvedValue(mockUsers);
 		const result = await usersAPI.getUsersById(["user1", "user2"]);
 		expect(result).toEqual(mockUsers);
+		expect(usersAPI.getUsersById).toHaveBeenCalledWith(["user1", "user2"]);
 	});
 
 	test("Debe buscar usuarios con query personalizada", async () => {
 		(usersAPI.findUsers as jest.Mock).mockResolvedValue(mockUsers);
-		const result = await usersAPI.findUsers({ name: "Test" });
+		const result = await usersAPI.findUsers({ search: "Test" });
 		expect(result).toEqual(mockUsers);
 	});
 
@@ -157,5 +168,16 @@ describe("Users model", () => {
 		(usersAPI.getBossUsers as jest.Mock).mockResolvedValue(mockUsers);
 		const result = await usersAPI.getBossUsers(mockUserId);
 		expect(result).toEqual(mockUsers);
+		expect(usersAPI.getBossUsers).toHaveBeenCalledWith(mockUserId);
+	});
+
+	test("Debe manejar errores al obtener usuarios por trabajo", async () => {
+		(usersAPI.getUsersByJob as jest.Mock).mockRejectedValue(
+			new Error("Error")
+		);
+		await expect(usersAPI.getUsersByJob(mockJobId)).rejects.toThrow(
+			"Error"
+		);
+		expect(usersAPI.getUsersByJob).toHaveBeenCalledWith(mockJobId);
 	});
 });

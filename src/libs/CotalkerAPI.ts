@@ -147,10 +147,14 @@ export class CotalkerAPI extends HttpClient {
 		}
 
 		if (!this._cotassistantClient) {
-			this._cotassistantClient = new COTAssistantClient(this, {
-				openaiKey: openaiKey,
-				axiosInstance: this.axiosInstance
-			});
+			this._cotassistantClient = new COTAssistantClient(
+				this,
+				{
+					openaiKey: openaiKey,
+					axiosInstance: this.axiosInstance
+				},
+				this._cotalkerToken
+			);
 		}
 
 		return this._cotassistantClient;

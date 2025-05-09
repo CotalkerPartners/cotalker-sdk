@@ -22,12 +22,8 @@ describe("🧪 COTBotClient", () => {
 			data: mockResponse
 		});
 
-		console.debug("[TEST] runBot - input botId:", botId);
-		console.debug("[TEST] runBot - input body:", input);
-
 		const result = await botClient.runBotById(botId, input);
 
-		console.debug("[TEST] runBot - result:", result);
 		expect(result.data.status).toBe(true);
 		expect(result.data.code).toBe("ok");
 		expect(result.data.owner).toBe("BOT");
@@ -39,11 +35,8 @@ describe("🧪 COTBotClient", () => {
 
 		(mockAxios.post as jest.Mock).mockResolvedValue({ data: mockResponse });
 
-		console.debug("[TEST] runBot (sin body) - input botId:", botId);
-
 		const result = await botClient.runBotById(botId);
 
-		console.debug("[TEST] runBot (sin body) - result:", result);
 		expect(result.data.status).toBe(true);
 	});
 });

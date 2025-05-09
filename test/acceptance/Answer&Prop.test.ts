@@ -47,10 +47,8 @@ describe("🧪 CotalkerAPI - Property & Answer Integration", () => {
 
 	it("✅ should get an answer by ID", async () => {
 		const id = "a1";
-		console.debug("[TEST] getAnswer - input:", id);
 
 		const result = await api.getCOTAnswerClient().getAnswerById(id);
-		console.debug("[TEST] getAnswer - output:", result);
 
 		expect(result._id).toBe("a1");
 		expect(result.user).toBe("user123");
@@ -60,14 +58,10 @@ describe("🧪 CotalkerAPI - Property & Answer Integration", () => {
 		const id = "123";
 		const mockProperty = { _id: id, name: "Test Property" };
 
-		console.debug("[TEST] getProperty - input:", id);
-		console.debug("[TEST] getProperty - expected output:", mockProperty);
-
 		const propertyClientInstance = (api as any)._cotpropertyClient;
 		propertyClientInstance.getProperty.mockResolvedValue(mockProperty);
 
 		const result = await api.getCOTPropertyClient().getProperty(id);
-		console.debug("[TEST] getProperty - actual output:", result);
 
 		expect(result).toEqual(mockProperty);
 	});
@@ -76,19 +70,12 @@ describe("🧪 CotalkerAPI - Property & Answer Integration", () => {
 		const code = "test_code";
 		const mockProperty = { code, name: "Property By Code" };
 
-		console.debug("[TEST] getPropertyByCode - input:", code);
-		console.debug(
-			"[TEST] getPropertyByCode - expected output:",
-			mockProperty
-		);
-
 		const propertyClientInstance = (api as any)._cotpropertyClient;
 		propertyClientInstance.getPropertyByCode.mockResolvedValue(
 			mockProperty
 		);
 
 		const result = await api.getCOTPropertyClient().getPropertyByCode(code);
-		console.debug("[TEST] getPropertyByCode - actual output:", result);
 
 		expect(result).toEqual(mockProperty);
 	});
@@ -96,12 +83,6 @@ describe("🧪 CotalkerAPI - Property & Answer Integration", () => {
 	it("✅ should get all properties from a property type", async () => {
 		const type = "testType";
 		const mockList = [{ name: "Prop 1" }, { name: "Prop 2" }];
-
-		console.debug("[TEST] getAllFromPropertyType - input:", type);
-		console.debug(
-			"[TEST] getAllFromPropertyType - expected output:",
-			mockList
-		);
 
 		const propertyTypeClientInstance = (api as any)._cotpropertyTypeClient;
 		propertyTypeClientInstance.getAllFromPropertyType.mockResolvedValue(
@@ -111,7 +92,6 @@ describe("🧪 CotalkerAPI - Property & Answer Integration", () => {
 		const result = await api
 			.getCOTPropertyTypeClient()
 			.getAllFromPropertyType(type);
-		console.debug("[TEST] getAllFromPropertyType - actual output:", result);
 
 		expect(result).toEqual(mockList);
 		expect(result.length).toBe(2);
@@ -121,18 +101,12 @@ describe("🧪 CotalkerAPI - Property & Answer Integration", () => {
 		const search = "searchTerm";
 		const mockList = [{ name: "Found 1" }];
 
-		console.debug("[TEST] searchProperty - input:", search);
-		console.debug("[TEST] searchProperty - expected output:", mockList);
-
 		const propertyClientInstance = (api as any)._cotpropertyClient;
 
-		console.debug("[MOCK] Antes del mockResolvedValue");
 		propertyClientInstance.searchProperty.mockResolvedValue(mockList);
-		console.debug("[MOCK] Después del mockResolvedValue");
 
 		const result = await api.getCOTPropertyClient().searchProperty(search);
 
-		console.debug("[TEST] searchProperty - actual output:", result);
 		expect(result).toEqual(mockList);
 		expect(result[0].name).toBe("Found 1");
 	});
@@ -144,20 +118,12 @@ describe("🧪 CotalkerAPI - Property & Answer Integration", () => {
 		];
 		const mockPatched = { name: "Patched Property" };
 
-		console.debug("[TEST] jsonPatchPropety - input ID:", propertyId);
-		console.debug("[TEST] jsonPatchPropety - patch body:", patchBody);
-		console.debug(
-			"[TEST] jsonPatchPropety - expected output:",
-			mockPatched
-		);
-
 		const propertyClientInstance = (api as any)._cotpropertyClient;
 		propertyClientInstance.jsonPatchProperty.mockResolvedValue(mockPatched);
 
 		const result = await api
 			.getCOTPropertyClient()
 			.jsonPatchProperty(propertyId, patchBody);
-		console.debug("[TEST] jsonPatchPropety - actual output:", result);
 
 		expect(result.name).toBe("Patched Property");
 	});

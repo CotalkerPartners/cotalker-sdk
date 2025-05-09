@@ -39,11 +39,18 @@ export class COTAssistantClient {
 
 	private userMap: Record<string, string> = {};
 
-	constructor(api: CotalkerAPI, options: AssistantClientOptions) {
+	private cotalkerToken: string;
+
+	constructor(
+		api: CotalkerAPI,
+		options: AssistantClientOptions,
+		cotalkerToken: string
+	) {
 		this.api = api;
 		this.openaiToken = options.openaiKey;
 		this.openai = new OpenAI({ apiKey: this.openaiToken });
 		this.messageClient = new COTMessageClient(options.axiosInstance);
+		this.cotalkerToken = cotalkerToken;
 	}
 
 	public setToken(token: string) {
@@ -78,7 +85,9 @@ export class COTAssistantClient {
 	): Promise<string> {
 		let effectiveUserId = userId;
 		if (!effectiveUserId) {
-			const me = await this.api.getCOTUserClient().getMe();
+			const me = await this.api
+				.getCOTUserClient()
+				.getMe(this.cotalkerToken);
 			effectiveUserId = me._id;
 		}
 

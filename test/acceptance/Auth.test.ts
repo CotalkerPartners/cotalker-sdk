@@ -1,4 +1,3 @@
-import { CotalkerAPI } from "../../src/libs/CotalkerAPI";
 import {
 	BotAuthValidator,
 	UserAuthValidator
@@ -11,6 +10,23 @@ const mockCotalkerApi = {
 	login: jest.fn()
 };
 
+// Mock data for tests
+const mockData = {
+	companyId: "mockCompany123",
+	userId: "mockUser456",
+	token: "mockToken123",
+	permissions: ["perm.read", "perm.write"],
+	accessRoles: ["admin", "editor"],
+	userData: {
+		companies: [{ companyId: "mockCompany123" }],
+		accessRoles: ["admin", "editor"]
+	},
+	botData: {
+		company: { _id: "mockCompany123" },
+		permissionsV2: ["perm.read", "perm.write"]
+	}
+};
+
 describe("🔐 Auth Module", () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -19,134 +35,100 @@ describe("🔐 Auth Module", () => {
 	// BOT
 	describe("🤖 BotAuthValidator", () => {
 		it("✅ should validate bot is in company", async () => {
-			const token =
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2MxYzA4NTYzM2NjZGM3YWRkZmZlOTgiLCJyb2xlIjoidXNlciIsImNvbXBhbnkiOiI2N2MxYmY1Y2E0YmRiYWY4ZTYxMzcwZmIiLCJkYXRlIjoxNzQzNzEyMjYxNTc2LCJpcnQiOnRydWUsImlhdCI6MTc0MzcxMjI2MSwiZXhwIjoxNzQ0MzE3MDYxfQ.nLuEQTyQhpB0GUCyBkK1gJI55yMa4lHHclyZXbbpOqs";
-			const companyId = "company123";
-
 			const validator = new BotAuthValidator({
-				companyId,
+				companyId: mockData.companyId,
 				cotalkerApi: mockCotalkerApi,
 				permissionsRequired: []
 			});
 
-			validator.token = token;
-			mockCotalkerApi.me.mockResolvedValue({
-				company: { _id: companyId }
-			});
-
-			console.debug("[TEST] BotAuthValidator - input token:", token);
-			console.debug(
-				"[TEST] BotAuthValidator - expected companyId:",
-				companyId
-			);
+			validator.token = mockData.token;
+			mockCotalkerApi.me.mockResolvedValue(mockData.botData);
 
 			const result = await validator.isInCompany();
 
-			console.debug("[TEST] BotAuthValidator - result:", result);
-
-			expect(mockCotalkerApi.me).toHaveBeenCalledWith(token);
+			expect(mockCotalkerApi.me).toHaveBeenCalledWith(mockData.token);
 			expect(result).toBe(true);
 		});
 
 		it("✅ should validate bot permissions", async () => {
-			const token =
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2MxYzA4NTYzM2NjZGM3YWRkZmZlOTgiLCJyb2xlIjoidXNlciIsImNvbXBhbnkiOiI2N2MxYmY1Y2E0YmRiYWY4ZTYxMzcwZmIiLCJkYXRlIjoxNzQzNzEyMjYxNTc2LCJpcnQiOnRydWUsImlhdCI6MTc0MzcxMjI2MSwiZXhwIjoxNzQ0MzE3MDYxfQ.nLuEQTyQhpB0GUCyBkK1gJI55yMa4lHHclyZXbbpOqs";
-			const permissions = ["perm.read"];
-
 			const validator = new BotAuthValidator({
-				companyId: "company123",
+				companyId: mockData.companyId,
 				cotalkerApi: mockCotalkerApi,
-				permissionsRequired: permissions
+				permissionsRequired: [mockData.permissions[0]]
 			});
 
-			validator.token = token;
-			mockCotalkerApi.me.mockResolvedValue({
-				permissionsV2: ["perm.read", "perm.write"]
-			});
-
-			console.debug(
-				"[TEST] BotAuthValidator - input permissions:",
-				permissions
-			);
+			validator.token = mockData.token;
+			mockCotalkerApi.me.mockResolvedValue(mockData.botData);
 
 			const result = await validator.hasPermissions();
 
-			console.debug("[TEST] BotAuthValidator - result:", result);
 			expect(result).toBe(true);
+		});
+
+		it("❌ should fail when bot has insufficient permissions", async () => {
+			const validator = new BotAuthValidator({
+				companyId: mockData.companyId,
+				cotalkerApi: mockCotalkerApi,
+				permissionsRequired: ["perm.nonexistent"]
+			});
+
+			validator.token = mockData.token;
+			mockCotalkerApi.me.mockResolvedValue(mockData.botData);
+
+			const result = await validator.hasPermissions();
+
+			expect(result).toBe(false);
 		});
 	});
 
 	// USER
 	describe("👤 UserAuthValidator", () => {
 		it("✅ should validate user is in company", async () => {
-			const companyId = "company123";
-			const userId = "user456";
-
 			const validator = new UserAuthValidator({
-				companyId,
+				companyId: mockData.companyId,
 				cotalkerApi: mockCotalkerApi,
-				accessRoleRequired: "admin"
+				accessRoleRequired: mockData.accessRoles[0]
 			});
 
-			validator.userId = userId;
-
-			mockCotalkerApi.getUserById.mockResolvedValue({
-				companies: [{ companyId }]
-			});
-
-			console.debug("[TEST] UserAuthValidator - input userId:", userId);
+			validator.userId = mockData.userId;
+			mockCotalkerApi.getUserById.mockResolvedValue(mockData.userData);
 
 			const result = await validator.isInCompany();
 
-			console.debug("[TEST] UserAuthValidator - result:", result);
+			expect(mockCotalkerApi.getUserById).toHaveBeenCalledWith(
+				mockData.userId
+			);
 			expect(result).toBe(true);
 		});
 
 		it("✅ should validate user access roles", async () => {
-			const userId = "user789";
-			const accessRole = "admin";
-
 			const validator = new UserAuthValidator({
-				companyId: "company123",
+				companyId: mockData.companyId,
 				cotalkerApi: mockCotalkerApi,
-				accessRoleRequired: accessRole
+				accessRoleRequired: mockData.accessRoles[0]
 			});
 
-			validator.userId = userId;
-
-			mockCotalkerApi.getUserById.mockResolvedValue({
-				accessRoles: ["admin", "editor"]
-			});
-
-			console.debug("[TEST] UserAuthValidator - input userId:", userId);
-			console.debug(
-				"[TEST] UserAuthValidator - required access role:",
-				accessRole
-			);
+			validator.userId = mockData.userId;
+			mockCotalkerApi.getUserById.mockResolvedValue(mockData.userData);
 
 			const result = await validator.hasAccessRoles();
 
-			console.debug("[TEST] UserAuthValidator - result:", result);
 			expect(result).toBe(true);
 		});
-	});
 
-	// REAL TEST — login contra staging (omitido por seguridad)
-	describe("🧪 CotalkerAPI Login (REAL)", () => {
-		it("should perform login and return real token", async () => {
-			process.env.BASE_URL = "https://staging.cotalker.com";
+		it("❌ should fail when user has insufficient access roles", async () => {
+			const validator = new UserAuthValidator({
+				companyId: mockData.companyId,
+				cotalkerApi: mockCotalkerApi,
+				accessRoleRequired: "nonexistent-role"
+			});
 
-			const email = "daniel.barriga@cotalker.com";
-			const password = "Cotalker25$";
+			validator.userId = mockData.userId;
+			mockCotalkerApi.getUserById.mockResolvedValue(mockData.userData);
 
-			console.log("[REAL TEST] Starting login with email:", email);
+			const result = await validator.hasAccessRoles();
 
-			const token = await CotalkerAPI.login(email, password);
-
-			console.log("\x1b[33m[REAL TOKEN GENERATED]\x1b[0m", token);
-
-			expect(typeof token).toBe("string");
-			expect(token.length).toBeGreaterThan(10);
+			expect(result).toBe(false);
 		});
 	});
 });
