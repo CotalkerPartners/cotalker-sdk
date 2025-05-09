@@ -82,9 +82,9 @@ Use one of the following conventional commit types:
 
 * BREAKING CHANGE
   
-* FEAT
+* feat
 
-* FIX
+* fix
 
 Example:
 
