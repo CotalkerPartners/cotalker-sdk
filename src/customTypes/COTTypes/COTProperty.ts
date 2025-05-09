@@ -17,6 +17,10 @@ export declare interface COTProperty {
 	schemaInstance?: Record<string, unknown>;
 	owner?: Record<string, string>;
 }
+export type COTPropertyPostBody = Omit<
+	COTProperty,
+	"_id" | "createdAt" | "modifiedAt"
+>;
 
 export interface SearchPropertyQueryOptions {
 	parent?: string | string[];

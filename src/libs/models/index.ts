@@ -1,0 +1,13 @@
+export { default as COTAccessRolesClient } from "./COTAccessRolesClient";
+export { default as COTAnswerClient } from "./COTAnswerClient";
+export { default as COTBotClient } from "./COTBotClient";
+export { default as COTChannelClient } from "./COTChannelClient";
+export { default as COTFileClient } from "./COTFileClient";
+export { default as COTMessageClient } from "./COTMessageClient";
+export { default as COTPropertyClient } from "./COTPropertyClient";
+export { default as COTPropertyTypeClient } from "./COTPropertyTypeClient";
+export { default as COTSchedulerClient } from "./COTSchedulerClient";
+export { default as COTSMStateClient } from "./COTSMStateClient";
+export { default as COTSurveyClient } from "./COTSurveyClient";
+export { default as COTTaskClient } from "./COTTaskClient";
+export { default as COTUserClient } from "./COTUserClient";
