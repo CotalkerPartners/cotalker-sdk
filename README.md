@@ -17,10 +17,11 @@ If not we recommend the use of [NVM] (https://github.com/nvm-sh/nvm) which you c
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 ```
 
-and then you can install node
+and then you can install node in the repository directory
 
 ```
-    nvm install node
+    nvm install
+    nvm use
 ```
 
 ## How to Install and Run the Project
