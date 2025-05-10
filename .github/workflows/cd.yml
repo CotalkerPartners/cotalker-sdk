@@ -8,11 +8,6 @@ on:
 jobs:
     release:
         runs-on: ubuntu-latest
-        permissions:
-            contents: write
-            pull-requests: write
-            checks: write
-            statuses: write
 
         steps:
             - name: Checkout code
@@ -33,10 +28,9 @@ jobs:
             - name: Build
               run: npm run build
 
-            - name: Run semantic-release
+            - name: Run public
               env:
-                  GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_PUSH_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
               run: |
                   echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-                  npx semantic-release
+                  npm publish --access public
