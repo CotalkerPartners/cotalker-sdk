@@ -1,3 +1,10 @@
+## [2.4.10](https://github.com/CotalkerPartners/cotalker-sdk/compare/v2.4.9...v2.4.10) (2025-05-10)
+
+
+### Bug Fixes
+
+* **main.yml:** bug archive ([d97acb3](https://github.com/CotalkerPartners/cotalker-sdk/commit/d97acb3021ec6715cc165c6df905c008b08085a9))
+
 ## [2.4.9](https://github.com/CotalkerPartners/cotalker-sdk/compare/v2.4.8...v2.4.9) (2025-05-10)
 
 
