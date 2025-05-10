@@ -1,3 +1,10 @@
+## [2.4.9](https://github.com/CotalkerPartners/cotalker-sdk/compare/v2.4.8...v2.4.9) (2025-05-10)
+
+
+### Bug Fixes
+
+* **release:** update releaserc ([3aaf76f](https://github.com/CotalkerPartners/cotalker-sdk/commit/3aaf76fd664250a838e9e066989e2acf5d32476f))
+
 ## [2.4.8](https://github.com/CotalkerPartners/cotalker-sdk/compare/v2.4.7...v2.4.8) (2025-05-10)
 
 
