@@ -72,6 +72,7 @@
 * **release:** update dependencies ([cd2f005](https://github.com/CotalkerPartners/cotalker-sdk/commit/cd2f005643e870963fdae983755871fc41d09642))
 * **release:** update node version ([c3e3fdb](https://github.com/CotalkerPartners/cotalker-sdk/commit/c3e3fdb35dbd45d68e619c6e2c308d143ee85887))
 * **release:** update releaserc ([7f42e4b](https://github.com/CotalkerPartners/cotalker-sdk/commit/7f42e4b18529e6c6306a53a8851507873c0265b3))
+* **release:** update releaserc ([3aaf76f](https://github.com/CotalkerPartners/cotalker-sdk/commit/3aaf76fd664250a838e9e066989e2acf5d32476f))
 * update url ([83daa4f](https://github.com/CotalkerPartners/cotalker-sdk/commit/83daa4fcfba413a05ce6f7ba5e6c485064538713))
 * **user:** test update ([253b9df](https://github.com/CotalkerPartners/cotalker-sdk/commit/253b9dfdcf7ee3ffe9f1e925636ab5571dcf8f09))
 
@@ -158,7 +159,6 @@
 * **user:** add new features and their tests ([2e3cfb9](https://github.com/Cotalker/cotalker-sdk/commit/2e3cfb9610f07cd2721c36d23ec589c3bc2f9f5f))
 * **user:** integrate COTUserAPI into BranchJocelynIntegration ([5e68f75](https://github.com/Cotalker/cotalker-sdk/commit/5e68f759ccef3f51ae704aae705d6de9848298fb))
 
-<<<<<<< HEAD
 # [2.3.0](https://github.com/Cotalker/cotalker-sdk/compare/v2.2.2...v2.3.0) (2025-05-03)
 
 
@@ -203,8 +203,6 @@
 
 * **test:** versioning test ([69e3a3e](https://github.com/Cotalker/cotalker-sdk/commit/69e3a3e5476ec449df654319dce9f38481650fe0))
 
-=======
->>>>>>> feature/AssistantClient
 ## [2.0.4](https://github.com/Cotalker/cotalker-sdk/compare/v2.0.3...v2.0.4) (2025-04-10)
 
 
