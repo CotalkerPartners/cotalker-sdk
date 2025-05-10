@@ -12,6 +12,28 @@
 * **ci/cd:** update release permissions ([483413b](https://github.com/CotalkerPartners/cotalker-sdk/commit/483413bd1f39a84adba35508c74ae5944d59af70))
 * **index:** add COTBot ([e3166e1](https://github.com/CotalkerPartners/cotalker-sdk/commit/e3166e1747bec1e0137f51d21bf8a206b676c192))
 * **package:** update url ([8a5383f](https://github.com/CotalkerPartners/cotalker-sdk/commit/8a5383f8b111f0b2cfbe0b4bc23c985f99150cd5))
+* **release:** bump version to 2.4.7 ([d008eed](https://github.com/CotalkerPartners/cotalker-sdk/commit/d008eedeae398a1fc844c331d4528b0573923bce))
+* **release:** update ([5b97b1d](https://github.com/CotalkerPartners/cotalker-sdk/commit/5b97b1db71dde1a2b4b021c2688157050545dd28))
+* **release:** update dependencies ([cd2f005](https://github.com/CotalkerPartners/cotalker-sdk/commit/cd2f005643e870963fdae983755871fc41d09642))
+* **release:** update node version ([c3e3fdb](https://github.com/CotalkerPartners/cotalker-sdk/commit/c3e3fdb35dbd45d68e619c6e2c308d143ee85887))
+* **release:** update releaserc ([7f42e4b](https://github.com/CotalkerPartners/cotalker-sdk/commit/7f42e4b18529e6c6306a53a8851507873c0265b3))
+* update url ([83daa4f](https://github.com/CotalkerPartners/cotalker-sdk/commit/83daa4fcfba413a05ce6f7ba5e6c485064538713))
+* **user:** test update ([253b9df](https://github.com/CotalkerPartners/cotalker-sdk/commit/253b9dfdcf7ee3ffe9f1e925636ab5571dcf8f09))
+
+## [2.4.6](https://github.com/CotalkerPartners/cotalker-sdk/compare/v2.4.5...v2.4.6) (2025-05-10)
+
+
+### Bug Fixes
+
+* **branch:** branch update ([fe280cb](https://github.com/CotalkerPartners/cotalker-sdk/commit/fe280cb4f03d12f4797dc004ff2203c19c92798b))
+* **cd:** update enviroment variable ([1df77ec](https://github.com/CotalkerPartners/cotalker-sdk/commit/1df77ec79fabdeefe63e28347f43243a8b107d79))
+* **cd:** update enviroment variable ([fa8c0d8](https://github.com/CotalkerPartners/cotalker-sdk/commit/fa8c0d8979956d3a5a056c47a067c1fb778d6e14))
+* **cd:** update enviroment variable ([95bd42d](https://github.com/CotalkerPartners/cotalker-sdk/commit/95bd42dbc98adcaea0e53dca694464b580562326))
+* **cd:** update name token ([ed9a68b](https://github.com/CotalkerPartners/cotalker-sdk/commit/ed9a68b7ca0ff0ba71fef3b5fd6095c538018472))
+* **cd:** update permissions ([e214322](https://github.com/CotalkerPartners/cotalker-sdk/commit/e21432250b2d879cf112efabb34b3fe45fdf5156))
+* **ci/cd:** update release permissions ([483413b](https://github.com/CotalkerPartners/cotalker-sdk/commit/483413bd1f39a84adba35508c74ae5944d59af70))
+* **index:** add COTBot ([e3166e1](https://github.com/CotalkerPartners/cotalker-sdk/commit/e3166e1747bec1e0137f51d21bf8a206b676c192))
+* **package:** update url ([8a5383f](https://github.com/CotalkerPartners/cotalker-sdk/commit/8a5383f8b111f0b2cfbe0b4bc23c985f99150cd5))
 * **release:** update ([5b97b1d](https://github.com/CotalkerPartners/cotalker-sdk/commit/5b97b1db71dde1a2b4b021c2688157050545dd28))
 * **release:** update dependencies ([cd2f005](https://github.com/CotalkerPartners/cotalker-sdk/commit/cd2f005643e870963fdae983755871fc41d09642))
 * **release:** update node version ([c3e3fdb](https://github.com/CotalkerPartners/cotalker-sdk/commit/c3e3fdb35dbd45d68e619c6e2c308d143ee85887))
