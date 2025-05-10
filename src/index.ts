@@ -7,5 +7,6 @@ export * from "./customTypes/COTTypes/COTBot";
 export * from "./customTypes/COTTypes/COTChannel";
 export * from "./customTypes/COTTypes/COTFile";
 export * from "./customTypes/COTTypes/COTProperty";
+export * from "./customTypes/COTTypes/COTSMState";
 export * from "./customTypes/COTTypes/COTTask";
 export * from "./customTypes/COTTypes/COTUser";
